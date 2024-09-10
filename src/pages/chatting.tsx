@@ -54,6 +54,13 @@ const Chatting = () => {
     return () => unsubscribe();
   }, []);
 
+  // 처음 화면 접속시 가장 아래 메시지 보여주기
+  useEffect(() => {
+    if (chatting.length > 0) {
+      scrollToBottom();
+    }
+  }, [chatting]);
+
   // 스크롤 맨 아래로 이동 함수
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
