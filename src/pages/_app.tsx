@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const init = async () => {
     const state = await auth.authStateReady();

@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 const GoogleLogin = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [, setLoading] = useState(false);
+  const [, setError] = useState("");
   const router = useRouter();
 
   const handleGoogleLogin = async () => {
