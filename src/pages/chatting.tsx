@@ -9,6 +9,8 @@ import {
 import { auth, db } from "../../firebase";
 import Image from "next/image";
 import { IoArrowBackOutline, IoArrowDown } from "react-icons/io5";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 // TODO
 // [] 커플 연결 구현 완료 후, 커플 연결된 두 명끼리만 채팅 가능하게 하기
@@ -20,6 +22,7 @@ import { IoArrowBackOutline, IoArrowDown } from "react-icons/io5";
 // [] 알림 모달 넣기
 
 const Chatting = () => {
+  const router = useRouter();
   const [chatting, setChatting] = useState<
     {
       id: string;
@@ -139,11 +142,18 @@ const Chatting = () => {
     return `${dateString} ${timeString}`;
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className="flex flex-col h-screen bg-background p-4">
       {/* 채팅방 헤더 */}
       <div className="flex items-center bg-white p-4 shadow-lg rounded-lg mb-4">
-        <IoArrowBackOutline className="text-2xl cursor-pointer mr-2" />
+        <IoArrowBackOutline
+          className="text-2xl cursor-pointer mr-2"
+          onClick={handleGoBack}
+        />
         {/* 📍 상대방 이름으로 바꾸기 */}
         <div className="flex-grow text-center font-semibold">Couple Chat</div>
       </div>
