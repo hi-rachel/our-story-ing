@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   collection,
   addDoc,
@@ -8,6 +8,16 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Image from "next/image";
+import { IoArrowBackOutline, IoArrowDown } from "react-icons/io5";
+
+// TODO
+// [] 커플 연결 구현 완료 후, 커플 연결된 두 명끼리만 채팅 가능하게 하기
+// -> 다른 사용자 접근 불가, 2명만 입장 가능, 커플이 아니면 접근 불가
+// [] 다국화 적용 -> 영어 시간 포맷 표시
+// [] 채팅방 나가기
+// [] 채팅방 삭제
+// [] 새 메시지 알림
+// [] 알림 모달 넣기
 
 const Chatting = () => {
   const [chatting, setChatting] = useState<
@@ -21,6 +31,8 @@ const Chatting = () => {
     }[]
   >([]);
   const [newChat, setNewChat] = useState("");
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const q = query(collection(db, "chatting"), orderBy("createdAt"));
@@ -37,12 +49,22 @@ const Chatting = () => {
         };
       });
       setChatting(msgs);
+      scrollToBottom(); // 새로운 메시지 수신 시 스크롤 아래로 이동
     });
     return () => unsubscribe();
   }, []);
 
+  // 스크롤 맨 아래로 이동 함수
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // 새 메시지 추가 함수
   const handleSendMessage = async () => {
-    if (newChat.trim() === "") return;
+    if (newChat.trim() === "") {
+      alert("메시지를 입력해주세요.");
+      return;
+    }
     const user = auth.currentUser;
     if (!user) {
       alert("로그인이 필요합니다.");
@@ -56,9 +78,27 @@ const Chatting = () => {
       photoURL: user.photoURL,
     });
     setNewChat("");
+    scrollToBottom(); // 메시지 전송 후 스크롤 아래로 이동
   };
 
-  // 날짜/시간 포맷 함수 (24/09/10 오후 10:11 형식으로 변환)
+  // 엔터키로 메시지 전송
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
+  // 스크롤 이벤트 감지 (위로 스크롤 시 화살표 버튼 보이기)
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+    if (scrollTop + clientHeight < scrollHeight) {
+      setShowScrollButton(true);
+    } else {
+      setShowScrollButton(false);
+    }
+  };
+
+  // 날짜/시간 포맷 함수 (24.09.10 오후 10:11 형식으로 변환)
   const formatDate = (date: Date) => {
     const dateString = date.toLocaleDateString("ko-KR", {
       year: "2-digit",
@@ -75,8 +115,18 @@ const Chatting = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background p-4">
+      {/* 채팅방 헤더 */}
+      <div className="flex items-center bg-white p-4 shadow-lg rounded-lg mb-4">
+        <IoArrowBackOutline className="text-2xl cursor-pointer mr-2" />
+        {/* 📍 상대방 이름으로 바꾸기 */}
+        <div className="flex-grow text-center font-semibold">Couple Chat</div>
+      </div>
+
       {/* 채팅 메시지 리스트 */}
-      <div className="flex-1 overflow-y-auto p-4 bg-white rounded-lg shadow-card">
+      <div
+        className="flex-1 overflow-y-auto p-4 bg-white rounded-lg shadow-card"
+        onScroll={handleScroll}
+      >
         {chatting.map((msg) => (
           <div
             key={msg.id}
@@ -129,7 +179,19 @@ const Chatting = () => {
             )}
           </div>
         ))}
+        {/* 스크롤 하단 기준점 */}
+        <div ref={chatEndRef} />
       </div>
+
+      {/* 스크롤 맨 아래로 이동하는 버튼 */}
+      {showScrollButton && (
+        <button
+          className="fixed bottom-20 right-5 p-2 bg-primary text-white rounded-full shadow-lg"
+          onClick={scrollToBottom}
+        >
+          <IoArrowDown className="text-2xl" />
+        </button>
+      )}
 
       {/* 입력 필드 */}
       <div className="flex mt-4">
@@ -137,6 +199,7 @@ const Chatting = () => {
           type="text"
           value={newChat}
           onChange={(e) => setNewChat(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message..."
           className="flex-1 p-3 rounded-l-lg border border-gray-300 shadow-button focus:outline-none"
         />
