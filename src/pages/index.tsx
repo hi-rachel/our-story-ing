@@ -12,21 +12,25 @@ const Home = () => {
       title: t("home.features.profileSetup.title"),
       description: t("home.features.profileSetup.description"),
       icon: "👥",
+      href: "/profile",
     },
     {
       title: t("home.features.realTimeChat.title"),
       description: t("home.features.realTimeChat.description"),
       icon: "💬",
+      href: "/chatting",
     },
     {
       title: t("home.features.timeline.title"),
       description: t("home.features.timeline.description"),
       icon: "📅",
+      href: "/",
     },
     {
       title: t("home.features.todoList.title"),
       description: t("home.features.todoList.description"),
       icon: "✅",
+      href: "/",
     },
   ];
 
@@ -74,18 +78,20 @@ const Home = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
               {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="bg-background rounded-lg p-6 text-center hover:shadow-lg transition duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="text-4xl sm:text-5xl mb-4">
-                    {feature.icon}
+                <Link href={feature.href}>
+                  <div
+                    key={index}
+                    className="bg-background rounded-lg p-6 text-center hover:shadow-lg transition duration-300 transform hover:-translate-y-1"
+                  >
+                    <div className="text-4xl sm:text-5xl mb-4">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-heading font-semibold mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-text text-sm">{feature.description}</p>
                   </div>
-                  <h3 className="text-xl font-heading font-semibold mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-text text-sm">{feature.description}</p>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
