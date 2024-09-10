@@ -1,0 +1,104 @@
+{
+  "common": {
+    "appName": "ing",
+    "getStarted": "Get Started",
+    "signup": "Sign Up",
+    "login": "Log In",
+    "logout": "Log Out",
+    "loading": "Loading..."
+  },
+  "home": {
+    "hero": {
+      "title": "Our Story is ing: Share Your Moments, Strengthen Your Bond",
+      "subtitle": "A special place for couples to share their journey"
+    },
+    "features": {
+      "title": "Our Features",
+      "profileSetup": {
+        "title": "Profile Setup",
+        "description": "Share your precious information"
+      },
+      "realTimeChat": {
+        "title": "Real-time Chat",
+        "description": "Stay connected anytime, anywhere"
+      },
+      "timeline": {
+        "title": "Timeline",
+        "description": "Cherish your moments together"
+      },
+      "todoList": {
+        "title": "To-Do List",
+        "description": "Plan your future, hand in hand"
+      }
+    },
+    "timelinePreview": {
+      "title": "Moments to Remember",
+      "moment": "Special Moment",
+      "description": "A brief description of this beautiful memory"
+    },
+    "cta": {
+      "title": "Ready to Start Your Story?",
+      "subtitle": "Join 'ing' today and create beautiful memories with your loved one"
+    }
+  },
+  "signup": {
+    "title": "Join ing",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "signUp": "Sign Up",
+    "orSignUpWith": "Or sign up with",
+    "alreadyHaveAccount": "Already have an account?",
+    "logIn": "Log in"
+  },
+  "login": {
+    "title": "Log In to ing",
+    "email": "Email",
+    "password": "Password",
+    "logIn": "Log In",
+    "forgotPassword": "Forgot Password?",
+    "orLoginWith": "Or log in with",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "contactUs": "Contact Us",
+    "followUs": "Follow Us"
+  },
+  "profile": {
+    "title": "Profile",
+    "image": "Image",
+    "name": "Name",
+    "email": "Email",
+    "bio": "Status Message",
+    "partner": "Partner",
+    "edit": "Edit"
+  },
+  "coupleConnection": {
+    "title": "Couple Connection",
+    "yourCode": "Your Connection Code",
+    "status": "Connection Status",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "partner": "Partner",
+    "enterCode": "Enter Connection Code",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "createInvitation": "Create Invitation Code",
+    "shareViaKakao": "Share via KakaoTalk",
+    "connectSuccess": "Successfully connected!",
+    "disconnectSuccess": "Connection has been disconnected.",
+    "invitationCreated": "Invitation code has been created.",
+    "errorFetchingProfile": "Failed to fetch profile information.",
+    "errorConnecting": "An error occurred while connecting.",
+    "errorDisconnecting": "An error occurred while disconnecting.",
+    "errorCreatingInvitation": "An error occurred while creating the invitation code.",
+    "kakaoShareMessage": "Let's connect on our couple app! Invitation code: {inviteCode}",
+    "createAndShareInvitation": "Create and Share Invitation",
+    "createAndShareInvitationSuccess": "Invitation code has been created. Share it via KakaoTalk!",
+    "errorCreateAndShareInvitation": "An error occurred while creating and sharing the invitation code."
+  }
+}
