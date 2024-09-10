@@ -31,6 +31,8 @@ const Chatting = () => {
     }[]
   >([]);
   const [newChat, setNewChat] = useState("");
+  const [isComposing, setIsComposing] = useState(false); // IME 입력 상태 관리(한글)
+  const [isSending, setIsSending] = useState(false); // 메시지 전송 중인지 확인하는 상태
   const [showScrollButton, setShowScrollButton] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -68,7 +70,7 @@ const Chatting = () => {
 
   // 새 메시지 추가 함수
   const handleSendMessage = async () => {
-    if (newChat.trim() === "") {
+    if (newChat.trim() === "" || isSending) {
       alert("메시지를 입력해주세요.");
       return;
     }
@@ -77,22 +79,39 @@ const Chatting = () => {
       alert("로그인이 필요합니다.");
       return;
     }
-    await addDoc(collection(db, "chatting"), {
-      text: newChat,
-      createdAt: new Date(),
-      userId: user.uid,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-    });
-    setNewChat("");
-    scrollToBottom(); // 메시지 전송 후 스크롤 아래로 이동
+    setIsSending(true);
+    try {
+      await addDoc(collection(db, "chatting"), {
+        text: newChat,
+        createdAt: new Date(),
+        userId: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      });
+      setNewChat("");
+      scrollToBottom(); // 메시지 전송 후 스크롤 아래로 이동
+    } catch (error) {
+      console.error("메시지 전송 오류:", error);
+    } finally {
+      setIsSending(false); // 전송 완료 후 상태 초기화
+    }
   };
 
   // 엔터키로 메시지 전송
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !isComposing) {
+      e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  // IME 입력 상태 처리
+  const handleCompositionStart = () => {
+    setIsComposing(true); // IME 입력 시작
+  };
+
+  const handleCompositionEnd = () => {
+    setIsComposing(false); // IME 입력 완료
   };
 
   // 스크롤 이벤트 감지 (위로 스크롤 시 화살표 버튼 보이기)
@@ -207,6 +226,8 @@ const Chatting = () => {
           value={newChat}
           onChange={(e) => setNewChat(e.target.value)}
           onKeyDown={handleKeyDown}
+          onCompositionStart={handleCompositionStart} // IME 입력 시작
+          onCompositionEnd={handleCompositionEnd} // IME 입력 완료
           placeholder="Type your message..."
           className="flex-1 p-3 rounded-l-lg border border-gray-300 shadow-button focus:outline-none"
         />
