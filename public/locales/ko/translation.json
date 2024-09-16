@@ -1,119 +1,119 @@
 {
-  "common": {
-    "appName": "ing",
-    "getStarted": "시작하기",
-    "signup": "회원가입",
-    "login": "로그인",
-    "logout": "로그아웃",
-    "logoutConfirm": "정말 로그아웃하시겠습니까?",
-    "loading": "로딩 중...",
-    "anonymous": "익명",
-    "cancel": "취소하기",
-    "save": "저장하기"
-  },
-  "home": {
-    "hero": {
-      "title": "우리의 이야기는 현재 진행중, 순간을 공유하고, 유대를 강화하세요",
-      "subtitle": "커플들이 자신들의 여정을 공유할 수 있는 특별한 공간"
-    },
-    "features": {
-      "title": "주요 기능",
-      "profileSetup": {
-        "title": "프로필 설정",
-        "description": "소중한 정보를 공유하세요"
-      },
-      "realTimeChat": {
-        "title": "실시간 채팅",
-        "description": "언제 어디서나 연결되어 있세요"
-      },
-      "timeline": {
-        "title": "타임라인",
-        "description": "함께한 순간들을 소중히 간직하세요"
-      },
-      "todoList": {
-        "title": "할 일 목록",
-        "description": "함께 미래를 계획하세요"
-      }
-    },
-    "timelinePreview": {
-      "title": "기억할 만한 순간들",
-      "moment": "특별한 순간",
-      "description": "이 아름다운 추억에 대한 간단한 설명"
-    },
-    "cta": {
-      "title": "당신의 이야기를 시작할 준비가 되셨나요?",
-      "subtitle": "오늘 ing에 가입하고 사랑하는 사람과 아름다운 추억을 만드세요"
-    }
-  },
-  "signup": {
-    "title": "ing에 가입하기",
-    "fullName": "이름",
-    "email": "이메일",
-    "password": "비밀번호",
-    "signUp": "가입하기",
-    "orSignUpWith": "또는 다음으로 가입하기",
-    "alreadyHaveAccount": "이미 계정이 있으신가요?",
-    "logIn": "로그인"
-  },
-  "login": {
-    "title": "ing에 로그인",
-    "email": "이메일",
-    "password": "비밀번호",
-    "logIn": "로그인",
-    "forgotPassword": "비밀번호를 잊으셨나요?",
-    "orLoginWith": "또는 다음으로 로그인",
-    "dontHaveAccount": "계정이 없으신가요?",
-    "signUp": "가입하기"
-  },
-  "footer": {
-    "quickLinks": "빠른 링크",
-    "termsOfService": "서비스 약관",
-    "privacyPolicy": "개인정보 처리방침",
-    "contactUs": "문의하기",
-    "followUs": "팔로우하기"
-  },
-  "profile": {
-    "title": "프로필",
-    "image": "대표 사진",
-    "name": "이름",
-    "email": "이메일",
-    "bio": "상태 메시지",
-    "noBio": "상태 메시지가 없습니다.",
-    "partner": "파트너",
-    "single": "연애 중이 아님",
-    "edit": "수정하기",
-    "save": "저장하기",
-    "cancel": "취소",
-    "deleteAccount": "탈퇴하기",
-    "confirmDeleteAccount": "정말로 계정을 삭제하시겠습니까?",
-    "accountDeleted": "계정이 삭제되었습니다.",
-    "errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
-    "errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
-    "errorDisplayNameRequired": "이름은 필수 항목입니다.",
-    "errorFileSizeExceeded": "파일 크기가 100MB 제한을 초과했습니다. 더 작은 파일을 업로드해 주세요."
-  },
-  "coupleConnection": {
-    "title": "커플 연결",
-    "yourCode": "내 연결 코드",
-    "status": "연결 상태",
-    "connected": "연결됨",
-    "notConnected": "연결되지 않음",
-    "partner": "파트너",
-    "enterCode": "연결 코드 입력",
-    "connect": "연결하기",
-    "disconnect": "연결 해제",
-    "createInvitation": "초대 코드 생성",
-    "shareViaKakao": "카카오톡으로 공유",
-    "connectSuccess": "성공적으로 연결되었습니다!",
-    "disconnectSuccess": "연결이 해제되었습니다.",
-    "invitationCreated": "초대 코드가 생성되었습니다.",
-    "errorFetchingProfile": "프로필 정보를 가져오는 데 실패했습니다.",
-    "errorConnecting": "연결 중 오류가 발생했습니다.",
-    "errorDisconnecting": "연결 해제 중 오류가 발생했습니다.",
-    "errorCreatingInvitation": "초대 코드 생성 중 오류가 발생했습니다.",
-    "kakaoShareMessage": "우리 커플 앱에서 연결해요! 초대 코드: {inviteCode}",
-    "createAndShareInvitation": "초대 코드 생성 및 공유",
-    "createAndShareInvitationSuccess": "초대 코드가 생성되었습니다. 카카오톡으로 공유해보세요!",
-    "errorCreateAndShareInvitation": "초대 코드 생성 및 공유 중 오류가 발생했습니다."
-  }
+	"common": {
+		"appName": "ing",
+		"getStarted": "시작하기",
+		"signup": "회원가입",
+		"login": "로그인",
+		"logout": "로그아웃",
+		"logoutConfirm": "정말 로그아웃하시겠습니까?",
+		"loading": "로딩 중...",
+		"anonymous": "익명",
+		"cancel": "취소하기",
+		"save": "저장하기"
+	},
+	"home": {
+		"hero": {
+			"title": "우리의 이야기는 현재 진행중, 순간을 공유하고, 유대를 강화하세요",
+			"subtitle": "커플들이 자신들의 여정을 공유할 수 있는 특별한 공간"
+		},
+		"features": {
+			"title": "주요 기능",
+			"profileSetup": {
+				"title": "프로필 설정",
+				"description": "소중한 정보를 공유하세요"
+			},
+			"realTimeChat": {
+				"title": "실시간 채팅",
+				"description": "언제 어디서나 연결되어 있세요"
+			},
+			"timeline": {
+				"title": "타임라인",
+				"description": "함께한 순간들을 소중히 간직하세요"
+			},
+			"todoList": {
+				"title": "할 일 목록",
+				"description": "함께 미래를 계획하세요"
+			}
+		},
+		"timelinePreview": {
+			"title": "기억할 만한 순간들",
+			"moment": "특별한 순간",
+			"description": "이 아름다운 추억에 대한 간단한 설명"
+		},
+		"cta": {
+			"title": "당신의 이야기를 시작할 준비가 되셨나요?",
+			"subtitle": "오늘 ing에 가입하고 사랑하는 사람과 아름다운 추억을 만드세요"
+		}
+	},
+	"signup": {
+		"title": "ing에 가입하기",
+		"fullName": "이름",
+		"email": "이메일",
+		"password": "비밀번호",
+		"signUp": "가입하기",
+		"orSignUpWith": "또는 다음으로 가입하기",
+		"alreadyHaveAccount": "이미 계정이 있으신가요?",
+		"logIn": "로그인"
+	},
+	"login": {
+		"title": "ing에 로그인",
+		"email": "이메일",
+		"password": "비밀번호",
+		"logIn": "로그인",
+		"forgotPassword": "비밀번호를 잊으셨나요?",
+		"orLoginWith": "또는 다음으로 로그인",
+		"dontHaveAccount": "계정이 없으신가요?",
+		"signUp": "가입하기"
+	},
+	"footer": {
+		"quickLinks": "빠른 링크",
+		"termsOfService": "서비스 약관",
+		"privacyPolicy": "개인정보 처리방침",
+		"contactUs": "문의하기",
+		"followUs": "팔로우하기"
+	},
+	"profile": {
+		"title": "프로필",
+		"image": "대표 사진",
+		"name": "이름",
+		"email": "이메일",
+		"bio": "상태 메시지",
+		"noBio": "상태 메시지가 없습니다.",
+		"partner": "파트너",
+		"single": "연애 중이 아님",
+		"edit": "수정하기",
+		"save": "저장하기",
+		"cancel": "취소",
+		"deleteAccount": "탈퇴하기",
+		"confirmDeleteAccount": "정말로 계정을 삭제하시겠습니까?",
+		"accountDeleted": "계정이 삭제되었습니다.",
+		"errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
+		"errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
+		"errorDisplayNameRequired": "이름은 필수 항목입니다.",
+		"errorFileSizeExceeded": "파일 크기가 100MB 제한을 초과했습니다. 더 작은 파일을 업로드해 주세요."
+	},
+	"coupleConnection": {
+		"title": "커플 연결",
+		"yourCode": "내 연결 코드",
+		"status": "연결 상태",
+		"connected": "연결됨",
+		"notConnected": "연결되지 않음",
+		"partner": "파트너",
+		"enterCode": "연결 코드 입력",
+		"connect": "연결하기",
+		"disconnect": "연결 해제",
+		"createInvitation": "초대 코드 생성",
+		"shareViaKakao": "카카오톡으로 공유",
+		"connectSuccess": "성공적으로 연결되었습니다!",
+		"disconnectSuccess": "연결이 해제되었습니다.",
+		"invitationCreated": "초대 코드가 생성되었습니다.",
+		"errorFetchingProfile": "프로필 정보를 가져오는 데 실패했습니다.",
+		"errorConnecting": "연결 중 오류가 발생했습니다.",
+		"errorDisconnecting": "연결 해제 중 오류가 발생했습니다.",
+		"errorCreatingInvitation": "초대 코드 생성 중 오류가 발생했습니다.",
+		"kakaoShareMessage": "우리 커플 앱에서 연결해요! 초대 코드: {inviteCode}",
+		"createAndShareInvitation": "초대 코드 생성 및 공유",
+		"createAndShareInvitationSuccess": "초대 코드가 생성되었습니다. 카카오톡으로 공유해보세요!",
+		"errorCreateAndShareInvitation": "초대 코드 생성 및 공유 중 오류가 발생했습니다."
+	}
 }
