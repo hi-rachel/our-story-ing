@@ -35,6 +35,10 @@ const config: Config = {
         default: "8px",
         large: "12px",
       },
+      animation: {
+        "spin-slow": "spin 3s linear infinite",
+        "spin-fast": "spin 0.5s linear infinite",
+      },
     },
   },
   plugins: [],
