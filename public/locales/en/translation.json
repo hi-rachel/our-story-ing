@@ -5,7 +5,11 @@
     "signup": "Sign Up",
     "login": "Log In",
     "logout": "Log Out",
-    "loading": "Loading..."
+    "logoutConfirm": "Are you sure you want to log out?",
+    "loading": "Loading...",
+    "anonymous": "Anonymous",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "home": {
     "hero": {
@@ -70,12 +74,23 @@
   },
   "profile": {
     "title": "Profile",
-    "image": "Image",
+    "image": "Profile Image",
     "name": "Name",
     "email": "Email",
     "bio": "Status Message",
+    "noBio": "No status message available.",
     "partner": "Partner",
-    "edit": "Edit"
+    "single": "Not in a relationship",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "deleteAccount": "Delete Account",
+    "confirmDeleteAccount": "Are you sure you want to delete your account?",
+    "accountDeleted": "Your account has been deleted.",
+    "errorUpdatingProfile": "There was an error updating your profile.",
+    "errorDeletingAccount": "There was an error deleting your account.",
+    "errorDisplayNameRequired": "Display name is required.",
+    "errorFileSizeExceeded": "File size exceeds the 100MB limit. Please upload a smaller file."
   },
   "coupleConnection": {
     "title": "Couple Connection",

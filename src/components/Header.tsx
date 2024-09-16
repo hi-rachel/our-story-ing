@@ -3,15 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { auth } from "../../firebase";
+import DefaultProfile from "./common/DefaultProfile";
 
 const Header = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const user = auth.currentUser;
-  console.log("user", user);
 
   const handleLogOut = async () => {
-    const ok = confirm("Are you sure you want to log out?");
+    const ok = confirm(t("common.logoutConfirm"));
     if (ok) {
       auth.signOut();
       router.reload();
@@ -39,13 +39,17 @@ const Header = () => {
             <div className="flex items-center space-x-4">
               <Link href={"/profile"}>
                 <div className="flex items-center space-x-2">
-                  <Image
-                    className="rounded-full border-2 border-primary"
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt="Profile"
-                    width={32}
-                    height={32}
-                  />
+                  {user.photoURL ? (
+                    <Image
+                      className="rounded-full border-2 border-primary"
+                      src={user.photoURL}
+                      alt="Profile"
+                      width={32}
+                      height={32}
+                    />
+                  ) : (
+                    <DefaultProfile size={32} />
+                  )}
                   <span className="text-text font-semibold text-sm sm:text-base">
                     {user.displayName}
                   </span>

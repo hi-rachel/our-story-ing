@@ -1,28 +1,42 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const GoogleLogin = () => {
   const [, setLoading] = useState(false);
-  const [, setError] = useState("");
   const router = useRouter();
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    setError("");
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      router.push("/");
-    } catch (e) {
-      if (e instanceof FirebaseError) {
-        setError(e.message);
+      const GoogleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, GoogleProvider);
+      const user = result.user;
+
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists()) {
+        // If user document doesn't exist, create a new one
+        await setDoc(userDocRef, {
+          userId: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          profileMessage: "", // Initialize empty profile message
+          isCouple: false, // Initial couple status
+          partnerId: null, // No partner by default
+          createdAt: new Date(),
+        });
       }
-      console.log(e);
+    } catch (error) {
+      console.error("Error logging in with Google: ", error);
     } finally {
       setLoading(false);
+      router.push("/");
     }
   };
 

@@ -5,7 +5,11 @@
     "signup": "회원가입",
     "login": "로그인",
     "logout": "로그아웃",
-    "loading": "Loading..."
+    "logoutConfirm": "정말 로그아웃하시겠습니까?",
+    "loading": "로딩 중...",
+    "anonymous": "익명",
+    "cancel": "취소하기",
+    "save": "저장하기"
   },
   "home": {
     "hero": {
@@ -74,8 +78,19 @@
     "name": "이름",
     "email": "이메일",
     "bio": "상태 메시지",
+    "noBio": "상태 메시지가 없습니다.",
     "partner": "파트너",
-    "edit": "수정하기"
+    "single": "연애 중이 아님",
+    "edit": "수정하기",
+    "save": "저장하기",
+    "cancel": "취소",
+    "deleteAccount": "탈퇴하기",
+    "confirmDeleteAccount": "정말로 계정을 삭제하시겠습니까?",
+    "accountDeleted": "계정이 삭제되었습니다.",
+    "errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
+    "errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
+    "errorDisplayNameRequired": "이름은 필수 항목입니다.",
+    "errorFileSizeExceeded": "파일 크기가 100MB 제한을 초과했습니다. 더 작은 파일을 업로드해 주세요."
   },
   "coupleConnection": {
     "title": "커플 연결",
