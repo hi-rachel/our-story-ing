@@ -78,11 +78,11 @@ const Home = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
               {features.map((feature, index) => (
-                <Link href={feature.href}>
-                  <div
-                    key={index}
-                    className="bg-background rounded-lg p-6 text-center hover:shadow-lg transition duration-300 transform hover:-translate-y-1"
-                  >
+                <div
+                  key={index}
+                  className="bg-background rounded-lg p-6 text-center hover:shadow-lg transition duration-300 transform hover:-translate-y-1"
+                >
+                  <Link href={feature.href}>
                     <div className="text-4xl sm:text-5xl mb-4">
                       {feature.icon}
                     </div>
@@ -90,8 +90,8 @@ const Home = () => {
                       {feature.title}
                     </h3>
                     <p className="text-text text-sm">{feature.description}</p>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>

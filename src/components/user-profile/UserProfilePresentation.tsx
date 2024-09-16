@@ -12,7 +12,6 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
   userData,
   isEditing,
   editedUser,
-  error,
   t,
   setIsEditing,
   handleInputChange,
