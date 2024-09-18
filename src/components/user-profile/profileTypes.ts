@@ -22,8 +22,9 @@ export interface UserProfilePresentationProps {
 	) => void;
 	handleSubmit: (e: React.FormEvent) => void;
 	handleDeleteAccount: () => void;
-	handleImageUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	handleImageDelete?: () => void;
+	handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	handleImageDelete: () => void;
+	handleCoupleUnlink: () => void;
 }
 
 export interface ProfileImageProps {
@@ -35,6 +36,7 @@ export interface ProfileDetailsProps {
 	user: User;
 	userData: UserData;
 	t: (key: string) => string;
+	handleCoupleUnlink: () => void;
 }
 
 export interface EditFormProps {

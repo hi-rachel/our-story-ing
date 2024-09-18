@@ -1,4 +1,4 @@
-import { ProfileImageProps } from './types';
+import { ProfileImageProps } from './profileTypes';
 import DefaultProfile from '../common/DefaultProfile';
 
 const ProfileImage: React.FC<ProfileImageProps> = ({ user, t }) => (

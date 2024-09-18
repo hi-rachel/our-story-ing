@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EditFormProps } from './types';
+import { EditFormProps } from './profileTypes';
 import DefaultProfile from '../common/DefaultProfile';
 
 const EditForm: React.FC<EditFormProps> = ({

@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { UserProfilePresentationProps } from './types';
+import { UserProfilePresentationProps } from './profileTypes';
 import ProfileImage from './ProfileImage';
 import ProfileDetails from './ProfileDetails';
 import EditForm from './EditForm';
@@ -19,6 +18,7 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 	handleDeleteAccount,
 	handleImageDelete,
 	handleImageUpload,
+	handleCoupleUnlink,
 }) => {
 	return (
 		<div className='min-h-screen bg-gradient-to-b from-background to-white flex justify-center items-center px-4 sm:px-6 lg:px-8'>
@@ -26,12 +26,14 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5 }}
-				className='w-full max-w-md bg-white rounded-lg shadow-card overflow-hidden relative'>
+				className='w-full max-w-2xl bg-white rounded-lg shadow-card overflow-hidden relative'>
 				<div className='px-4 py-5 sm:px-6'>
 					<h1 className='text-2xl font-bold text-primary text-center'>
 						{t('profile.title')}
 					</h1>
 				</div>
+
+				{!isEditing && <ProfileImage user={user} t={t} />}
 
 				<div className='border-t border-gray-200 px-4 py-5 sm:p-0'>
 					{isEditing ? (
@@ -46,12 +48,13 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 						/>
 					) : (
 						<>
-							<ProfileImage user={user} t={t} />
 							<ProfileDetails
 								user={user}
 								userData={userData}
 								t={t}
+								handleCoupleUnlink={handleCoupleUnlink}
 							/>
+
 							<div className='flex gap-4 justify-end p-4'>
 								<EditAccountButton
 									setIsEditing={setIsEditing}

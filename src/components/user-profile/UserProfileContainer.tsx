@@ -10,7 +10,7 @@ import {
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import UserProfilePresentation from './UserProfilePresentation';
 import { useTranslation } from 'next-i18next';
-import { EditedUser } from './types';
+import { EditedUser } from './profileTypes';
 import { UserData } from '@/types/user';
 
 export default function UserProfileContainer() {
@@ -22,7 +22,7 @@ export default function UserProfileContainer() {
 		photoURL: user?.photoURL || null,
 		profileMessage: '',
 		isCouple: false,
-		partnerId: null,
+		partnerId: '',
 	});
 	const [error, setError] = useState('');
 	const { t } = useTranslation();
@@ -40,7 +40,7 @@ export default function UserProfileContainer() {
 						photoURL: user.photoURL || null,
 						profileMessage: data.profileMessage || '',
 						isCouple: data.isCouple || false,
-						partnerId: data.partnerId || null,
+						partnerId: data.partnerId || '',
 					});
 				}
 			};
@@ -135,6 +135,7 @@ export default function UserProfileContainer() {
 
 			const userDocRef = doc(db, 'users', user.uid);
 			await updateDoc(userDocRef, {
+				displayName: editedUser.displayName,
 				profileMessage: editedUser.profileMessage,
 				isCouple: editedUser.isCouple,
 				partnerId: editedUser.partnerId,
@@ -149,7 +150,7 @@ export default function UserProfileContainer() {
 					photoURL: editedUser.photoURL,
 					profileMessage: editedUser.profileMessage,
 					isCouple: editedUser.isCouple,
-					partnerId: editedUser.partnerId,
+					partnerId: editedUser.partnerId || '',
 				};
 			});
 
@@ -177,6 +178,46 @@ export default function UserProfileContainer() {
 	// Pass data to presentation component
 	if (!user || !userData) return null;
 
+	// 커플 해제 핸들러
+	const handleCoupleUnlink = async () => {
+		const confirmed = confirm(t('profile.confirmUnlinkCouple'));
+		if (confirmed) {
+			if (user && userData?.isCouple && userData.partnerId) {
+				try {
+					// users 컬렉션에서 partnerId 및 isCouple 상태 해제
+					await updateDoc(doc(db, 'users', user.uid), {
+						isCouple: false,
+						partnerId: '',
+						coupleId: '',
+					});
+					await updateDoc(doc(db, 'users', userData.partnerId), {
+						isCouple: false,
+						partnerId: '',
+						coupleId: '',
+					});
+
+					// 로컬 상태 업데이트
+					setUserData((prevData) => {
+						if (!prevData) return null;
+						return {
+							...prevData,
+							isCouple: false,
+							partnerId: '',
+						};
+					});
+
+					alert(t('profile.coupleUnlinked'));
+				} catch (err) {
+					console.error('Error unlinking couple:', err);
+					setError(t('profile.errorUnlinkCouple'));
+				}
+			} else {
+				console.error('Invalid partnerId or user data');
+				setError('Invalid partner or user data');
+			}
+		}
+	};
+
 	return (
 		<UserProfilePresentation
 			user={user}
@@ -191,6 +232,7 @@ export default function UserProfileContainer() {
 			handleImageUpload={handleImageUpload}
 			handleImageDelete={handleImageDelete}
 			handleDeleteAccount={handleDeleteAccount}
+			handleCoupleUnlink={handleCoupleUnlink}
 		/>
 	);
 }

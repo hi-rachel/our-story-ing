@@ -1,4 +1,4 @@
-import { EditFieldProps } from './types';
+import { EditFieldProps } from './profileTypes';
 
 const EditName: React.FC<EditFieldProps> = ({
 	editedUser,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeleteAccountButtonProps } from './types';
+import { DeleteAccountButtonProps } from './profileTypes';
 
 const DeleteAccountButton: React.FC<DeleteAccountButtonProps> = ({
 	handleDeleteAccount,
