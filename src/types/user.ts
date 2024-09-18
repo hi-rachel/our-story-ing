@@ -6,5 +6,5 @@ export interface UserData {
 	createdAt: string;
 	profileMessage: string;
 	isCouple: boolean;
-	partnerId: string | null;
+	partnerId: string;
 }
