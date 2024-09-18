@@ -1,8 +1,9 @@
+import Image from 'next/image';
 import React from 'react';
 import { FaUserAstronaut } from 'react-icons/fa';
 
 interface DefaultProfileProps {
-	photoURL?: string;
+	photoURL?: string | null;
 	size: number;
 }
 
@@ -12,11 +13,12 @@ const DefaultProfile: React.FC<DefaultProfileProps> = ({ photoURL, size }) => {
 			className='rounded-full border-2 border-primary flex items-center justify-center'
 			style={{ width: size, height: size }}>
 			{photoURL ? (
-				<img
+				<Image
 					src={photoURL}
 					alt='User Profile'
 					className='rounded-full'
-					style={{ width: size, height: size }}
+					width={size}
+					height={size}
 				/>
 			) : (
 				<FaUserAstronaut size={size * 0.5} />

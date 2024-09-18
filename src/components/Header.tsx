@@ -1,20 +1,20 @@
-import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../../firebase';
 import DefaultProfile from './common/DefaultProfile';
 
 const Header = () => {
-	const router = useRouter();
 	const { t } = useTranslation();
 	const user = auth.currentUser;
 
 	const handleLogOut = async () => {
 		const ok = confirm(t('common.logoutConfirm'));
 		if (ok) {
-			auth.signOut();
-			router.reload();
+			try {
+				await auth.signOut();
+			} catch (error) {
+				console.error('Error signing out: ', error);
+			}
 		}
 	};
 
@@ -37,17 +37,12 @@ const Header = () => {
 						<div className='flex items-center space-x-4'>
 							<Link href={'/profile'}>
 								<div className='flex items-center space-x-2'>
-									{user.photoURL ? (
-										<Image
-											className='rounded-full border-2 border-primary'
-											src={user.photoURL}
-											alt='Profile'
-											width={32}
-											height={32}
-										/>
-									) : (
-										<DefaultProfile size={32} />
-									)}
+									<DefaultProfile
+										size={32}
+										photoURL={
+											user.photoURL ? user.photoURL : null
+										}
+									/>
 									<span className='text-text font-semibold text-sm sm:text-base'>
 										{user.displayName}
 									</span>
