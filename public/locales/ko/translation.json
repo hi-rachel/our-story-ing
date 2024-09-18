@@ -9,7 +9,13 @@
 		"loading": "로딩 중...",
 		"anonymous": "익명",
 		"cancel": "취소하기",
-		"save": "저장하기"
+		"save": "저장하기",
+		"goBack": "돌아가기"
+	},
+	"error": {
+		"oops": "이런, 문제가 발생했어요!",
+		"dontWorry": "걱정하지 마세요!",
+		"stayTogether": "우리는 여전히 함께예요 ❤️"
 	},
 	"home": {
 		"hero": {
@@ -90,30 +96,44 @@
 		"errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
 		"errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
 		"errorDisplayNameRequired": "이름은 필수 항목입니다.",
-		"errorFileSizeExceeded": "파일 크기가 100MB 제한을 초과했습니다. 더 작은 파일을 업로드해 주세요."
+		"errorFileSizeExceeded": "파일 크기가 100MB 제한을 초과했습니다. 더 작은 파일을 업로드해 주세요.",
+		"personalInfo": "개인 정보",
+		"coupleInfo": "커플 정보",
+		"coupleStatus": "커플 상태",
+		"coupled": "연애 중",
+		"linkCouple": "초대하기",
+		"loadingPartner": "파트너 정보를 불러오는 중...",
+		"unlinkCouple": "커플 해제",
+		"coupleUnlinked": "커플 해제가 완료되었습니다.",
+		"confirmUnlinkCouple": "정말 커플 해제를 하시겠습니까? 커플 해제를 하면 상대방과의 연결이 끊기고 채팅에 접근할 수 없습니다. 그동안의 데이터 복구가 어려울 수 있으니 신중하게 선택해주세요."
 	},
-	"coupleConnection": {
-		"title": "커플 연결",
-		"yourCode": "내 연결 코드",
-		"status": "연결 상태",
-		"connected": "연결됨",
-		"notConnected": "연결되지 않음",
-		"partner": "파트너",
-		"enterCode": "연결 코드 입력",
-		"connect": "연결하기",
-		"disconnect": "연결 해제",
-		"createInvitation": "초대 코드 생성",
-		"shareViaKakao": "카카오톡으로 공유",
-		"connectSuccess": "성공적으로 연결되었습니다!",
-		"disconnectSuccess": "연결이 해제되었습니다.",
-		"invitationCreated": "초대 코드가 생성되었습니다.",
-		"errorFetchingProfile": "프로필 정보를 가져오는 데 실패했습니다.",
-		"errorConnecting": "연결 중 오류가 발생했습니다.",
-		"errorDisconnecting": "연결 해제 중 오류가 발생했습니다.",
-		"errorCreatingInvitation": "초대 코드 생성 중 오류가 발생했습니다.",
-		"kakaoShareMessage": "우리 커플 앱에서 연결해요! 초대 코드: {inviteCode}",
-		"createAndShareInvitation": "초대 코드 생성 및 공유",
-		"createAndShareInvitationSuccess": "초대 코드가 생성되었습니다. 카카오톡으로 공유해보세요!",
-		"errorCreateAndShareInvitation": "초대 코드 생성 및 공유 중 오류가 발생했습니다."
+	"invitePartner": {
+		"title": "파트너 초대",
+		"errorLogin": "초대를 보내려면 로그인해야 합니다.",
+		"generateInviteButton": "초대 링크 생성",
+		"generatingInvite": "링크 생성 중...",
+		"inviteLinkGenerated": "초대 링크가 생성되었습니다!",
+		"shareLink": "이 링크를 파트너에게 공유하세요:",
+		"errorGeneratingInvite": "초대 링크 생성에 실패했습니다. 다시 시도해 주세요.",
+		"copyLinkButton": "링크 복사",
+		"linkCopied": " 링크가 복사되었습니다.\n 커플 연결하고 싶은 상대방에게 해당 링크를 공유해주세요.",
+		"errorCopying": "링크 복사 중 오류가 발생했습니다.",
+		"cannotInviteYourself": "자기 자신을 초대할 수 없습니다.",
+		"alreadyInCouple": "이미 커플 상태입니다.",
+		"hasInvited": "님이 당신을 파트너로 초대했어요!",
+		"acceptInvitation": "초대 수락하기",
+		"invalidLink": "유효하지 않은 초대 링크입니다",
+		"startJourney": "함께 새로운 여정을 시작해보세요!",
+		"accepted": "커플 연결 성공",
+		"invitationAccepted": "커플 초대가 수락되었습니다!",
+		"goToChat": "비밀 커플 채팅으로 이동 ❤️"
+	},
+	"chat": {
+		"needLogin": "로그인이 필요합니다.",
+		"unauthorized": "이 채팅에 접근할 권한이 없습니다.",
+		"roomNotExist": "채팅방이 존재하지 않습니다.",
+		"errorLoading": "채팅 데이터를 불러오는 중 오류가 발생했습니다.",
+		"sendMessage": "메시지 보내기",
+		"backToChatList": "채팅 목록으로 돌아가기"
 	}
 }

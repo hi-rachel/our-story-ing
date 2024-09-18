@@ -9,7 +9,13 @@
 		"loading": "Loading...",
 		"anonymous": "Anonymous",
 		"cancel": "Cancel",
-		"save": "Save"
+		"save": "Save",
+		"goBack": "Go Back"
+	},
+	"error": {
+		"oops": "Oops, something went wrong!",
+		"dontWorry": "Don't worry!",
+		"stayTogether": "We're still together ❤️"
 	},
 	"home": {
 		"hero": {
@@ -78,7 +84,7 @@
 		"name": "Name",
 		"email": "Email",
 		"bio": "Status Message",
-		"noBio": "No status message available.",
+		"noBio": "No status message.",
 		"partner": "Partner",
 		"single": "Not in a relationship",
 		"edit": "Edit",
@@ -87,33 +93,46 @@
 		"deleteAccount": "Delete Account",
 		"confirmDeleteAccount": "Are you sure you want to delete your account?",
 		"accountDeleted": "Your account has been deleted.",
-		"errorUpdatingProfile": "There was an error updating your profile.",
-		"errorDeletingAccount": "There was an error deleting your account.",
+		"errorUpdatingProfile": "Error updating profile.",
+		"errorDeletingAccount": "Error deleting account.",
 		"errorDisplayNameRequired": "Display name is required.",
-		"errorFileSizeExceeded": "File size exceeds the 100MB limit. Please upload a smaller file."
+		"errorFileSizeExceeded": "File size exceeds 100MB limit. Please upload a smaller file.",
+		"personalInfo": "Personal Info",
+		"coupleInfo": "Couple Info",
+		"coupleStatus": "Relationship Status",
+		"coupled": "In a relationship",
+		"linkCouple": "Invite",
+		"loadingPartner": "Loading partner info...",
+		"unlinkCouple": "Unlink Couple",
+		"coupleUnlinked": "Couple has been unlinked successfully.",
+		"confirmUnlinkCouple": "Are you sure you want to unlink the couple? Unlinking will break the connection and restrict access to chats with your partner. Data recovery may not be possible, so please proceed with caution."
 	},
-	"coupleConnection": {
-		"title": "Couple Connection",
-		"yourCode": "Your Connection Code",
-		"status": "Connection Status",
-		"connected": "Connected",
-		"notConnected": "Not Connected",
-		"partner": "Partner",
-		"enterCode": "Enter Connection Code",
-		"connect": "Connect",
-		"disconnect": "Disconnect",
-		"createInvitation": "Create Invitation Code",
-		"shareViaKakao": "Share via KakaoTalk",
-		"connectSuccess": "Successfully connected!",
-		"disconnectSuccess": "Connection has been disconnected.",
-		"invitationCreated": "Invitation code has been created.",
-		"errorFetchingProfile": "Failed to fetch profile information.",
-		"errorConnecting": "An error occurred while connecting.",
-		"errorDisconnecting": "An error occurred while disconnecting.",
-		"errorCreatingInvitation": "An error occurred while creating the invitation code.",
-		"kakaoShareMessage": "Let's connect on our couple app! Invitation code: {inviteCode}",
-		"createAndShareInvitation": "Create and Share Invitation",
-		"createAndShareInvitationSuccess": "Invitation code has been created. Share it via KakaoTalk!",
-		"errorCreateAndShareInvitation": "An error occurred while creating and sharing the invitation code."
+	"invitePartner": {
+		"title": "Invite Your Partner",
+		"errorLogin": "You need to be logged in to send an invitation.",
+		"generateInviteButton": "Generate Invite Link",
+		"generatingInvite": "Generating link...",
+		"inviteLinkGenerated": "Invitation link generated!",
+		"shareLink": "Share this link with your partner:",
+		"errorGeneratingInvite": "Failed to generate the invitation. Please try again.",
+		"copyLinkButton": "Copy Link",
+		"linkCopied": " Link copied.\n Please share this link with the person you want to connect with as a couple.",
+		"errorCopying": "Error occurred while copying the link.",
+		"cannotInviteYourself": "You cannot invite yourself.",
+		"alreadyInCouple": "You are already in a couple.",
+		"hasInvited": "has invited you to be their partner!",
+		"acceptInvitation": "Accept Invitation",
+		"invalidLink": "Invalid invitation link",
+		"startJourney": "Let's start a new journey together!",
+		"invitationAccepted": "Couple invitation has been accepted!",
+		"goToChat": "Go to the secret couple chat ❤️"
+	},
+	"chat": {
+		"needLogin": "You need to log in.",
+		"unauthorized": "You are not authorized to access this chat.",
+		"roomNotExist": "The chat room does not exist.",
+		"errorLoading": "An error occurred while loading chat data.",
+		"sendMessage": "Send Message",
+		"backToChatList": "Back to Chat List"
 	}
 }
