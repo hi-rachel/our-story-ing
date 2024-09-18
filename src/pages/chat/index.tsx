@@ -6,23 +6,24 @@ import {
 	onSnapshot,
 	orderBy,
 } from 'firebase/firestore';
-import { auth, db } from '../../firebase';
-import Image from 'next/image';
+import { auth, db } from '../../../firebase';
 import { IoArrowBackOutline, IoArrowDown } from 'react-icons/io5';
 import { useRouter } from 'next/router';
+import { formatDate } from '@/utils/dateUtils';
+import DefaultProfile from '@/components/common/DefaultProfile';
 
 // TODO
-// [] 커플 채팅 만들기
-// 커플 연결 구현 완료 후, 커플 연결된 두 명끼리만 채팅 가능하게 하기
+// [x] 커플 채팅 만들기
+// [x] 커플 연결 구현 완료 후, 커플 연결된 두 명끼리만 채팅 가능하게 하기
 // -> 다른 사용자 접근 불가, 2명만 입장 가능, 커플이 아니면 접근 불가
 // [] 다국화 적용 -> 영어 시간 포맷 표시
-// [] 채팅방 나가기
+// [x] 채팅방 나가기
 // [] 채팅방 삭제
 // [] 새 메시지 알림
 // [] 알림 모달 넣기
 // [] 상대방 정보 수정 -> 업데이트 반영하기
 
-const Chatting = () => {
+const EveryoneChatPage = () => {
 	const router = useRouter();
 	const [chatting, setChatting] = useState<
 		{
@@ -41,7 +42,7 @@ const Chatting = () => {
 	const chatEndRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		const q = query(collection(db, 'chatting'), orderBy('createdAt'));
+		const q = query(collection(db, 'chats'), orderBy('createdAt'));
 		const unsubscribe = onSnapshot(q, (snapshot) => {
 			const msgs = snapshot.docs.map((doc) => {
 				const data = doc.data();
@@ -85,7 +86,7 @@ const Chatting = () => {
 		}
 		setIsSending(true);
 		try {
-			await addDoc(collection(db, 'chatting'), {
+			await addDoc(collection(db, 'chats'), {
 				text: newChat,
 				createdAt: new Date(),
 				userId: user.uid,
@@ -128,21 +129,6 @@ const Chatting = () => {
 		}
 	};
 
-	// 날짜/시간 포맷 함수 (24.09.10 오후 10:11 형식으로 변환)
-	const formatDate = (date: Date) => {
-		const dateString = date.toLocaleDateString('ko-KR', {
-			year: '2-digit',
-			month: '2-digit',
-			day: '2-digit',
-		});
-		const timeString = date.toLocaleTimeString('ko-KR', {
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true,
-		});
-		return `${dateString} ${timeString}`;
-	};
-
 	const handleGoBack = () => {
 		router.back();
 	};
@@ -155,9 +141,8 @@ const Chatting = () => {
 					className='text-2xl cursor-pointer mr-2'
 					onClick={handleGoBack}
 				/>
-				{/* 📍 상대방 이름으로 바꾸기 */}
 				<div className='flex-grow text-center font-semibold'>
-					Couple Chat
+					Ing Chat
 				</div>
 			</div>
 
@@ -176,12 +161,11 @@ const Chatting = () => {
 						{/* 상대방 메시지일 때만 유저 정보 표시 */}
 						{msg.userId !== auth.currentUser?.uid ? (
 							<div className='flex items-start mr-3'>
-								<Image
-									src={msg.photoURL || 'icons/heart.svg'}
-									alt='User Image'
-									className='w-8 h-8 rounded-full'
-									width={600}
-									height={600}
+								<DefaultProfile
+									size={38}
+									photoURL={
+										msg.photoURL ? msg.photoURL : null
+									}
 								/>
 								<div className='ml-2'>
 									<div className='text-sm text-gray-600'>
@@ -253,4 +237,4 @@ const Chatting = () => {
 	);
 };
 
-export default Chatting;
+export default EveryoneChatPage;

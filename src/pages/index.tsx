@@ -18,7 +18,7 @@ const Home = () => {
 			title: t('home.features.realTimeChat.title'),
 			description: t('home.features.realTimeChat.description'),
 			icon: '💬',
-			href: '/chatting',
+			href: '/chat',
 		},
 		{
 			title: t('home.features.timeline.title'),
