@@ -12,6 +12,9 @@ const GoogleLogin = () => {
 		setLoading(true);
 		try {
 			const GoogleProvider = new GoogleAuthProvider();
+			GoogleProvider.setCustomParameters({
+				prompt: 'select_account',
+			});
 			const result = await signInWithPopup(auth, GoogleProvider);
 			const user = result.user;
 
@@ -27,7 +30,7 @@ const GoogleLogin = () => {
 					photoURL: user.photoURL,
 					profileMessage: '', // Initialize empty profile message
 					isCouple: false, // Initial couple status
-					partnerId: null, // No partner by default
+					partnerId: '', // No partner by default
 					createdAt: new Date(),
 				});
 			}
