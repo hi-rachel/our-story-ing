@@ -39,6 +39,18 @@ const config: Config = {
 				'spin-slow': 'spin 3s linear infinite',
 				'spin-fast': 'spin 0.5s linear infinite',
 			},
+			ringColor: {
+				DEFAULT: '#FF6B6B',
+			},
+			ringOpacity: {
+				DEFAULT: '0.5',
+			},
+			ringOffsetColor: {
+				DEFAULT: '#FFF0F0',
+			},
+			ringOffsetWidth: {
+				DEFAULT: '2px',
+			},
 		},
 	},
 	plugins: [],
