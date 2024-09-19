@@ -7,15 +7,26 @@ import { User } from 'firebase/auth';
 import CoupleRequestPresentation from './CoupleRequestPresentation';
 import { useTranslation } from 'next-i18next';
 import ErrorPage from '@/components/common/ErrorPage';
+import Head from 'next/head';
 
 const CoupleRequestContainer = () => {
 	const router = useRouter();
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const { coupleRequestId } = router.query;
 	const [inviter, setInviter] = useState<UserData | null>(null);
 	const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(true);
+
+	const ogTitle =
+		i18n.language === 'ko'
+			? '커플 웹앱에 초대하세요 ❤️ Ing'
+			: 'Invite Your Partner to Our Couple Web App ❤️ Ing';
+	const ogDescription =
+		i18n.language === 'ko'
+			? '커플을 위한 특별한 플랫폼에 함께하세요! 채팅하고 추억을 공유하고 소통할 수 있어요!'
+			: 'Join me on this special platform designed for couples to chat, share memories, and connect!';
+	const ogImage = 'https://our-story-ing.vercel.app/main.jpg';
 
 	useEffect(() => {
 		const checkCoupleRequest = async () => {
@@ -130,13 +141,29 @@ const CoupleRequestContainer = () => {
 	}
 
 	return (
-		<CoupleRequestPresentation
-			inviter={inviter}
-			error={error}
-			loading={loading}
-			onAcceptInvitation={acceptInvitation}
-			t={t}
-		/>
+		<>
+			<Head>
+				<meta property='og:title' content={ogTitle} />
+				<meta property='og:description' content={ogDescription} />
+				<meta property='og:image' content={ogImage} />
+				<meta
+					property='og:url'
+					content='https://our-story-ing.vercel.app/invite'
+				/>
+				<meta property='og:type' content='website' />
+				<meta name='twitter:card' content='summary_large_image' />
+				<meta name='twitter:title' content={ogTitle} />
+				<meta name='twitter:description' content={ogDescription} />
+				<meta name='twitter:image' content={ogImage} />
+			</Head>
+			<CoupleRequestPresentation
+				inviter={inviter}
+				error={error}
+				loading={loading}
+				onAcceptInvitation={acceptInvitation}
+				t={t}
+			/>
+		</>
 	);
 };
 
