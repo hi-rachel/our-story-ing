@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { db, auth } from '../../../firebase';
 import {
@@ -16,8 +17,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 
+// [] 초대 링크 공유시 msg 미리보기 띄우기
+// [] 초대시 기념일 입력 만들기
+
 const InvitePartner: React.FC = () => {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const router = useRouter();
 	const [inviteLink, setInviteLink] = useState<string | null>(null);
 	const [error, setError] = useState('');
@@ -25,6 +29,16 @@ const InvitePartner: React.FC = () => {
 	const [isAccepted, setIsAccepted] = useState(false);
 	const [invitationId, setInvitationId] = useState<string | null>(null);
 	const [coupleId, setCoupleId] = useState<string | null>(null);
+
+	const ogTitle =
+		i18n.language === 'ko'
+			? '커플 웹앱에 초대하세요 ❤️ Ing'
+			: 'Invite Your Partner to Our Couple Web App ❤️ Ing';
+	const ogDescription =
+		i18n.language === 'ko'
+			? '커플을 위한 특별한 플랫폼에 함께하세요! 채팅하고 추억을 공유하고 소통할 수 있어요!'
+			: 'Join me on this special platform designed for couples to chat, share memories, and connect!';
+	const ogImage = 'https://our-story-ing.vercel.app/main.jpg';
 
 	// Listen for real-time updates to the couple request status
 	useEffect(() => {
@@ -67,7 +81,6 @@ const InvitePartner: React.FC = () => {
 						const coupleId = userData?.coupleId;
 						if (coupleId) {
 							setCoupleId(coupleId);
-							// router.push(`/couple-chat/${coupleId}`);
 						}
 					}
 				} catch (error) {
@@ -158,87 +171,105 @@ const InvitePartner: React.FC = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
-			<ToastContainer />
-			<motion.div
-				initial={{ opacity: 0, y: -20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.5 }}
-				className='max-w-md w-full bg-white shadow-card rounded-large p-8'>
-				<h2 className='text-3xl font-heading font-semibold mb-6 text-center text-primary'>
-					{isAccepted
-						? t('invitePartner.accepted')
-						: t('invitePartner.title')}
-				</h2>
+		<>
+			<Head>
+				<meta property='og:title' content={ogTitle} />
+				<meta property='og:description' content={ogDescription} />
+				<meta property='og:image' content={ogImage} />
+				<meta
+					property='og:url'
+					content='https://our-story-ing.vercel.app/invite'
+				/>
+				<meta property='og:type' content='website' />
+				<meta name='twitter:card' content='summary_large_image' />
+				<meta name='twitter:title' content={ogTitle} />
+				<meta name='twitter:description' content={ogDescription} />
+				<meta name='twitter:image' content={ogImage} />
+			</Head>
+			<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
+				<ToastContainer />
+				<motion.div
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5 }}
+					className='max-w-md w-full bg-white shadow-card rounded-large p-8'>
+					<h2 className='text-3xl font-heading font-semibold mb-6 text-center text-primary'>
+						{isAccepted
+							? t('invitePartner.accepted')
+							: t('invitePartner.title')}
+					</h2>
 
-				{error && (
-					<motion.p
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						className='text-error mb-4 text-center'>
-						{error}
-					</motion.p>
-				)}
+					{error && (
+						<motion.p
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							className='text-error mb-4 text-center'>
+							{error}
+						</motion.p>
+					)}
 
-				{!isAccepted && (
-					<motion.button
-						onClick={handleInvite}
-						className='w-full p-4 bg-accent hover:bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						disabled={loading || isAccepted}>
-						{loading ? (
-							<motion.span
-								animate={{ rotate: 360 }}
-								transition={{
-									duration: 2,
-									repeat: Infinity,
-									ease: 'linear',
-								}}>
-								🔄
-							</motion.span>
-						) : (
-							t('invitePartner.generateInviteButton')
-						)}
-					</motion.button>
-				)}
-
-				{inviteLink && !isAccepted && (
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.2 }}
-						className='mt-6'>
-						<p className='text-success text-center mb-4'>
-							{t('invitePartner.inviteLinkGenerated')}
-						</p>
-						<p className='text-center mb-4'>
-							{t('invitePartner.shareLink')}
-						</p>
-						<div className='bg-gray-100 p-4 rounded-md break-all text-center mb-4'>
-							<span className='text-blue-500'>{inviteLink}</span>
-						</div>
+					{!isAccepted && (
 						<motion.button
-							className='w-full p-3 bg-secondary hover:bg-primary text-white rounded-large font-bold shadow-button transition-colors duration-300'
-							onClick={() => handleClickCopyLink(inviteLink)}
+							onClick={handleInvite}
+							className='w-full p-4 bg-accent hover:bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							disabled={loading || isAccepted}>
+							{loading ? (
+								<motion.span
+									animate={{ rotate: 360 }}
+									transition={{
+										duration: 2,
+										repeat: Infinity,
+										ease: 'linear',
+									}}>
+									🔄
+								</motion.span>
+							) : (
+								t('invitePartner.generateInviteButton')
+							)}
+						</motion.button>
+					)}
+
+					{inviteLink && !isAccepted && (
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.2 }}
+							className='mt-6'>
+							<p className='text-success text-center mb-4'>
+								{t('invitePartner.inviteLinkGenerated')}
+							</p>
+							<p className='text-center mb-4'>
+								{t('invitePartner.shareLink')}
+							</p>
+							<div className='bg-gray-100 p-4 rounded-md break-all text-center mb-4'>
+								<span className='text-blue-500'>
+									{inviteLink}
+								</span>
+							</div>
+							<motion.button
+								className='w-full p-3 bg-secondary hover:bg-primary text-white rounded-large font-bold shadow-button transition-colors duration-300'
+								onClick={() => handleClickCopyLink(inviteLink)}
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}>
+								{t('invitePartner.copyLinkButton')}
+							</motion.button>
+						</motion.div>
+					)}
+
+					{isAccepted && (
+						<motion.button
+							onClick={() => handleGoToCoupleChat()}
+							className='w-full p-4 bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300 mt-6'
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}>
-							{t('invitePartner.copyLinkButton')}
+							{t('invitePartner.goToChat')}
 						</motion.button>
-					</motion.div>
-				)}
-
-				{isAccepted && (
-					<motion.button
-						onClick={() => handleGoToCoupleChat()}
-						className='w-full p-4 bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300 mt-6'
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}>
-						{t('invitePartner.goToChat')}
-					</motion.button>
-				)}
-			</motion.div>
-		</div>
+					)}
+				</motion.div>
+			</div>
+		</>
 	);
 };
 
