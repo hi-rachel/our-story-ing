@@ -1,12 +1,12 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
+import '../i18n';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../firebase';
 import { User } from 'firebase/auth';
 import Loading from '@/components/common/Loading';
-import Meta from '@/components/common/Meta';
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	const [loading, setLoading] = useState(true);
@@ -42,12 +42,7 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 		return <Loading />;
 	}
 
-	return (
-		<>
-			<Meta />
-			<Component {...pageProps} />
-		</>
-	);
+	return <Component {...pageProps} />;
 };
 
 export default appWithTranslation(App);
