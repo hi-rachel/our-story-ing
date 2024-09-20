@@ -8,25 +8,57 @@ import CoupleRequestPresentation from './CoupleRequestPresentation';
 import { useTranslation } from 'next-i18next';
 import ErrorPage from '@/components/common/ErrorPage';
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 
-const CoupleRequestContainer = () => {
+interface CoupleRequestPageProps {
+	ogTitle: string;
+	ogDescription: string;
+	ogImage: string;
+	ogUrl: string;
+}
+
+export const getServerSideProps: GetServerSideProps<
+	CoupleRequestPageProps
+> = async (context) => {
+	const { locale, req } = context;
+	const protocol = req.headers['x-forwarded-proto'] || 'https'; // Production에서 'x-forwarded-proto'를 사용하고, 로컬에서는 'https'
+	const host = req.headers.host;
+	const urlPath = context.resolvedUrl; // 현재 URL 경로를 가져옴
+
+	const ogTitle =
+		locale === 'ko'
+			? '커플 웹앱에 초대하세요 ❤️ Ing'
+			: 'Invite Your Partner to Our Couple Web App ❤️ Ing';
+	const ogDescription =
+		locale === 'ko'
+			? '커플을 위한 특별한 플랫폼에 함께하세요! 채팅하고 추억을 공유하고 소통할 수 있어요!'
+			: 'Join me on this special platform designed for couples to chat, share memories, and connect!';
+	const ogImage = 'https://our-story-ing.vercel.app/main.jpg';
+	const ogUrl = `${protocol}://${host}${urlPath}`; // 현재 URL 생성
+
+	return {
+		props: {
+			ogTitle,
+			ogDescription,
+			ogImage,
+			ogUrl,
+		},
+	};
+};
+
+const CoupleRequestContainer: React.FC<CoupleRequestPageProps> = ({
+	ogTitle,
+	ogDescription,
+	ogImage,
+	ogUrl,
+}) => {
 	const router = useRouter();
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
 	const { coupleRequestId } = router.query;
 	const [inviter, setInviter] = useState<UserData | null>(null);
 	const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(true);
-
-	const ogTitle =
-		i18n.language === 'ko'
-			? '커플 웹앱에 초대하세요 ❤️ Ing'
-			: 'Invite Your Partner to Our Couple Web App ❤️ Ing';
-	const ogDescription =
-		i18n.language === 'ko'
-			? '커플을 위한 특별한 플랫폼에 함께하세요! 채팅하고 추억을 공유하고 소통할 수 있어요!'
-			: 'Join me on this special platform designed for couples to chat, share memories, and connect!';
-	const ogImage = 'https://our-story-ing.vercel.app/main.jpg';
 
 	useEffect(() => {
 		const checkCoupleRequest = async () => {
@@ -146,10 +178,7 @@ const CoupleRequestContainer = () => {
 				<meta property='og:title' content={ogTitle} />
 				<meta property='og:description' content={ogDescription} />
 				<meta property='og:image' content={ogImage} />
-				<meta
-					property='og:url'
-					content='https://our-story-ing.vercel.app/invite'
-				/>
+				<meta property='og:url' content={ogUrl} />
 				<meta property='og:type' content='website' />
 				<meta name='twitter:card' content='summary_large_image' />
 				<meta name='twitter:title' content={ogTitle} />
