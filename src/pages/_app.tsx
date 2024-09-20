@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { auth } from '../../firebase';
 import { User } from 'firebase/auth';
 import Loading from '@/components/common/Loading';
+import Meta from '@/components/common/Meta';
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	const [loading, setLoading] = useState(true);
@@ -42,7 +43,12 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 		return <Loading />;
 	}
 
-	return <Component {...pageProps} />;
+	return (
+		<>
+			<Meta />
+			<Component {...pageProps} />
+		</>
+	);
 };
 
 export default appWithTranslation(App);
