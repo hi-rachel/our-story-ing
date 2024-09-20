@@ -7,58 +7,8 @@ import { User } from 'firebase/auth';
 import CoupleRequestPresentation from './CoupleRequestPresentation';
 import { useTranslation } from 'next-i18next';
 import ErrorPage from '@/components/common/ErrorPage';
-import Head from 'next/head';
-import { CoupleRequestPageProps } from '@/pages/couple-request/[coupleRequestId]';
 
-// Utility function for setting Open Graph metadata
-const generateOGMetaTags = ({
-	ogTitle,
-	ogDescription,
-	ogImage,
-	ogUrl,
-}: CoupleRequestPageProps) => (
-	<Head>
-		<meta property='og:title' content={ogTitle} />
-		<meta property='og:description' content={ogDescription} />
-		<meta property='og:image' content={ogImage} />
-		<meta property='og:url' content={ogUrl} />
-		<meta property='og:type' content='website' />
-		<meta name='twitter:card' content='summary_large_image' />
-		<meta name='twitter:title' content={ogTitle} />
-		<meta name='twitter:description' content={ogDescription} />
-		<meta name='twitter:image' content={ogImage} />
-	</Head>
-);
-
-// Utility function to check the couple request
-const fetchCoupleRequest = async (
-	userId: string,
-	coupleRequestId: string,
-	t: (key: string) => string
-) => {
-	const [currentUserDoc, coupleDoc] = await Promise.all([
-		getDoc(doc(db, 'users', userId)),
-		getDoc(doc(db, 'couples', coupleRequestId)),
-	]);
-
-	if (!currentUserDoc.exists())
-		throw new Error(t('invitePartner.invalidCurrentUser'));
-	if (!coupleDoc.exists())
-		throw new Error(t('invitePartner.invalidOrExpiredLink'));
-
-	return {
-		currentUser: currentUserDoc.data() as UserData,
-		coupleData: coupleDoc.data(),
-	};
-};
-
-// Main container component
-const CoupleRequestContainer: React.FC<CoupleRequestPageProps> = ({
-	ogTitle,
-	ogDescription,
-	ogImage,
-	ogUrl,
-}) => {
+const CoupleRequestContainer = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 	const { coupleRequestId } = router.query;
@@ -77,13 +27,28 @@ const CoupleRequestContainer: React.FC<CoupleRequestPageProps> = ({
 			}
 
 			try {
-				const { currentUser, coupleData } = await fetchCoupleRequest(
-					user.uid,
-					coupleRequestId as string,
-					t
-				);
+				const [currentUserDoc, coupleDoc] = await Promise.all([
+					getDoc(doc(db, 'users', user.uid)),
+					getDoc(doc(db, 'couples', coupleRequestId as string)),
+				]);
 
+				if (!currentUserDoc.exists()) {
+					setError(t('invitePartner.invalidCurrentUser'));
+					setLoading(false);
+					return;
+				}
+				const currentUserData = currentUserDoc.data() as UserData;
+				setCurrentUser(currentUserData);
+
+				if (!coupleDoc.exists()) {
+					setError(t('invitePartner.invalidOrExpiredLink'));
+					setLoading(false);
+					return;
+				}
+
+				const coupleData = coupleDoc.data();
 				const inviterId = coupleData.inviterId;
+
 				if (inviterId === user.uid) {
 					setError(t('invitePartner.cannotInviteYourself'));
 					setLoading(false);
@@ -97,16 +62,24 @@ const CoupleRequestContainer: React.FC<CoupleRequestPageProps> = ({
 					return;
 				}
 
-				setInviter(inviterDoc.data() as UserData);
-				setCurrentUser(currentUser);
+				const inviterData = inviterDoc.data() as UserData;
+				setInviter(inviterData);
 
-				if (currentUser.isCouple || inviterDoc.data()?.isCouple) {
+				if (currentUserData.isCouple) {
 					setError(t('invitePartner.alreadyInCouple'));
 					setLoading(false);
+					return;
+				}
+
+				if (inviterData.isCouple) {
+					setError(t('invitePartner.alreadyInCouple'));
+					setLoading(false);
+					return;
 				}
 			} catch (err) {
 				console.error('Error fetching invitation:', err);
 				setError(t('invitePartner.failedToLoadInvitation'));
+			} finally {
 				setLoading(false);
 			}
 		};
@@ -151,19 +124,19 @@ const CoupleRequestContainer: React.FC<CoupleRequestPageProps> = ({
 	};
 
 	if (loading) return <div>{t('common.loading')}</div>;
-	if (error) return <ErrorPage errorMessage={error} t={t} />;
+
+	if (error) {
+		return <ErrorPage errorMessage={error} t={t} />;
+	}
 
 	return (
-		<>
-			{generateOGMetaTags({ ogTitle, ogDescription, ogImage, ogUrl })}
-			<CoupleRequestPresentation
-				inviter={inviter}
-				error={error}
-				loading={loading}
-				onAcceptInvitation={acceptInvitation}
-				t={t}
-			/>
-		</>
+		<CoupleRequestPresentation
+			inviter={inviter}
+			error={error}
+			loading={loading}
+			onAcceptInvitation={acceptInvitation}
+			t={t}
+		/>
 	);
 };
 
