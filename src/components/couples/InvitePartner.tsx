@@ -16,7 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 
-// [] 초대시 기념일 입력 만들기
+// [x] 초대시 기념일 입력 만들기
 
 const InvitePartner: React.FC = () => {
 	const { t } = useTranslation();
@@ -220,7 +220,7 @@ const InvitePartner: React.FC = () => {
 							<span className='text-blue-500'>{inviteLink}</span>
 						</div>
 						<motion.button
-							className='w-full p-3 bg-secondary hover:bg-primary text-white rounded-large font-bold shadow-button transition-colors duration-300'
+							className='w-full p-3 bg-primary text-white rounded-large font-bold shadow-button transition-colors duration-300'
 							onClick={() => handleClickCopyLink(inviteLink)}
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}>
