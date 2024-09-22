@@ -1,10 +1,11 @@
 export interface UserData {
-	userId: string;
+	coupleId: string;
+	createdAt: string;
 	displayName: string;
 	email: string;
-	photoURL: string | null;
-	createdAt: string;
-	profileMessage: string;
 	isCouple: boolean;
 	partnerId: string;
+	photoURL: string | null;
+	profileMessage: string;
+	userId: string;
 }

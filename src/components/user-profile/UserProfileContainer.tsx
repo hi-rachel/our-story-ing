@@ -1,58 +1,115 @@
 import { useState, useEffect } from 'react';
 import { auth, db, storage } from '../../../firebase';
 import { User, deleteUser, updateProfile } from 'firebase/auth';
-import {
-	ref,
-	uploadBytes,
-	getDownloadURL,
-	deleteObject,
-} from 'firebase/storage';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import UserProfilePresentation from './UserProfilePresentation';
 import { useTranslation } from 'next-i18next';
 import { EditedUser } from './profileTypes';
 import { UserData } from '@/types/user';
+import {
+	deleteObject,
+	getDownloadURL,
+	ref,
+	uploadBytes,
+} from 'firebase/storage';
 
-export default function UserProfileContainer() {
+const UserProfileContainer = () => {
 	const user = auth.currentUser as User | null;
 	const [isEditing, setIsEditing] = useState(false);
 	const [userData, setUserData] = useState<UserData | null>(null);
 	const [editedUser, setEditedUser] = useState<EditedUser>({
 		displayName: user?.displayName || 'Anonymous',
+		email: user?.email || '',
 		photoURL: user?.photoURL || null,
 		profileMessage: '',
 		isCouple: false,
 		partnerId: '',
+		anniversary: '',
 	});
+	const [partnerName, setPartnerName] = useState<string | null>(null);
+	const [loadingPartner, setLoadingPartner] = useState<boolean>(false);
 	const [error, setError] = useState('');
 	const { t } = useTranslation();
 
-	// Fetch user data from Firestore
+	// Fetch user data and couple data (including anniversary)
 	useEffect(() => {
-		if (user) {
-			const fetchUserData = async () => {
+		const fetchUserData = async () => {
+			if (user) {
 				const userDoc = await getDoc(doc(db, 'users', user.uid));
 				if (userDoc.exists()) {
 					const data = userDoc.data() as UserData;
 					setUserData(data);
-					setEditedUser({
-						displayName: user.displayName || 'Anonymous',
-						photoURL: user.photoURL || null,
-						profileMessage: data.profileMessage || '',
-						isCouple: data.isCouple || false,
-						partnerId: data.partnerId || '',
-					});
+
+					// Fetch couple data if user is in a couple
+					if (data.isCouple && data.coupleId) {
+						const coupleDoc = await getDoc(
+							doc(db, 'couples', data.coupleId)
+						);
+						if (coupleDoc.exists()) {
+							const coupleData = coupleDoc.data();
+							setEditedUser({
+								...editedUser,
+								displayName: user.displayName || 'Anonymous',
+								photoURL: user.photoURL || null,
+								profileMessage: data.profileMessage || '',
+								isCouple: data.isCouple || false,
+								partnerId: data.partnerId || '',
+								anniversary: coupleData?.anniversary || '',
+							});
+						}
+					}
 				}
-			};
-			fetchUserData();
-		}
+			}
+		};
+
+		fetchUserData();
 	}, [user]);
+
+	// 파트너 이름 가져오기
+	useEffect(() => {
+		const fetchPartnerName = async () => {
+			if (userData?.partnerId) {
+				setLoadingPartner(true);
+				try {
+					const partnerDoc = await getDoc(
+						doc(db, 'users', userData.partnerId)
+					);
+					if (partnerDoc.exists()) {
+						const partnerData = partnerDoc.data();
+						if (partnerData && partnerData.displayName) {
+							setPartnerName(partnerData.displayName);
+						} else {
+							setPartnerName('Unknown Partner');
+						}
+					} else {
+						setPartnerName(null);
+					}
+				} catch (error) {
+					setPartnerName(null);
+				} finally {
+					setLoadingPartner(false);
+				}
+			}
+		};
+
+		if (userData?.isCouple && userData?.partnerId) {
+			fetchPartnerName();
+		}
+	}, [userData?.isCouple, userData?.partnerId]);
 
 	// Handle input change for editing profile
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
 		setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+	};
+
+	// Handle anniversary change
+	const handleAnniversaryChange = (date: Date | null) => {
+		setEditedUser((prev) => ({
+			...prev,
+			anniversary: date ? date.toISOString().substring(0, 10) : '',
+		}));
 	};
 
 	// Handle image upload
@@ -64,7 +121,7 @@ export default function UserProfileContainer() {
 			const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB in bytes
 
 			if (file.size > MAX_FILE_SIZE) {
-				setError(t('profile.errorFileSizeExceeded')); // Show an error if the file size exceeds the limit
+				setError(t('profile.errorFileSizeExceeded'));
 				return;
 			}
 
@@ -77,7 +134,7 @@ export default function UserProfileContainer() {
 			const photoURL = await getDownloadURL(storageRef);
 
 			// Update the local state to reflect the new image URL
-			setEditedUser((prev) => ({ ...prev, photoURL })); // <== This ensures the image preview updates
+			setEditedUser((prev) => ({ ...prev, photoURL }));
 
 			// Update Firebase Authentication with the new photo URL
 			await updateProfile(user, { photoURL });
@@ -128,6 +185,7 @@ export default function UserProfileContainer() {
 		}
 
 		try {
+			// Update user profile in Firestore
 			await updateProfile(user, {
 				displayName: editedUser.displayName,
 				photoURL: editedUser.photoURL,
@@ -141,18 +199,27 @@ export default function UserProfileContainer() {
 				partnerId: editedUser.partnerId,
 			});
 
-			// Update only the editable fields in the state
-			setUserData((prevUserData) => {
-				if (!prevUserData) return null; // Ensure userData is not null
-				return {
-					...prevUserData, // Spread the previous data to preserve userId, email, createdAt
-					displayName: editedUser.displayName,
-					photoURL: editedUser.photoURL,
-					profileMessage: editedUser.profileMessage,
-					isCouple: editedUser.isCouple,
-					partnerId: editedUser.partnerId || '',
-				};
-			});
+			// Update anniversary in couples collection
+			if (userData.coupleId) {
+				const coupleDocRef = doc(db, 'couples', userData.coupleId);
+				await updateDoc(coupleDocRef, {
+					anniversary: editedUser.anniversary,
+				});
+			}
+
+			// 업데이트된 정보를 상태에 반영하여 즉시 리렌더링
+			setUserData((prevData) => ({
+				...prevData,
+				displayName: editedUser.displayName,
+				photoURL: editedUser.photoURL,
+				profileMessage: editedUser.profileMessage,
+				partnerId: editedUser.partnerId || '',
+				isCouple: editedUser.isCouple,
+				coupleId: prevData?.coupleId || '',
+				createdAt: prevData?.createdAt || '',
+				email: prevData?.email || '',
+				userId: prevData?.userId || '',
+			}));
 
 			setIsEditing(false);
 			setError('');
@@ -175,53 +242,48 @@ export default function UserProfileContainer() {
 		}
 	};
 
-	// Pass data to presentation component
-	if (!user || !userData) return null;
-
 	// 커플 해제 핸들러
 	const handleCoupleUnlink = async () => {
 		const confirmed = confirm(t('profile.confirmUnlinkCouple'));
-		if (confirmed) {
-			if (user && userData?.isCouple && userData.partnerId) {
-				try {
-					// users 컬렉션에서 partnerId 및 isCouple 상태 해제
-					await updateDoc(doc(db, 'users', user.uid), {
+		if (confirmed && user && userData?.isCouple && userData.partnerId) {
+			try {
+				await updateDoc(doc(db, 'users', user.uid), {
+					isCouple: false,
+					partnerId: '',
+					coupleId: '',
+				});
+				await updateDoc(doc(db, 'users', userData.partnerId), {
+					isCouple: false,
+					partnerId: '',
+					coupleId: '',
+				});
+
+				setUserData((prevData) => {
+					if (!prevData) return null;
+					return {
+						...prevData,
 						isCouple: false,
 						partnerId: '',
-						coupleId: '',
-					});
-					await updateDoc(doc(db, 'users', userData.partnerId), {
-						isCouple: false,
-						partnerId: '',
-						coupleId: '',
-					});
+					};
+				});
 
-					// 로컬 상태 업데이트
-					setUserData((prevData) => {
-						if (!prevData) return null;
-						return {
-							...prevData,
-							isCouple: false,
-							partnerId: '',
-						};
-					});
-
-					alert(t('profile.coupleUnlinked'));
-				} catch (err) {
-					console.error('Error unlinking couple:', err);
-					setError(t('profile.errorUnlinkCouple'));
-				}
-			} else {
-				console.error('Invalid partnerId or user data');
-				setError('Invalid partner or user data');
+				alert(t('profile.coupleUnlinked'));
+				location.reload();
+			} catch (err) {
+				console.error('Error unlinking couple:', err);
+				setError(t('profile.errorUnlinkCouple'));
 			}
 		}
 	};
+
+	if (!user || !userData) return;
 
 	return (
 		<UserProfilePresentation
 			user={user}
 			userData={userData}
+			partnerName={partnerName}
+			loadingPartner={loadingPartner}
 			isEditing={isEditing}
 			editedUser={editedUser}
 			error={error}
@@ -229,10 +291,13 @@ export default function UserProfileContainer() {
 			setIsEditing={setIsEditing}
 			handleInputChange={handleInputChange}
 			handleSubmit={handleSubmit}
+			handleDeleteAccount={handleDeleteAccount}
 			handleImageUpload={handleImageUpload}
 			handleImageDelete={handleImageDelete}
-			handleDeleteAccount={handleDeleteAccount}
+			handleAnniversaryChange={handleAnniversaryChange}
 			handleCoupleUnlink={handleCoupleUnlink}
 		/>
 	);
-}
+};
+
+export default UserProfileContainer;

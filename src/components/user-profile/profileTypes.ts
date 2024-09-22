@@ -3,15 +3,19 @@ import { UserData } from '@/types/user';
 
 export interface EditedUser {
 	displayName: string;
+	email: string;
 	photoURL: string | null;
 	profileMessage: string;
 	isCouple: boolean;
 	partnerId: string | null;
+	anniversary: string;
 }
 
 export interface UserProfilePresentationProps {
 	user: User;
 	userData: UserData;
+	partnerName: string | null;
+	loadingPartner: boolean;
 	isEditing: boolean;
 	editedUser: EditedUser;
 	error: string;
@@ -25,6 +29,7 @@ export interface UserProfilePresentationProps {
 	handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	handleImageDelete: () => void;
 	handleCoupleUnlink: () => void;
+	handleAnniversaryChange: (date: Date | null) => void;
 }
 
 export interface ProfileImageProps {
@@ -33,13 +38,16 @@ export interface ProfileImageProps {
 }
 
 export interface ProfileDetailsProps {
+	partnerName: string | null;
+	loadingPartner: boolean;
 	user: User;
 	userData: UserData;
 	t: (key: string) => string;
-	handleCoupleUnlink: () => void;
 }
 
 export interface EditFormProps {
+	partnerName: string | null;
+	loadingPartner: boolean;
 	editedUser: EditedUser;
 	handleInputChange: (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,6 +57,9 @@ export interface EditFormProps {
 	setIsEditing: (value: boolean) => void;
 	handleImageUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	handleImageDelete?: () => void;
+	handleAnniversaryChange: (date: Date | null) => void;
+	handleCoupleUnlink: () => void;
+	handleDeleteAccount: () => void;
 }
 
 export interface EditFieldProps {

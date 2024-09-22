@@ -86,6 +86,8 @@
 		"bio": "상태 메시지",
 		"noBio": "상태 메시지가 없습니다.",
 		"partner": "파트너",
+		"anniversary": "기념일",
+		"selectAnniversary": "만난 날을 기록해 보세요.",
 		"single": "연애 중이 아님",
 		"edit": "수정하기",
 		"save": "저장하기",
@@ -101,11 +103,12 @@
 		"coupleInfo": "커플 정보",
 		"coupleStatus": "커플 상태",
 		"coupled": "연애 중",
-		"linkCouple": "초대하기",
+		"invitePartner": "초대하기",
 		"loadingPartner": "파트너 정보를 불러오는 중...",
 		"unlinkCouple": "커플 해제",
 		"coupleUnlinked": "커플 해제가 완료되었습니다.",
-		"confirmUnlinkCouple": "정말 커플 해제를 하시겠습니까? 커플 해제를 하면 상대방과의 연결이 끊기고 채팅에 접근할 수 없습니다. 그동안의 데이터 복구가 어려울 수 있으니 신중하게 선택해주세요."
+		"confirmUnlinkCouple": "정말 커플 해제를 하시겠습니까? 커플 해제를 하면 상대방과의 연결이 끊기고 채팅에 접근할 수 없습니다. 그동안의 데이터 복구가 어려울 수 있으니 신중하게 선택해주세요.",
+		"goToChat": "커플 채팅 바로가기"
 	},
 	"invitePartner": {
 		"title": "파트너 초대",
@@ -126,7 +129,12 @@
 		"startJourney": "함께 새로운 여정을 시작해보세요!",
 		"accepted": "커플 연결 성공",
 		"invitationAccepted": "커플 초대가 수락되었습니다!",
-		"goToChat": "비밀 커플 채팅으로 이동 ❤️"
+		"goToChat": "비밀 커플 채팅으로 이동 ❤️",
+		"invalidRequest": "잘못되었거나 만료된 요청입니다. 다시 시도해주세요.",
+		"invalidCurrentUser": "사용자 데이터를 불러올 수 없습니다. 다시 로그인해주세요.",
+		"invalidInviter": "초대한 사람의 정보가 잘못되었습니다.",
+		"failedToLoadInvitation": "초대를 불러오는데 실패했습니다. 다시 시도해주세요.",
+		"failedToAcceptInvitation": "초대를 수락하는데 실패했습니다. 다시 시도해주세요."
 	},
 	"chat": {
 		"needLogin": "로그인이 필요합니다.",
@@ -135,5 +143,12 @@
 		"errorLoading": "채팅 데이터를 불러오는 중 오류가 발생했습니다.",
 		"sendMessage": "메시지 보내기",
 		"backToChatList": "채팅 목록으로 돌아가기"
+	},
+	"anniversary": {
+		"setAnniversary": "기념일을 설정하세요",
+		"enterDate": "기념일 날짜를 입력하세요.",
+		"dateSaved": "기념일이 성공적으로 저장되었습니다!",
+		"errorSaving": "기념일을 저장하는 중 오류가 발생했습니다.",
+		"saveDate": "날짜 저장"
 	}
 }

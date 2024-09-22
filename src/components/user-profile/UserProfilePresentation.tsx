@@ -4,11 +4,12 @@ import ProfileImage from './ProfileImage';
 import ProfileDetails from './ProfileDetails';
 import EditForm from './EditForm';
 import EditAccountButton from './EditAccountButton';
-import DeleteAccountButton from './DeleteAccountButton';
 
 const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 	user,
 	userData,
+	partnerName,
+	loadingPartner,
 	isEditing,
 	editedUser,
 	t,
@@ -19,6 +20,7 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 	handleImageDelete,
 	handleImageUpload,
 	handleCoupleUnlink,
+	handleAnniversaryChange,
 }) => {
 	return (
 		<div className='min-h-screen bg-gradient-to-b from-background to-white flex justify-center items-center px-4 sm:px-6 lg:px-8'>
@@ -38,6 +40,8 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 				<div className='border-t border-gray-200 px-4 py-5 sm:p-0'>
 					{isEditing ? (
 						<EditForm
+							partnerName={partnerName}
+							loadingPartner={loadingPartner}
 							editedUser={editedUser}
 							handleInputChange={handleInputChange}
 							handleSubmit={handleSubmit}
@@ -45,23 +49,23 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 							setIsEditing={setIsEditing}
 							handleImageDelete={handleImageDelete}
 							handleImageUpload={handleImageUpload}
+							handleAnniversaryChange={handleAnniversaryChange}
+							handleCoupleUnlink={handleCoupleUnlink}
+							handleDeleteAccount={handleDeleteAccount}
 						/>
 					) : (
 						<>
 							<ProfileDetails
+								partnerName={partnerName}
+								loadingPartner={loadingPartner}
 								user={user}
 								userData={userData}
 								t={t}
-								handleCoupleUnlink={handleCoupleUnlink}
 							/>
 
-							<div className='flex gap-4 justify-end p-4'>
+							<div className='flex justify-end p-4'>
 								<EditAccountButton
 									setIsEditing={setIsEditing}
-									t={t}
-								/>
-								<DeleteAccountButton
-									handleDeleteAccount={handleDeleteAccount}
 									t={t}
 								/>
 							</div>

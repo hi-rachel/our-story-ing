@@ -97,6 +97,7 @@ const CoupleRequestContainer = () => {
 				const inviterRef = doc(db, 'users', inviter.userId);
 				const currentUserRef = doc(db, 'users', currentUser.userId);
 
+				// Update the couple status to 'accepted' and connect the two users
 				transaction.update(coupleRef, {
 					status: 'accepted',
 					partnerId: currentUser.userId,
@@ -116,7 +117,8 @@ const CoupleRequestContainer = () => {
 				});
 			});
 
-			router.push(`/couple-chat/${coupleRequestId}`);
+			// Once the couple is connected, redirect to the anniversary input page
+			router.push(`/couple-anniversary/${coupleRequestId}`);
 		} catch (err) {
 			console.error('Error accepting invitation:', err);
 			setError(t('invitePartner.failedToAcceptInvitation'));

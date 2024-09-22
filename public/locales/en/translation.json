@@ -86,6 +86,8 @@
 		"bio": "Status Message",
 		"noBio": "No status message.",
 		"partner": "Partner",
+		"anniversary": "Anniversary",
+		"selectAnniversary": "Write down the date you met.",
 		"single": "Not in a relationship",
 		"edit": "Edit",
 		"save": "Save",
@@ -101,11 +103,12 @@
 		"coupleInfo": "Couple Info",
 		"coupleStatus": "Relationship Status",
 		"coupled": "In a relationship",
-		"linkCouple": "Invite",
+		"invitePartner": "Invite Partner",
 		"loadingPartner": "Loading partner info...",
 		"unlinkCouple": "Unlink Couple",
 		"coupleUnlinked": "Couple has been unlinked successfully.",
-		"confirmUnlinkCouple": "Are you sure you want to unlink the couple? Unlinking will break the connection and restrict access to chats with your partner. Data recovery may not be possible, so please proceed with caution."
+		"confirmUnlinkCouple": "Are you sure you want to unlink the couple? Unlinking will break the connection and restrict access to chats with your partner. Data recovery may not be possible, so please proceed with caution.",
+		"goToChat": "Go to the couple chat ❤️"
 	},
 	"invitePartner": {
 		"title": "Invite Your Partner",
@@ -125,7 +128,12 @@
 		"invalidLink": "Invalid invitation link",
 		"startJourney": "Let's start a new journey together!",
 		"invitationAccepted": "Couple invitation has been accepted!",
-		"goToChat": "Go to the secret couple chat ❤️"
+		"goToChat": "Go to the secret couple chat ❤️",
+		"invalidRequest": "Invalid or expired request. Please try again.",
+		"invalidCurrentUser": "Unable to retrieve your user data. Please log in again.",
+		"invalidInviter": "The inviter information is invalid.",
+		"failedToLoadInvitation": "Failed to load the invitation. Please try again.",
+		"failedToAcceptInvitation": "Failed to accept the invitation. Please try again."
 	},
 	"chat": {
 		"needLogin": "You need to log in.",
@@ -134,5 +142,12 @@
 		"errorLoading": "An error occurred while loading chat data.",
 		"sendMessage": "Send Message",
 		"backToChatList": "Back to Chat List"
+	},
+	"anniversary": {
+		"setAnniversary": "Set Your Anniversary",
+		"enterDate": "Please enter your anniversary date.",
+		"dateSaved": "Anniversary date saved successfully!",
+		"errorSaving": "Error saving anniversary date.",
+		"saveDate": "Save Date"
 	}
 }

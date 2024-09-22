@@ -1,8 +1,22 @@
 import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { EditFormProps } from './profileTypes';
 import DefaultProfile from '../common/DefaultProfile';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import {
+	FaCalendarAlt,
+	FaCamera,
+	FaInfoCircle,
+	FaTimes,
+	FaUser,
+	FaEnvelope,
+	FaHeart,
+	FaTrash,
+} from 'react-icons/fa';
 
 const EditForm: React.FC<EditFormProps> = ({
+	partnerName,
 	editedUser,
 	handleInputChange,
 	handleSubmit,
@@ -10,6 +24,9 @@ const EditForm: React.FC<EditFormProps> = ({
 	setIsEditing,
 	handleImageDelete,
 	t,
+	handleAnniversaryChange,
+	handleCoupleUnlink,
+	handleDeleteAccount,
 }) => {
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -20,16 +37,28 @@ const EditForm: React.FC<EditFormProps> = ({
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='space-y-4 px-4 py-5'>
+		<motion.form
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5 }}
+			onSubmit={handleSubmit}
+			className='space-y-8 px-4 py-5'>
 			{/* Editable Profile Image */}
-			<div className='flex justify-center items-center'>
-				<div
-					onClick={handleImageClick}
-					className='cursor-pointer relative'>
-					<DefaultProfile
-						size={96}
-						photoURL={editedUser.photoURL || null}
-					/>
+			<div className='flex justify-center items-center mb-8'>
+				<div className='relative'>
+					<motion.div
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={handleImageClick}
+						className='cursor-pointer relative rounded-full overflow-hidden'>
+						<DefaultProfile
+							size={96}
+							photoURL={editedUser.photoURL || null}
+						/>
+						<div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200'>
+							<FaCamera className='text-white text-3xl' />
+						</div>
+					</motion.div>
 					<input
 						type='file'
 						ref={fileInputRef}
@@ -38,64 +67,199 @@ const EditForm: React.FC<EditFormProps> = ({
 						accept='image/*'
 					/>
 					{editedUser.photoURL && (
-						<button
+						<motion.button
+							// whileTap={{ scale: 0.9 }}
 							type='button'
 							onClick={handleImageDelete}
-							className='absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center hover:bg-red-700 focus:outline-none'
+							className='absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-8 h-8 flex justify-center items-center hover:bg-red-700 focus:outline-none'
 							aria-label={t('profile.deleteImage')}>
-							x
-						</button>
+							<FaTimes />
+						</motion.button>
 					)}
 				</div>
 			</div>
 
-			{/* Editable Display Name */}
-			<div>
-				<label
-					htmlFor='displayName'
-					className='block text-sm font-medium text-gray-700'>
-					{t('profile.name')}
-				</label>
-				<input
-					type='text'
-					name='displayName'
-					value={editedUser.displayName}
-					onChange={handleInputChange}
-					className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 '
-				/>
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+				{/* Personal Information Section */}
+				<div>
+					<h3 className='text-lg font-medium text-gray-900 mb-4'>
+						{t('profile.personalInfo')}
+					</h3>
+					<div className='space-y-4'>
+						{/* Editable Display Name */}
+						<div className='relative'>
+							<label
+								htmlFor='displayName'
+								className='block text-sm font-medium text-gray-700 mb-1'>
+								{t('profile.name')}
+							</label>
+							<div className='relative rounded-md shadow-sm'>
+								<div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+									<FaUser className='text-gray-400' />
+								</div>
+								<input
+									type='text'
+									name='displayName'
+									value={editedUser.displayName}
+									onChange={handleInputChange}
+									className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
+								/>
+							</div>
+						</div>
+
+						{/* Non-editable Email */}
+						<div className='relative'>
+							<label
+								htmlFor='email'
+								className='block text-sm font-medium text-gray-700 mb-1'>
+								{t('profile.email')}
+							</label>
+							<div className='relative rounded-md shadow-sm'>
+								<div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+									<FaEnvelope className='text-gray-400' />
+								</div>
+								<input
+									type='email'
+									name='email'
+									value={editedUser.email}
+									disabled
+									className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-100 text-gray-500 sm:text-sm'
+								/>
+							</div>
+						</div>
+
+						{/* Editable Bio / Status Message */}
+						<div className='relative'>
+							<label
+								htmlFor='profileMessage'
+								className='block text-sm font-medium text-gray-700 mb-1'>
+								{t('profile.bio')}
+							</label>
+							<div className='relative rounded-md shadow-sm'>
+								<div className='absolute inset-y-0 left-0 pl-3 pt-2 flex items-start pointer-events-none'>
+									<FaInfoCircle className='text-gray-400' />
+								</div>
+								<textarea
+									name='profileMessage'
+									value={editedUser.profileMessage}
+									onChange={handleInputChange}
+									rows={3}
+									className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Couple Information Section */}
+				<div>
+					<h3 className='text-lg font-medium text-gray-900 mb-4'>
+						{t('profile.coupleInfo')}
+					</h3>
+					<div className='space-y-4'>
+						{/* Partner Name (Read-only) */}
+						<div className='relative'>
+							<label
+								htmlFor='partnerName'
+								className='block text-sm font-medium text-gray-700 mb-1'>
+								{t('profile.partner')}
+							</label>
+							<div className='relative rounded-md shadow-sm'>
+								<div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+									<FaHeart className='text-gray-400' />
+								</div>
+								<input
+									type='text'
+									name='partnerName'
+									value={partnerName || t('profile.single')}
+									disabled
+									className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-100 text-gray-500 sm:text-sm'
+								/>
+							</div>
+						</div>
+
+						{/* Editable Anniversary */}
+						{partnerName && (
+							<div className='relative'>
+								<label
+									htmlFor='anniversary'
+									className='block text-sm font-medium text-gray-700 mb-1'>
+									{t('profile.anniversary')}
+								</label>
+								<div className='relative rounded-md shadow-sm'>
+									<div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+										<FaCalendarAlt className='text-gray-400' />
+									</div>
+									<DatePicker
+										selected={
+											editedUser.anniversary
+												? new Date(
+														editedUser.anniversary
+													)
+												: null
+										}
+										onChange={handleAnniversaryChange}
+										dateFormat='yyyy-MM-dd'
+										className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
+										wrapperClassName='w-full'
+										popperClassName='react-datepicker-right'
+										popperPlacement='bottom-start'
+										placeholderText={t(
+											'profile.selectAnniversary'
+										)}
+										showYearDropdown
+										scrollableYearDropdown
+										yearDropdownItemNumber={15}
+									/>
+								</div>
+							</div>
+						)}
+
+						{/* Unlink Couple Button */}
+						{partnerName && (
+							<motion.button
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								type='button'
+								onClick={handleCoupleUnlink}
+								className='w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
+								{t('profile.unlinkCouple')}
+							</motion.button>
+						)}
+					</div>
+				</div>
 			</div>
 
-			{/* Editable Bio / Status Message */}
-			<div>
-				<label
-					htmlFor='profileMessage'
-					className='block text-sm font-medium text-gray-700'>
-					{t('profile.bio')}
-				</label>
-				<textarea
-					name='profileMessage'
-					value={editedUser.profileMessage}
-					onChange={handleInputChange}
-					rows={3}
-					className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3'
-				/>
-			</div>
-
-			{/* Save and Cancel Buttons */}
-			<div className='flex justify-end space-x-3'>
-				<button
+			{/* Save, Cancel, and Delete Account Buttons */}
+			<div className='flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-3 mt-8'>
+				<motion.button
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
 					type='button'
-					onClick={() => setIsEditing(false)}
-					className='px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
-					{t('common.cancel')}
-				</button>
-				<button
-					type='submit'
-					className='px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
-					{t('common.save')}
-				</button>
+					onClick={handleDeleteAccount}
+					className='w-full sm:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
+					<FaTrash className='inline-block mr-2' />
+					{t('profile.deleteAccount')}
+				</motion.button>
+				<div className='flex space-x-3'>
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						type='button'
+						onClick={() => setIsEditing(false)}
+						className='px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
+						{t('common.cancel')}
+					</motion.button>
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						type='submit'
+						className='px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
+						{t('common.save')}
+					</motion.button>
+				</div>
 			</div>
-		</form>
+		</motion.form>
 	);
 };
 
