@@ -15,7 +15,7 @@ import { formatDate } from '@/utils/dateUtils';
 import { ChatMessage } from './chatTypes';
 import { useTranslation } from 'react-i18next';
 import Loading from '../common/Loading';
-import ErrorPage from '../common/ErrorPage';
+import ErrorPage from '@/pages/error';
 
 const ChatContainer: React.FC = () => {
 	const { t } = useTranslation();

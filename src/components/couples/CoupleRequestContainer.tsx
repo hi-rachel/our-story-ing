@@ -6,7 +6,7 @@ import { UserData } from '@/types/user';
 import { User } from 'firebase/auth';
 import CoupleRequestPresentation from './CoupleRequestPresentation';
 import { useTranslation } from 'next-i18next';
-import ErrorPage from '@/components/common/ErrorPage';
+import ErrorPage from '@/pages/error';
 
 const CoupleRequestContainer = () => {
 	const router = useRouter();
