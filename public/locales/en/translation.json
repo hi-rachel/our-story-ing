@@ -17,6 +17,12 @@
 		"dontWorry": "Don't worry!",
 		"stayTogether": "We're still together ❤️"
 	},
+	"notFound": {
+		"title": "Page Not Found",
+		"message": "Oops! The page you're looking for seems to have wandered off. Let's find our way back to our special place.",
+		"dontWorry": "Don't worry, it happens to the best of us!",
+		"stayTogether": "We'll always find our way back to each other."
+	},
 	"home": {
 		"hero": {
 			"title": "Our Story is ing: Share Your Moments, Strengthen Your Bond",
@@ -95,6 +101,7 @@
 		"deleteAccount": "Delete Account",
 		"confirmDeleteAccount": "Are you sure you want to delete your account?",
 		"accountDeleted": "Your account has been deleted.",
+		"noAnniversary": "-",
 		"errorUpdatingProfile": "Error updating profile.",
 		"errorDeletingAccount": "Error deleting account.",
 		"errorDisplayNameRequired": "Display name is required.",

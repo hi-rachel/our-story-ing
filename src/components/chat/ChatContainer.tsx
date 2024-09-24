@@ -156,7 +156,7 @@ const ChatContainer: React.FC = () => {
 
 	// Handle going back
 	const handleGoBack = () => {
-		// 뒤로가기가 'invite/[랜덤id]'초대하기 페이지 혹은 couple-anniversary 설정 페이지면 '/'로 이동
+		// 📍 뒤로가기가 'invite/[랜덤id]'초대하기 페이지 혹은 couple-anniversary 설정 페이지면 '/'로 이동
 		router.back();
 	};
 

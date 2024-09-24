@@ -17,6 +17,12 @@
 		"dontWorry": "걱정하지 마세요!",
 		"stayTogether": "우리는 여전히 함께예요 ❤️"
 	},
+	"notFound": {
+		"title": "페이지를 찾을 수 없습니다",
+		"message": "앗! 찾으시는 페이지가 어디론가 사라진 것 같아요. 우리의 특별한 공간으로 돌아가볼까요?",
+		"dontWorry": "걱정하지 마세요, 이런 일은 누구에게나 있답니다!",
+		"stayTogether": "우리는 언제나 서로를 다시 찾을 수 있어요."
+	},
 	"home": {
 		"hero": {
 			"title": "우리의 이야기는 현재 진행중, 순간을 공유하고, 유대를 강화하세요",
@@ -95,6 +101,7 @@
 		"deleteAccount": "탈퇴하기",
 		"confirmDeleteAccount": "정말로 계정을 삭제하시겠습니까?",
 		"accountDeleted": "계정이 삭제되었습니다.",
+		"noAnniversary": "-",
 		"errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
 		"errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
 		"errorDisplayNameRequired": "이름은 필수 항목입니다.",
