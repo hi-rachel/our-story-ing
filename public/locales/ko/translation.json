@@ -101,7 +101,7 @@
 		"deleteAccount": "탈퇴하기",
 		"confirmDeleteAccount": "정말로 계정을 삭제하시겠습니까?",
 		"accountDeleted": "계정이 삭제되었습니다.",
-		"noAnniversary": "-",
+		"noAnniversary": "설정 안됨",
 		"errorUpdatingProfile": "프로필 업데이트 중 오류가 발생했습니다.",
 		"errorDeletingAccount": "계정 삭제 중 오류가 발생했습니다.",
 		"errorDisplayNameRequired": "이름은 필수 항목입니다.",

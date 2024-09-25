@@ -101,7 +101,7 @@
 		"deleteAccount": "Delete Account",
 		"confirmDeleteAccount": "Are you sure you want to delete your account?",
 		"accountDeleted": "Your account has been deleted.",
-		"noAnniversary": "-",
+		"noAnniversary": "Not set",
 		"errorUpdatingProfile": "Error updating profile.",
 		"errorDeletingAccount": "Error deleting account.",
 		"errorDisplayNameRequired": "Display name is required.",
