@@ -1,7 +1,7 @@
 import { IoArrowBackOutline, IoArrowDown } from 'react-icons/io5';
 import { auth } from '../../../firebase';
 import { ChatPresentationProps } from './chatTypes';
-import DefaultProfile from '../common/DefaultProfile';
+import DefaultProfile from '../common/profile/DefaultProfile';
 
 const ChatPresentation: React.FC<ChatPresentationProps> = ({
 	chatting,
