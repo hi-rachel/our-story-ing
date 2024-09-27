@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { ProfileDetailsProps } from './profileTypes';
+import { ProfileDetailsProps } from '../profileTypes';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 import { motion } from 'framer-motion';
 import {
 	FaCalendarAlt,

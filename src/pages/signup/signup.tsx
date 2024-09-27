@@ -3,11 +3,11 @@ import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import GoogleLogin from '@/components/auth/GoogleLogin';
+import GoogleLogin from '@/components/auth/google/GoogleLogin';
 import { useRouter } from 'next/router';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
-const Signup = () => {
+const SignUpPage = () => {
 	const router = useRouter();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -129,4 +129,4 @@ const Signup = () => {
 	);
 };
 
-export default Signup;
+export default SignUpPage;

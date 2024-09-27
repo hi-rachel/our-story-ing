@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { UserProfilePresentationProps } from './profileTypes';
+import { UserProfilePresentationProps } from '../profileTypes';
 import ProfileImage from './ProfileImage';
 import ProfileDetails from './ProfileDetails';
-import EditForm from './EditForm';
-import EditAccountButton from './EditAccountButton';
+import EditForm from '../edit/EditForm';
+import EditAccountButton from '../edit/EditAccountButton';
 
 const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 	user,

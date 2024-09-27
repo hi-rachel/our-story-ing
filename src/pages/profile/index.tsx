@@ -1,4 +1,4 @@
-import UserProfileContainer from '../../components/user-profile/UserProfileContainer';
+import UserProfileContainer from '../../components/user-profile/profile/UserProfileContainer';
 
 const ProfilePage: React.FC = () => {
 	return <UserProfileContainer />;

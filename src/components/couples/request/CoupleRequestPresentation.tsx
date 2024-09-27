@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CoupleRequestPresentationProps } from './coupleTypes';
+import { CoupleRequestPresentationProps } from '../coupleTypes';
 
 const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 	inviter,

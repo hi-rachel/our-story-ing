@@ -1,4 +1,4 @@
-import { EditAccountButtonProps } from './profileTypes';
+import { EditAccountButtonProps } from '../profileTypes';
 import { motion } from 'framer-motion';
 
 const EditAccountButton: React.FC<EditAccountButtonProps> = ({

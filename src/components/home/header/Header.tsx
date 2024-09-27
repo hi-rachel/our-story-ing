@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { auth } from '../../firebase';
-import DefaultProfile from './common/DefaultProfile';
+import { auth } from '../../../../firebase';
+import DefaultProfile from '@/components/common/profile/DefaultProfile';
 
 const Header = () => {
 	const { t } = useTranslation();

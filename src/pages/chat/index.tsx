@@ -10,7 +10,7 @@ import { auth, db } from '../../../firebase';
 import { IoArrowBackOutline, IoArrowDown } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { formatDate } from '@/utils/dateUtils';
-import DefaultProfile from '@/components/common/DefaultProfile';
+import DefaultProfile from '@/components/common/profile/DefaultProfile';
 
 // TODO
 // [x] 커플 채팅 만들기

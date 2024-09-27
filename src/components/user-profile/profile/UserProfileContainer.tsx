@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { auth, db, storage } from '../../../firebase';
+import { auth, db, storage } from '../../../../firebase';
 import { User, deleteUser, updateProfile } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import UserProfilePresentation from './UserProfilePresentation';
 import { useTranslation } from 'next-i18next';
-import { EditedUser } from './profileTypes';
+import { EditedUser } from '../profileTypes';
 import { UserData } from '@/types/user';
 import {
 	deleteObject,

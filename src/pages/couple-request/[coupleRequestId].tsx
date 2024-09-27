@@ -1,4 +1,4 @@
-import CoupleRequestContainer from '@/components/couples/CoupleRequestContainer';
+import CoupleRequestContainer from '@/components/couples/request/CoupleRequestContainer';
 
 const CoupleRequestPage = () => {
 	return <CoupleRequestContainer />;

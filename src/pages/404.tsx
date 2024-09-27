@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import ErrorLayout from '@/components/common/ErrorLayout';
+import ErrorLayout from '@/components/common/error/ErrorLayout';
 
 const NotFoundPage: React.FC = () => {
 	const router = useRouter();

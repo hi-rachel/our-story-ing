@@ -1,4 +1,4 @@
-import InvitePartner from '@/components/couples/InvitePartner';
+import InvitePartner from '@/components/couples/invite/InvitePartner';
 
 const InvitePage = () => {
 	return (

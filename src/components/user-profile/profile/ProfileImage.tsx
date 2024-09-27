@@ -1,5 +1,5 @@
-import { ProfileImageProps } from './profileTypes';
-import DefaultProfile from '../common/DefaultProfile';
+import { ProfileImageProps } from '../profileTypes';
+import DefaultProfile from '@/components/common/profile/DefaultProfile';
 
 const ProfileImage: React.FC<ProfileImageProps> = ({ user, t }) => (
 	<div className='py-4 sm:py-5 px-6'>

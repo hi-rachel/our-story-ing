@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { db, auth } from '../../../firebase';
+import { db, auth } from '../../../../firebase';
 import {
 	collection,
 	query,
@@ -12,9 +12,8 @@ import {
 	addDoc,
 } from 'firebase/firestore';
 import { useTranslation } from 'next-i18next';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import 'react-toastify/dist/ReactToastify.css';
 
 // [x] 초대시 기념일 입력 만들기
 
@@ -47,6 +46,7 @@ const InvitePartner: React.FC = () => {
 									closeOnClick: true,
 									pauseOnHover: true,
 									draggable: true,
+									theme: 'light',
 								}
 							);
 						}
@@ -160,7 +160,6 @@ const InvitePartner: React.FC = () => {
 
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
-			<ToastContainer />
 			<motion.div
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}

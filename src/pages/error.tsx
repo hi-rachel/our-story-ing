@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import ErrorLayout from '@/components/common/ErrorLayout';
+import ErrorLayout from '@/components/common/error/ErrorLayout';
 
 interface ErrorPageProps {
 	errorMessage: string;

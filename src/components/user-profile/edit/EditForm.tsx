@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { EditFormProps } from './profileTypes';
-import DefaultProfile from '../common/DefaultProfile';
+import { EditFormProps } from '../profileTypes';
+import DefaultProfile from '../../common/profile/DefaultProfile';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
