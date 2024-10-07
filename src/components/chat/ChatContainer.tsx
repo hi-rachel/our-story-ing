@@ -7,6 +7,9 @@ import {
 	orderBy,
 	getDoc,
 	doc,
+	where,
+	getDocs,
+	updateDoc,
 } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import { useRouter } from 'next/router';
@@ -52,11 +55,38 @@ const ChatContainer: React.FC = () => {
 				createdAt: doc.data().createdAt.toDate(),
 			})) as ChatMessage[];
 			setChatting(msgs);
-			scrollToBottom();
 		});
 		return () => unsubscribe();
 	}, [coupleId]);
 
+	const markMessagesAsRead = async () => {
+		const user = auth.currentUser;
+		if (!user || !coupleId) return;
+
+		const unreadMessagesQuery = query(
+			collection(db, 'couple-chats', coupleId as string, 'messages'),
+			where('userId', '!=', user.uid), // Only the other user's messages
+			where('isRead', '==', false) // Only unread messages
+		);
+
+		const snapshot = await getDocs(unreadMessagesQuery);
+
+		snapshot.forEach(async (doc) => {
+			try {
+				await updateDoc(doc.ref, { isRead: true });
+			} catch (error) {
+				console.error(`Error updating message ${doc.id}:`, error);
+			}
+		});
+	};
+
+	// Ensure this runs after messages are fetched
+	useEffect(() => {
+		if (chatting.length > 0) {
+			markMessagesAsRead();
+		}
+		scrollToBottom();
+	}, [chatting]); // Only re-run when messages are updated
 	// Check if the user is authorized to view the chat
 	useEffect(() => {
 		const checkAuthorization = async () => {
@@ -117,6 +147,7 @@ const ChatContainer: React.FC = () => {
 					createdAt: new Date(),
 					userId: user.uid,
 					displayName: user.displayName || 'Unknown',
+					isRead: false,
 				}
 			);
 

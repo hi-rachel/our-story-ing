@@ -65,18 +65,25 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 											}`}>
 											{msg.text}
 										</p>
-										<span className='text-xs text-gray-500 block'>
-											{formatDate(msg.createdAt)}
-										</span>
+										<div>
+											<span className='text-xs text-gray-500 block'>
+												{formatDate(msg.createdAt)}
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
 						) : (
 							<div className='flex flex-col items-end'>
 								<div className='flex items-end gap-2'>
-									<span className='text-xs text-gray-500 block'>
-										{formatDate(msg.createdAt)}
-									</span>
+									<div className='flex flex-col items-end'>
+										<span className='text-xs text-primary font-semibold'>
+											{msg.isRead ? '' : '1'}
+										</span>
+										<span className='text-xs text-gray-500 block'>
+											{formatDate(msg.createdAt)}
+										</span>
+									</div>
 									<p className='bg-primary text-white p-3 rounded-lg inline-block'>
 										{msg.text}
 									</p>

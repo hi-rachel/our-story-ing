@@ -5,6 +5,7 @@ export interface ChatMessage {
 	displayName: string;
 	photoURL: string;
 	createdAt: Date;
+	isRead: boolean;
 }
 
 export interface ChatPresentationProps {
