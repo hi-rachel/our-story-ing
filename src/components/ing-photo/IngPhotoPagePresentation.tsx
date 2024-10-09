@@ -43,7 +43,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 					alt='photo-theme'
 					width={450}
 					height={675}
-					src='/images/ing-photos/photo-navy.png'
+					src='/images/photo-pink.png'
 				/>
 
 				{/* 각 사진 촬영 구역 */}

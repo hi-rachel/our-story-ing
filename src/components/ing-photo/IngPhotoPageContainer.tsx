@@ -37,7 +37,7 @@ const IngPhotoPageContainer = () => {
 			img.onload = () => {
 				context.drawImage(img, 0, 0, canvas.width, canvas.height);
 			};
-			img.src = '/images/ing-photos/photo-navy.png';
+			img.src = '/images/photo-pink.png';
 		}
 	}, []);
 
@@ -141,7 +141,7 @@ const IngPhotoPageContainer = () => {
 		const context = canvas?.getContext('2d');
 		if (canvas && context) {
 			const img = new window.Image();
-			img.src = '/images/ing-photos/photo-navy.png';
+			img.src = '/images/photo-pink.png';
 
 			img.onload = () => {
 				// 배경 이미지를 그릴 때 필터를 적용하지 않음
