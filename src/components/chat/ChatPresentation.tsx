@@ -99,7 +99,8 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 			)}
 
 			{/* Input Field */}
-			<div className='flex mt-4'>
+
+			<div className='flex items-center mt-4'>
 				<input
 					type='text'
 					value={newChat}
