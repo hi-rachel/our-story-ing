@@ -25,11 +25,12 @@
 	},
 	"home": {
 		"hero": {
-			"title": "우리의 이야기는 현재 진행중, 순간을 공유하고, 유대를 강화하세요",
+			"title": "우리의 이야기는 현재 진행중",
 			"subtitle": "커플들이 자신들의 여정을 공유할 수 있는 특별한 공간"
 		},
 		"features": {
-			"title": "주요 기능",
+			"title": "특별한 기능",
+			"subTitle": "주요 기능",
 			"profileSetup": {
 				"title": "프로필 설정",
 				"description": "소중한 정보를 공유하세요"
@@ -47,10 +48,20 @@
 				"description": "함께 미래를 계획하세요"
 			}
 		},
-		"timelinePreview": {
-			"title": "기억할 만한 순간들",
-			"moment": "특별한 순간",
-			"description": "이 아름다운 추억에 대한 간단한 설명"
+		"moments": {
+			"title": "Let's make memories",
+			"ingPhoto": {
+				"title": "ing Photo",
+				"description": "지금 함께 있는 시간을 사진으로 남겨요"
+			},
+			"anniversary": {
+				"title": "Anniversary",
+				"description": "기념일을 기록하고 챙겨줘요"
+			},
+			"chatting": {
+				"title": "Chatting",
+				"description": "멀리 떨어져서도 일상을 공유해요"
+			}
 		},
 		"cta": {
 			"title": "당신의 이야기를 시작할 준비가 되셨나요?",

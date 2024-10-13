@@ -29,7 +29,8 @@
 			"subtitle": "A special place for couples to share their journey"
 		},
 		"features": {
-			"title": "Our Features",
+			"title": "Special Features",
+			"subTitle": "Main features",
 			"profileSetup": {
 				"title": "Profile Setup",
 				"description": "Share your precious information"
@@ -47,10 +48,20 @@
 				"description": "Plan your future, hand in hand"
 			}
 		},
-		"timelinePreview": {
-			"title": "Moments to Remember",
-			"moment": "Special Moment",
-			"description": "A brief description of this beautiful memory"
+		"moments": {
+			"title": "Let's make memories",
+			"ingPhoto": {
+				"title": "ing Photo",
+				"description": "Let's take a picture of our time together"
+			},
+			"anniversary": {
+				"title": "Anniversary",
+				"description": "Record your anniversary and take care of it"
+			},
+			"chatting": {
+				"title": "Chatting",
+				"description": "We share our daily lives from far away"
+			}
 		},
 		"cta": {
 			"title": "Ready to Start Your Story?",

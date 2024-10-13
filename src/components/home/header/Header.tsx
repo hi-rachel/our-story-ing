@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../../../../firebase';
 import DefaultProfile from '@/components/common/profile/DefaultProfile';
+import { motion } from 'framer-motion';
 
 const Header = () => {
 	const { t } = useTranslation();
@@ -31,7 +32,7 @@ const Header = () => {
 					<Link
 						href='#features'
 						className='text-text font-medium hover:text-primary transition duration-300 text-sm sm:text-base'>
-						{t('home.features.title')}
+						{t('home.features.subTitle')}
 					</Link>
 					{user ? (
 						<div className='flex items-center space-x-4'>
@@ -55,11 +56,15 @@ const Header = () => {
 							</button>
 						</div>
 					) : (
-						<Link
-							href='/login'
-							className='bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-secondary hover:text-primary transition duration-300 shadow-button'>
-							{t('common.login')}
-						</Link>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}>
+							<Link
+								href='/login'
+								className='bg-gradient-to-r from-pink-400 to-purple-300 text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-secondary transition duration-300 shadow-button'>
+								{t('common.login')}
+							</Link>
+						</motion.button>
 					)}
 				</div>
 			</div>
