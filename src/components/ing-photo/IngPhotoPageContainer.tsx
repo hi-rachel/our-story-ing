@@ -3,7 +3,7 @@ import IngPhotoPagePresentation from './IngPhotoPagePresentation';
 
 // TODO
 // 완료된 사진 firebase에 보관하기 (시간 제한)
-// 사진 촬영 카운트다운 3초, 5초 설정하기
+// 사진 촬영 카운트다운 3초, 5초, 10초 선택 기능
 // 4개 모두 촬영 전 다운로드 막기 / 4개 모두 촬영 완료 후 밝기 조절, 흑백 선택
 // 테마 사진 업데이트, 테마 선택 기능 구현
 // 공유 기능

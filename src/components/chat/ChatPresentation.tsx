@@ -56,13 +56,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 										{msg.displayName}
 									</div>
 									<div className='flex items-end gap-2 mt-2'>
-										<p
-											className={`p-3 rounded-lg inline-block ${
-												msg.userId ===
-												auth.currentUser?.uid
-													? 'bg-primary text-white'
-													: 'bg-secondary text-text'
-											}`}>
+										<p className='p-3 rounded-lg inline-block bg-secondary text-black'>
 											{msg.text}
 										</p>
 										<div>
@@ -84,7 +78,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 											{formatDate(msg.createdAt)}
 										</span>
 									</div>
-									<p className='bg-primary text-white p-3 rounded-lg inline-block'>
+									<p className='bg-pink-200 text-black p-3 rounded-lg inline-block'>
 										{msg.text}
 									</p>
 								</div>
