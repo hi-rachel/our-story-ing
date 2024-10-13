@@ -42,18 +42,21 @@ const Home = () => {
 			image: '/images/photo-booth.png',
 			title: t('home.moments.ingPhoto.title'),
 			description: t('home.moments.ingPhoto.description'),
+			href: '/ing-photo',
 		},
 		{
 			id: 'photo-album',
 			image: '/images/album.png',
 			title: t('home.moments.anniversary.title'),
 			description: t('home.moments.anniversary.description'),
+			href: '/profile',
 		},
 		{
 			id: 'contact',
 			image: '/images/contact.png',
 			title: t('home.moments.chatting.title'),
 			description: t('home.moments.chatting.description'),
+			href: '/profile',
 		},
 	];
 
@@ -89,15 +92,17 @@ const Home = () => {
 										delay: index * 0.1,
 									}}
 									className='bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg p-6 shadow-md hover:shadow-lg transition duration-300'>
-									<div className='text-4xl mb-4'>
-										{feature.icon}
-									</div>
-									<h3 className='text-xl font-heading font-semibold mb-2'>
-										{feature.title}
-									</h3>
-									<p className='text-gray-600'>
-										{feature.description}
-									</p>
+									<Link href={feature.href}>
+										<div className='text-4xl mb-4'>
+											{feature.icon}
+										</div>
+										<h3 className='text-xl font-heading font-semibold mb-2'>
+											{feature.title}
+										</h3>
+										<p className='text-gray-600'>
+											{feature.description}
+										</p>
+									</Link>
 								</motion.div>
 							))}
 						</div>
@@ -121,22 +126,24 @@ const Home = () => {
 										delay: index * 0.1,
 									}}
 									className='bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2'>
-									<div className='h-60 relative overflow-hidden'>
-										<Image
-											alt='memory'
-											src={item.image}
-											fill
-											className='object-cover transition duration-300 transform hover:scale-110'
-										/>
-									</div>
-									<div className='p-6 bg-white z-10'>
-										<h3 className='text-xl font-heading font-semibold mb-3'>
-											{item.title}
-										</h3>
-										<p className='text-gray-600 text-sm'>
-											{item.description}
-										</p>
-									</div>
+									<Link href={item.href}>
+										<div className='h-60 relative overflow-hidden'>
+											<Image
+												alt='memory'
+												src={item.image}
+												fill
+												className='object-cover transition duration-300 transform hover:scale-110'
+											/>
+										</div>
+										<div className='p-6 bg-white z-10'>
+											<h3 className='text-xl font-heading font-semibold mb-3'>
+												{item.title}
+											</h3>
+											<p className='text-gray-600 text-sm'>
+												{item.description}
+											</p>
+										</div>
+									</Link>
 								</motion.div>
 							))}
 						</div>
