@@ -1,10 +1,23 @@
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { useAnimatingHeart } from '@/hooks/useAnimationHeart';
-import { useTranslation } from 'react-i18next';
 
-const NotFoundPage = () => {
-	const { t } = useTranslation();
+interface ErrorLayoutProps {
+	title: string;
+	message: string;
+	goBackText: string;
+	extraMessage: string;
+	extraSubMessage: string;
+	handleGoBack: () => void;
+}
+
+const ErrorLayout: React.FC<ErrorLayoutProps> = ({
+	title,
+	message,
+	goBackText,
+	extraMessage,
+	extraSubMessage,
+	handleGoBack,
+}) => {
 	const { isAnimating, heartVariants } = useAnimatingHeart();
 
 	return (
@@ -43,11 +56,9 @@ const NotFoundPage = () => {
 						transition={{ duration: 0.6, delay: 0.2 }}
 						className='space-y-4'>
 						<h1 className='text-3xl font-heading font-bold text-gray-800'>
-							{t('notFound.title')}
+							{title}
 						</h1>
-						<p className='text-lg text-gray-600 max-w-md mx-auto'>
-							{t('notFound.message')}
-						</p>
+						<p className='text-lg text-gray-600 max-w-md mx-auto'>{message}</p>
 					</motion.div>
 
 					{/* Buttons */}
@@ -56,8 +67,8 @@ const NotFoundPage = () => {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, delay: 0.4 }}
 						className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-						<Link
-							href='/'
+						<button
+							onClick={handleGoBack}
 							className='group px-8 py-3 bg-gradient-to-r from-accent to-primary 
                          text-white font-semibold rounded-full shadow-lg 
                          hover:shadow-xl transition-all duration-300
@@ -66,9 +77,9 @@ const NotFoundPage = () => {
 								className='block'
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}>
-								{t('common.goBack')}
+								{goBackText}
 							</motion.span>
-						</Link>
+						</button>
 					</motion.div>
 
 					{/* Extra Messages */}
@@ -77,10 +88,8 @@ const NotFoundPage = () => {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.8, delay: 0.6 }}
 						className='mt-12 space-y-2'>
-						<p className='text-lg font-medium text-accent'>
-							{t('notFound.dontWorry')}
-						</p>
-						<p className='text-gray-600'>{t('notFound.stayTogether')}</p>
+						<p className='text-lg font-medium text-accent'>{extraMessage}</p>
+						<p className='text-gray-600'>{extraSubMessage}</p>
 					</motion.div>
 				</div>
 			</div>
@@ -91,4 +100,4 @@ const NotFoundPage = () => {
 	);
 };
 
-export default NotFoundPage;
+export default ErrorLayout;
