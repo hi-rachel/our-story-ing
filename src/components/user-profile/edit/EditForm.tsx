@@ -247,7 +247,7 @@ const EditForm: React.FC<EditFormProps> = ({
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						type='submit'
-						className='px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
+						className='px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-pink-400 to-purple-300'>
 						{t('common.save')}
 					</motion.button>
 				</div>

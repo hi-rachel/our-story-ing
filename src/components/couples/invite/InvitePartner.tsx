@@ -156,7 +156,7 @@ const InvitePartner: React.FC = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-surface-light to-surface p-4'>
 			<motion.div
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -178,7 +178,7 @@ const InvitePartner: React.FC = () => {
 				{!isAccepted && (
 					<motion.button
 						onClick={handleInvite}
-						className='w-full p-4 bg-accent hover:bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
+						className='w-full p-4 bg-gradient-to-r from-accent to-primary  text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						disabled={loading || isAccepted}>
@@ -212,7 +212,7 @@ const InvitePartner: React.FC = () => {
 							<span className='text-blue-500'>{inviteLink}</span>
 						</div>
 						<motion.button
-							className='w-full p-3 bg-primary text-white rounded-large font-bold shadow-button transition-colors duration-300'
+							className='w-full p-3 bg-accent text-white rounded-large font-bold shadow-button transition-colors duration-300'
 							onClick={() => handleClickCopyLink(inviteLink)}
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}>
@@ -224,7 +224,7 @@ const InvitePartner: React.FC = () => {
 				{isAccepted && (
 					<motion.button
 						onClick={() => handleGoToCoupleChat()}
-						className='w-full p-4 bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300 mt-6'
+						className='w-full p-4 bg-gradient-to-r from-accent to-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300 mt-6'
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}>
 						{t('invitePartner.goToChat')}

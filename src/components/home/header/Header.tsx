@@ -59,7 +59,7 @@ const Header = () => {
 							whileTap={{ scale: 0.95 }}>
 							<Link
 								href='/login'
-								className='bg-gradient-to-r from-pink-400 to-purple-300 text-white px-5 py-3 rounded-full text-sm font-semibold hover:bg-secondary transition duration-300 shadow-button'>
+								className='bg-gradient-to-r from-pink-400 to-purple-300 text-white px-5 py-3 rounded-full text-sm font-semibold h transition duration-300 shadow-button'>
 								{t('common.login')}
 							</Link>
 						</motion.button>

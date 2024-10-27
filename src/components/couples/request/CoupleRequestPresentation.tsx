@@ -10,7 +10,7 @@ const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 }) => {
 	if (loading) {
 		return (
-			<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary'>
+			<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-surface-light to-surface'>
 				<motion.div
 					animate={{ rotate: 360 }}
 					transition={{
@@ -30,7 +30,7 @@ const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 
 	if (error) {
 		return (
-			<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
+			<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-surface-light to-surface p-4'>
 				<motion.div
 					initial={{ opacity: 0, y: -20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 	}
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-secondary p-4'>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-surface-light to-surface p-4'>
 			<motion.div
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 						</h2>
 						<motion.button
 							onClick={onAcceptInvitation}
-							className='w-full p-4 bg-accent hover:bg-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
+							className='w-full p-4 bg-gradient-to-r from-accent to-primary text-white rounded-large font-bold text-lg shadow-button transition-colors duration-300'
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}>
 							{t('invitePartner.acceptInvitation')}

@@ -9,7 +9,7 @@ const EditAccountButton: React.FC<EditAccountButtonProps> = ({
 		whileHover={{ scale: 1.05 }}
 		whileTap={{ scale: 0.95 }}
 		onClick={() => setIsEditing(true)}
-		className='flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
+		className='flex justify-center py-2 px-4 shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-400 to-purple-300'>
 		{t('profile.edit')}
 	</motion.button>
 );

@@ -50,7 +50,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 								<div className='ml-2'>
 									<div className='text-sm text-gray-600'>{msg.displayName}</div>
 									<div className='flex items-end gap-2 mt-2'>
-										<p className='p-3 rounded-lg inline-block bg-secondary text-black'>
+										<p className='p-3 rounded-lg inline-block bg-surface text-black'>
 											{msg.text}
 										</p>
 										<div>
