@@ -10,7 +10,6 @@ import Loading from '@/components/common/loading/Loading';
 import Meta from '@/components/common/meta/Meta';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../styles/globals.css';
 import { onMessage } from '@firebase/messaging';
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
@@ -18,40 +17,39 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter();
 
-	const publicRoutes = ['/', '/login', '/signup']; // Publicly accessible routes
+	const publicRoutes = ['/', '/login', '/signup'];
 
-	const init = async () => {
+	const initAuthState = () => {
 		auth.onAuthStateChanged((authUser) => {
-			if (authUser) {
-				setUser(authUser);
-			} else {
-				setUser(null);
-			}
+			setUser(authUser ? authUser : null);
 			setLoading(false);
+
+			if (authUser) {
+				// 로그인된 상태에서 /main으로 리디렉션
+				if (router.pathname === '/login' || router.pathname === '/signup') {
+					router.push('/');
+				}
+			}
 		});
 	};
 
 	useEffect(() => {
-		init();
+		initAuthState();
 	}, []);
 
 	useEffect(() => {
-		// Redirect logic: If not logged in and not on a public route, redirect to login
 		if (!loading && !user && !publicRoutes.includes(router.pathname)) {
-			router.push('/login');
+			router.push('/login'); // 인증되지 않은 사용자는 로그인 페이지로 리디렉션
 		}
 	}, [user, loading, router]);
 
 	useEffect(() => {
-		// FCM 권한 요청 및 토큰 저장
 		requestPermissionAndSaveToken();
 
-		// Foreground 푸시 알림 처리
 		if (messaging) {
 			const unsubscribe = onMessage(messaging, (payload) => {
 				const { notification, data } = payload;
 				if (notification && data) {
-					// 기본 브라우저 알림
 					new Notification(notification.title || '', {
 						body: notification.body,
 						icon: '/icons/couple.svg',
@@ -65,11 +63,10 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 				}
 			});
 
-			return () => unsubscribe(); // Cleanup 함수
+			return () => unsubscribe();
 		}
 	}, []);
 
-	// Show a loading screen or spinner while authentication state is being checked
 	if (loading) {
 		return <Loading />;
 	}
@@ -77,15 +74,15 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	return (
 		<>
 			<Meta />
-			<Component {...pageProps} />
+			{user ? <Component {...pageProps} /> : <Component {...pageProps} />}
 			<ToastContainer
-				position='top-right' // 원하는 위치 설정 가능 (예: top-right, bottom-left 등)
-				autoClose={5000} // 자동으로 닫히는 시간 (ms)
-				hideProgressBar={false} // 프로그레스바 숨기기 설정
-				newestOnTop={false} // 새로운 Toast를 상단에 표시
-				pauseOnHover // 마우스 Hover 시 일시 정지
-				draggable // 드래그로 닫기
-				theme='colored' // 테마 설정 (light, dark, colored 등)
+				position='top-right'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				pauseOnHover
+				draggable
+				theme='colored'
 			/>
 		</>
 	);
