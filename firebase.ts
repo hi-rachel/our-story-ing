@@ -52,10 +52,7 @@ export const initializeMessaging = async () => {
 				);
 			}
 		} catch (err) {
-			console.error(
-				'Failed to register service worker or get FCM token:',
-				err
-			);
+			console.error('Failed to register service worker or get FCM token:', err);
 		}
 	}
 };

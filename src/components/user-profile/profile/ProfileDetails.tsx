@@ -11,6 +11,7 @@ import {
 	FaInfoCircle,
 	FaUser,
 } from 'react-icons/fa';
+import { calculateDaysSinceAnniversary } from '@/utils/dateUtils';
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 	partnerName,
@@ -20,9 +21,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 	t,
 }) => {
 	const router = useRouter();
-	const [anniversary, setAnniversary] = useState<string | null>(null); // 기념일 상태 추가
-	const [loadingAnniversary, setLoadingAnniversary] =
-		useState<boolean>(false);
+	const [anniversary, setAnniversary] = useState<string | null>(null);
+	const [loadingAnniversary, setLoadingAnniversary] = useState<boolean>(false);
+	const [daysSinceAnniversary, setDaysSinceAnniversary] = useState<
+		number | null
+	>(null);
 
 	// 기념일 정보 가져오기
 	useEffect(() => {
@@ -30,19 +33,24 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 			if (userData.coupleId) {
 				setLoadingAnniversary(true);
 				try {
-					const coupleDoc = await getDoc(
-						doc(db, 'couples', userData.coupleId)
-					);
+					const coupleDoc = await getDoc(doc(db, 'couples', userData.coupleId));
 					if (coupleDoc.exists()) {
 						const coupleData = coupleDoc.data();
 						if (coupleData && coupleData.anniversary) {
 							setAnniversary(coupleData.anniversary);
+
+							const days = calculateDaysSinceAnniversary(
+								coupleData.anniversary
+							);
+							setDaysSinceAnniversary(days);
 						} else {
 							setAnniversary(null);
+							setDaysSinceAnniversary(null);
 						}
 					}
 				} catch (error) {
 					setAnniversary(null);
+					setDaysSinceAnniversary(null);
 				} finally {
 					setLoadingAnniversary(false);
 				}
@@ -86,7 +94,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 										<dt className='text-sm font-medium text-gray-500'>
 											{t('profile.name')}
 										</dt>
-										<dd className='mt-1 text-sm text-gray-900'>
+										<dd className='font-medium mt-1 text-sm text-gray-900'>
 											{user.displayName}
 										</dd>
 									</div>
@@ -97,9 +105,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 										<dt className='text-sm font-medium text-gray-500'>
 											{t('profile.email')}
 										</dt>
-										<dd className='mt-1 text-sm text-gray-900'>
-											{user.email}
-										</dd>
+										<dd className='mt-1 text-sm text-gray-900'>{user.email}</dd>
 									</div>
 								</div>
 								<div className='flex items-center'>
@@ -109,8 +115,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 											{t('profile.bio')}
 										</dt>
 										<dd className='mt-1 text-sm text-gray-900'>
-											{userData.profileMessage ||
-												t('profile.noBio')}
+											{userData.profileMessage || t('profile.noBio')}
 										</dd>
 									</div>
 								</div>
@@ -132,13 +137,9 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 										<dt className='text-sm font-medium text-gray-500'>
 											{t('profile.partner')}
 										</dt>
-										<dd className='mt-1 text-sm text-gray-900'>
+										<dd className='font-medium mt-1 text-sm text-gray-900'>
 											{loadingPartner ? (
-												<span>
-													{t(
-														'profile.loadingPartner'
-													)}
-												</span>
+												<span>{t('profile.loadingPartner')}</span>
 											) : userData.partnerId ? (
 												partnerName
 											) : (
@@ -154,15 +155,14 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 											<dt className='text-sm font-medium text-gray-500'>
 												{t('profile.anniversary')}
 											</dt>
-											<dd className='mt-1 text-sm text-gray-900'>
+											<dd className='font-medium mt-1 text-sm text-gray-900'>
 												{loadingAnniversary ? (
-													<span>
-														{t(
-															'profile.loadingAnniversary'
-														)}
-													</span>
+													<span>{t('profile.loadingAnniversary')}</span>
 												) : anniversary ? (
-													anniversary
+													<>
+														{anniversary}{' '}
+														<span>({daysSinceAnniversary}일)</span>
+													</>
 												) : (
 													t('profile.noAnniversary')
 												)}

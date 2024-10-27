@@ -40,9 +40,7 @@ const Header = () => {
 								<div className='flex items-center space-x-2'>
 									<DefaultProfile
 										size={32}
-										photoURL={
-											user.photoURL ? user.photoURL : null
-										}
+										photoURL={user.photoURL ? user.photoURL : null}
 									/>
 									<span className='text-text font-semibold text-sm sm:text-base'>
 										{user.displayName}
@@ -51,7 +49,7 @@ const Header = () => {
 							</Link>
 							<button
 								onClick={handleLogOut}
-								className='bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-secondary hover:text-primary transition duration-300 shadow-button'>
+								className='bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-background hover:text-primary transition duration-300 shadow-button'>
 								{t('common.logout')}
 							</button>
 						</div>

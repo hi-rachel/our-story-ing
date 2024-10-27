@@ -45,9 +45,7 @@ const SignUpPage = () => {
 				</h2>
 				<form onSubmit={handleSubmit} className='space-y-4'>
 					<div>
-						<label
-							htmlFor='name'
-							className='block text-text mb-2 font-medium'>
+						<label htmlFor='name' className='block text-text mb-2 font-medium'>
 							{t('signup.fullName')}
 						</label>
 						<input
@@ -60,9 +58,7 @@ const SignUpPage = () => {
 						/>
 					</div>
 					<div>
-						<label
-							htmlFor='email'
-							className='block text-text mb-2 font-medium'>
+						<label htmlFor='email' className='block text-text mb-2 font-medium'>
 							{t('signup.email')}
 						</label>
 						<input

@@ -43,9 +43,7 @@ const CoupleAnniversary: React.FC = () => {
 					onChange={(e) => setAnniversaryDate(e.target.value)}
 					className='border rounded p-2 mb-4'
 				/>
-				<button
-					type='submit'
-					className='bg-primary text-white p-2 rounded'>
+				<button type='submit' className='bg-primary text-white p-2 rounded'>
 					{t('anniversary.saveDate')}
 				</button>
 			</form>

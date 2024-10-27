@@ -51,10 +51,7 @@ const EditForm: React.FC<EditFormProps> = ({
 						whileTap={{ scale: 0.95 }}
 						onClick={handleImageClick}
 						className='cursor-pointer relative rounded-full overflow-hidden'>
-						<DefaultProfile
-							size={96}
-							photoURL={editedUser.photoURL || null}
-						/>
+						<DefaultProfile size={96} photoURL={editedUser.photoURL || null} />
 						<div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200'>
 							<FaCamera className='text-white text-3xl' />
 						</div>
@@ -71,7 +68,7 @@ const EditForm: React.FC<EditFormProps> = ({
 							// whileTap={{ scale: 0.9 }}
 							type='button'
 							onClick={handleImageDelete}
-							className='absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-8 h-8 flex justify-center items-center hover:bg-red-700 focus:outline-none'
+							className='absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-error text-white rounded-full w-8 h-8 flex justify-center items-center hover:bg-red-600 focus:outline-none'
 							aria-label={t('profile.deleteImage')}>
 							<FaTimes />
 						</motion.button>
@@ -193,9 +190,7 @@ const EditForm: React.FC<EditFormProps> = ({
 									<DatePicker
 										selected={
 											editedUser.anniversary
-												? new Date(
-														editedUser.anniversary
-													)
+												? new Date(editedUser.anniversary)
 												: null
 										}
 										onChange={handleAnniversaryChange}
@@ -204,9 +199,7 @@ const EditForm: React.FC<EditFormProps> = ({
 										wrapperClassName='w-full'
 										popperClassName='react-datepicker-right'
 										popperPlacement='bottom-start'
-										placeholderText={t(
-											'profile.selectAnniversary'
-										)}
+										placeholderText={t('profile.selectAnniversary')}
 										showYearDropdown
 										scrollableYearDropdown
 										yearDropdownItemNumber={15}
@@ -222,7 +215,7 @@ const EditForm: React.FC<EditFormProps> = ({
 								whileTap={{ scale: 0.95 }}
 								type='button'
 								onClick={handleCoupleUnlink}
-								className='w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
+								className='w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-error hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
 								{t('profile.unlinkCouple')}
 							</motion.button>
 						)}
@@ -237,7 +230,7 @@ const EditForm: React.FC<EditFormProps> = ({
 					whileTap={{ scale: 0.95 }}
 					type='button'
 					onClick={handleDeleteAccount}
-					className='w-full sm:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
+					className='w-full sm:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-error hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
 					<FaTrash className='inline-block mr-2' />
 					{t('profile.deleteAccount')}
 				</motion.button>

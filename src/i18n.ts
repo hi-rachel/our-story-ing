@@ -3,7 +3,8 @@ import { initReactI18next } from 'react-i18next';
 import enTranslation from '../public/locales/en/translation.json';
 import koTranslation from '../public/locales/ko/translation.json';
 
-i18n.use(initReactI18next) // react-i18next와 통합
+i18n
+	.use(initReactI18next) // react-i18next와 통합
 	.init({
 		resources: {
 			en: {

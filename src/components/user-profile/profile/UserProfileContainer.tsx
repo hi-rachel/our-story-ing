@@ -42,9 +42,7 @@ const UserProfileContainer = () => {
 
 					// Fetch couple data if user is in a couple
 					if (data.isCouple && data.coupleId) {
-						const coupleDoc = await getDoc(
-							doc(db, 'couples', data.coupleId)
-						);
+						const coupleDoc = await getDoc(doc(db, 'couples', data.coupleId));
 						if (coupleDoc.exists()) {
 							const coupleData = coupleDoc.data();
 							setEditedUser({
@@ -71,9 +69,7 @@ const UserProfileContainer = () => {
 			if (userData?.partnerId) {
 				setLoadingPartner(true);
 				try {
-					const partnerDoc = await getDoc(
-						doc(db, 'users', userData.partnerId)
-					);
+					const partnerDoc = await getDoc(doc(db, 'users', userData.partnerId));
 					if (partnerDoc.exists()) {
 						const partnerData = partnerDoc.data();
 						if (partnerData && partnerData.displayName) {
@@ -113,9 +109,7 @@ const UserProfileContainer = () => {
 	};
 
 	// Handle image upload
-	const handleImageUpload = async (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file && user) {
 			const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB in bytes
@@ -151,10 +145,7 @@ const UserProfileContainer = () => {
 			try {
 				// Delete the image from Firebase Storage if it exists
 				if (editedUser.photoURL) {
-					const storageRef = ref(
-						storage,
-						`users/${user.uid}/profile.jpg`
-					);
+					const storageRef = ref(storage, `users/${user.uid}/profile.jpg`);
 					await deleteObject(storageRef);
 				}
 

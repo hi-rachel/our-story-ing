@@ -31,9 +31,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({
 			<h1 className='text-3xl font-heading font-semibold text-primary mb-4 text-center'>
 				{title}
 			</h1>
-			<p className='text-xl text-text mb-8 text-center max-w-md'>
-				{message}
-			</p>
+			<p className='text-xl text-text mb-8 text-center max-w-md'>{message}</p>
 			<motion.button
 				onClick={handleGoBack}
 				className='bg-accent hover:bg-primary text-white font-bold py-3 px-6 rounded-large shadow-button transition-colors duration-300'
@@ -48,9 +46,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.5 }}>
 					<p className='text-lg mb-2'>{extraMessage}</p>
-					{extraSubMessage && (
-						<p className='text-md'>{extraSubMessage}</p>
-					)}
+					{extraSubMessage && <p className='text-md'>{extraSubMessage}</p>}
 				</motion.div>
 			)}
 		</div>

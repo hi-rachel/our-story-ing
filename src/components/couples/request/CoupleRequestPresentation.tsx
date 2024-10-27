@@ -73,8 +73,7 @@ const CoupleRequestPresentation: React.FC<CoupleRequestPresentationProps> = ({
 							💌
 						</motion.div>
 						<h2 className='text-3xl font-heading font-semibold mb-6 text-center text-primary'>
-							{inviter.displayName}{' '}
-							{t('invitePartner.hasInvited')}
+							{inviter.displayName} {t('invitePartner.hasInvited')}
 						</h2>
 						<motion.button
 							onClick={onAcceptInvitation}

@@ -152,9 +152,7 @@ const ChatContainer: React.FC = () => {
 			);
 
 			// Fetch recipient FCM token
-			const coupleDoc = await getDoc(
-				doc(db, 'couples', coupleId as string)
-			);
+			const coupleDoc = await getDoc(doc(db, 'couples', coupleId as string));
 			const recipientId =
 				coupleDoc.data()?.inviterId === user.uid
 					? coupleDoc.data()?.partnerId

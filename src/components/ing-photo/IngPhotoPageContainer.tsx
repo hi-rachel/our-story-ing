@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 import IngPhotoPagePresentation from './IngPhotoPagePresentation';
 
 // TODO
-// 완료된 사진 firebase에 보관하기 (시간 제한)
-// 사진 촬영 카운트다운 3초, 5초, 10초 선택 기능
-// 4개 모두 촬영 전 다운로드 막기 / 4개 모두 촬영 완료 후 밝기 조절, 흑백 선택
-// 테마 사진 업데이트, 테마 선택 기능 구현
-// 공유 기능
+// [] 완료된 사진 firebase에 보관하기 (시간 제한)
+// [] 사진 촬영 카운트다운 3초, 5초, 10초 선택 기능
+// [] 4개 모두 촬영 전 다운로드 막기 / 4개 모두 촬영 완료 후 밝기 조절, 흑백 선택
+// [] 테마 사진 업데이트, 테마 선택 기능 구현
+// [] 공유 기능
+// [] 이미지 좌우 반전
 
 const IngPhotoPageContainer = () => {
 	const [photos, setPhotos] = useState<(string | null)[]>([
@@ -154,8 +155,7 @@ const IngPhotoPageContainer = () => {
 						const img = new window.Image();
 						img.src = photo;
 						img.onload = () => {
-							const { top, left, width, height } =
-								photoPositions[index];
+							const { top, left, width, height } = photoPositions[index];
 							// 필터 적용 (사진에만 적용)
 							context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
 							context.drawImage(img, left, top, width, height);
@@ -177,9 +177,7 @@ const IngPhotoPageContainer = () => {
 	// 사진 촬영 핸들러
 	const handleTakePhoto = (index: number) => {
 		if (photos[index]) {
-			const confirmRetake = window.confirm(
-				'Do you want to retake the photo?'
-			);
+			const confirmRetake = window.confirm('Do you want to retake the photo?');
 			if (!confirmRetake) return;
 		}
 		setIsCapturing(index);

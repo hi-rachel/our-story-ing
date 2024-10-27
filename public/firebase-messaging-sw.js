@@ -34,10 +34,7 @@ self.addEventListener('push', function (event) {
 			icon: '/icons/couple.svg',
 		};
 
-		self.registration.showNotification(
-			notificationTitle,
-			notificationOptions
-		);
+		self.registration.showNotification(notificationTitle, notificationOptions);
 	} catch (error) {
 		console.error('Error parsing push event data:', error);
 	}

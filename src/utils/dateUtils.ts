@@ -13,7 +13,9 @@ export const formatDate = (date: Date): string => {
 	return `${dateString} ${timeString}`;
 };
 
-export const calculateDaysSinceAnniversary = (anniversaryDate: string): number => {
+export const calculateDaysSinceAnniversary = (
+	anniversaryDate: string
+): number => {
 	const today = new Date();
 	const anniversary = new Date(anniversaryDate);
 

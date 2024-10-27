@@ -26,9 +26,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 					className='text-2xl cursor-pointer mr-2'
 					onClick={handleGoBack}
 				/>
-				<div className='flex-grow text-center font-semibold'>
-					Couple Chat
-				</div>
+				<div className='flex-grow text-center font-semibold'>Couple Chat</div>
 			</div>
 
 			{/* Chat Messages List */}
@@ -47,14 +45,10 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 							<div className='flex items-start mr-3'>
 								<DefaultProfile
 									size={38}
-									photoURL={
-										msg.photoURL ? msg.photoURL : null
-									}
+									photoURL={msg.photoURL ? msg.photoURL : null}
 								/>
 								<div className='ml-2'>
-									<div className='text-sm text-gray-600'>
-										{msg.displayName}
-									</div>
+									<div className='text-sm text-gray-600'>{msg.displayName}</div>
 									<div className='flex items-end gap-2 mt-2'>
 										<p className='p-3 rounded-lg inline-block bg-secondary text-black'>
 											{msg.text}

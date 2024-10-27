@@ -64,10 +64,7 @@ const UserProfilePresentation: React.FC<UserProfilePresentationProps> = ({
 							/>
 
 							<div className='flex justify-end p-4'>
-								<EditAccountButton
-									setIsEditing={setIsEditing}
-									t={t}
-								/>
+								<EditAccountButton setIsEditing={setIsEditing} t={t} />
 							</div>
 						</>
 					)}

@@ -37,18 +37,15 @@ const InvitePartner: React.FC = () => {
 						const data = docSnapshot.data();
 						if (data?.status === 'accepted') {
 							setIsAccepted(true);
-							toast.success(
-								t('invitePartner.invitationAccepted'),
-								{
-									position: 'top-center',
-									autoClose: 3000,
-									hideProgressBar: false,
-									closeOnClick: true,
-									pauseOnHover: true,
-									draggable: true,
-									theme: 'light',
-								}
-							);
+							toast.success(t('invitePartner.invitationAccepted'), {
+								position: 'top-center',
+								autoClose: 3000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								theme: 'light',
+							});
 						}
 					}
 				}
@@ -166,9 +163,7 @@ const InvitePartner: React.FC = () => {
 				transition={{ duration: 0.5 }}
 				className='max-w-md w-full bg-white shadow-card rounded-large p-8'>
 				<h2 className='text-3xl font-heading font-semibold mb-6 text-center text-primary'>
-					{isAccepted
-						? t('invitePartner.accepted')
-						: t('invitePartner.title')}
+					{isAccepted ? t('invitePartner.accepted') : t('invitePartner.title')}
 				</h2>
 
 				{error && (
@@ -212,9 +207,7 @@ const InvitePartner: React.FC = () => {
 						<p className='text-success text-center mb-4'>
 							{t('invitePartner.inviteLinkGenerated')}
 						</p>
-						<p className='text-center mb-4'>
-							{t('invitePartner.shareLink')}
-						</p>
+						<p className='text-center mb-4'>{t('invitePartner.shareLink')}</p>
 						<div className='bg-gray-100 p-4 rounded-md break-all text-center mb-4'>
 							<span className='text-blue-500'>{inviteLink}</span>
 						</div>
