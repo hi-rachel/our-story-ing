@@ -1,13 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import IngPhotoPagePresentation from './IngPhotoPagePresentation';
-
-// TODO
-// [] 완료된 사진 firebase에 보관하기 (시간 제한)
-// [] 사진 촬영 카운트다운 3초, 5초, 10초 선택 기능
-// [] 4개 모두 촬영 전 다운로드 막기 / 4개 모두 촬영 완료 후 밝기 조절, 흑백 선택
-// [] 테마 사진 업데이트, 테마 선택 기능 구현
-// [] 공유 기능
-// [] 이미지 좌우 반전
+import { photoPositions } from '@/constants/photoPositions';
+import { themes } from '@/constants/themes';
 
 const IngPhotoPageContainer = () => {
 	const [photos, setPhotos] = useState<(string | null)[]>([
@@ -16,42 +10,47 @@ const IngPhotoPageContainer = () => {
 		null,
 		null,
 	]);
+	const [currentTheme, setCurrentTheme] = useState(
+		'/images/ing-photo/theme-mint.png'
+	);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const [isCapturing, setIsCapturing] = useState<number | null>(null);
 	const [countdown, setCountdown] = useState<number | null>(null);
 	const [brightness, setBrightness] = useState<number>(100);
 	const [isGrayscale, setIsGrayscale] = useState<boolean>(false);
-
-	const photoPositions = [
-		{ top: 77, left: 19, width: 199, height: 282 },
-		{ top: 77, left: 233, width: 199, height: 282 },
-		{ top: 372, left: 19, width: 199, height: 282 },
-		{ top: 372, left: 233, width: 199, height: 282 },
-	];
+	const [isSharing, setIsSharing] = useState(false);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
-		const context = canvas?.getContext('2d');
-		if (canvas && context) {
-			const img = new window.Image();
-			img.onload = () => {
-				context.drawImage(img, 0, 0, canvas.width, canvas.height);
-			};
-			img.src = '/images/photo-pink.png';
-		}
-	}, []);
+		if (!canvas) return;
 
-	// 사진 촬영 시작 및 3초 카운트다운
+		const context = canvas.getContext('2d', { alpha: false });
+		if (!context) return;
+
+		context.imageSmoothingEnabled = true;
+		context.imageSmoothingQuality = 'high';
+
+		canvas.width = 450 * 2;
+		canvas.height = 675 * 2;
+
+		const img = new window.Image();
+		img.onload = () => {
+			context.drawImage(img, 0, 0, canvas.width, canvas.height);
+		};
+		img.src = currentTheme;
+	}, [currentTheme]);
+
 	const startCountdownAndCapture = async (index: number) => {
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
 				video: {
-					width: { ideal: 1280 },
-					height: { ideal: 720 },
+					width: { ideal: 1920 },
+					height: { ideal: 1080 },
 					facingMode: 'user',
 				},
 			});
+
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream;
 				videoRef.current.play();
@@ -71,117 +70,230 @@ const IngPhotoPageContainer = () => {
 			}, 1000);
 		} catch (error) {
 			console.error('Error accessing camera:', error);
+			alert(
+				'Failed to access camera. Please make sure you have given camera permission.'
+			);
 		}
 	};
 
-	// 사진 캡처 후 메인 캔버스에 그림
 	const capturePhoto = (index: number) => {
 		const video = videoRef.current;
 		const canvas = document.createElement('canvas');
-		const context = canvas.getContext('2d');
-		if (context && video) {
-			const { width, height } = photoPositions[index];
-			canvas.width = width;
-			canvas.height = height;
+		const context = canvas.getContext('2d', { alpha: false });
+		if (!context || !video) return;
 
-			let captureWidth = video.videoHeight * (width / height);
-			let captureHeight = video.videoHeight;
+		// 캔버스 컨텍스트 초기화 설정
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.imageSmoothingEnabled = true;
+		context.imageSmoothingQuality = 'high';
 
-			if (captureWidth > video.videoWidth) {
-				captureWidth = video.videoWidth;
-				captureHeight = video.videoWidth / (width / height);
-			}
+		const { width, height } = photoPositions[index];
+		canvas.width = width * 2;
+		canvas.height = height * 2;
 
-			const captureX = (video.videoWidth - captureWidth) / 2;
-			const captureY = (video.videoHeight - captureHeight) / 2;
+		let captureWidth = video.videoHeight * (width / height);
+		let captureHeight = video.videoHeight;
 
-			// 사진에만 필터 적용
-			context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-			context.drawImage(
-				video,
-				captureX,
-				captureY,
-				captureWidth,
-				captureHeight,
-				0,
-				0,
-				width,
-				height
-			);
-
-			const photo = canvas.toDataURL('image/png');
-			const newPhotos = [...photos];
-			newPhotos[index] = photo;
-			setPhotos(newPhotos);
-
-			// 비디오 스트림 종료
-			const stream = video.srcObject as MediaStream;
-			stream.getTracks().forEach((track) => track.stop());
-			video.srcObject = null;
-			setIsCapturing(null);
-
-			// 사진을 메인 캔버스에 그릴 때도 필터 적용
-			const mainCanvas = canvasRef.current;
-			const mainContext = mainCanvas?.getContext('2d');
-			if (mainCanvas && mainContext) {
-				const img = new window.Image();
-				img.onload = () => {
-					const { top, left, width, height } = photoPositions[index];
-					// 사진 그릴 때만 필터 적용
-					mainContext.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-					mainContext.drawImage(img, left, top, width, height);
-				};
-				img.src = photo;
-			}
+		if (captureWidth > video.videoWidth) {
+			captureWidth = video.videoWidth;
+			captureHeight = video.videoWidth / (width / height);
 		}
-	};
 
-	// 다운로드 기능
-	const handleDownload = () => {
-		const canvas = canvasRef.current;
-		const context = canvas?.getContext('2d');
-		if (canvas && context) {
+		const captureX = (video.videoWidth - captureWidth) / 2;
+		const captureY = (video.videoHeight - captureHeight) / 2;
+
+		context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+		context.drawImage(
+			video,
+			captureX,
+			captureY,
+			captureWidth,
+			captureHeight,
+			0,
+			0,
+			canvas.width,
+			canvas.height
+		);
+
+		const photo = canvas.toDataURL('image/png', 1.0);
+		const newPhotos = [...photos];
+		newPhotos[index] = photo;
+		setPhotos(newPhotos);
+
+		const stream = video.srcObject as MediaStream;
+		stream.getTracks().forEach((track) => track.stop());
+		video.srcObject = null;
+		setIsCapturing(null);
+
+		const mainCanvas = canvasRef.current;
+		const mainContext = mainCanvas?.getContext('2d', { alpha: false });
+		if (mainCanvas && mainContext) {
 			const img = new window.Image();
-			img.src = '/images/photo-pink.png';
-
 			img.onload = () => {
-				// 배경 이미지를 그릴 때 필터를 적용하지 않음
-				context.filter = 'none'; // 필터 초기화
-				context.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-				// 각 사진에만 필터 적용
-				photos.forEach((photo, index) => {
-					if (photo) {
-						const img = new window.Image();
-						img.src = photo;
-						img.onload = () => {
-							const { top, left, width, height } = photoPositions[index];
-							// 필터 적용 (사진에만 적용)
-							context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-							context.drawImage(img, left, top, width, height);
-						};
-					}
-				});
-
-				// 다운로드
-				setTimeout(() => {
-					const link = document.createElement('a');
-					link.href = canvas.toDataURL('image/png');
-					link.download = 'combined-image.png';
-					link.click();
-				}, 500);
+				const { top, left, width, height } = photoPositions[index];
+				mainContext.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+				mainContext.drawImage(img, left * 2, top * 2, width * 2, height * 2);
 			};
+			img.src = photo;
 		}
 	};
 
-	// 사진 촬영 핸들러
 	const handleTakePhoto = (index: number) => {
 		if (photos[index]) {
-			const confirmRetake = window.confirm('Do you want to retake the photo?');
+			const confirmRetake = window.confirm('Do you want to retake this photo?');
 			if (!confirmRetake) return;
 		}
 		setIsCapturing(index);
 		startCountdownAndCapture(index);
+	};
+
+	const handleDownload = async () => {
+		const canvas = canvasRef.current;
+		const context = canvas?.getContext('2d', { alpha: false });
+
+		if (!canvas || !context) return;
+
+		try {
+			// 캔버스 초기화
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			// 배경 이미지 로드 및 그리기를 Promise로 래핑
+			await new Promise((resolve, reject) => {
+				const bgImg = new Image();
+				bgImg.onload = () => {
+					context.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+					resolve(true);
+				};
+				bgImg.onerror = reject;
+				bgImg.src = currentTheme;
+			});
+
+			// 모든 사진 로드 및 그리기를 Promise 배열로 처리
+			const photoPromises = photos.map((photo, index) => {
+				if (!photo) return Promise.resolve();
+
+				return new Promise((resolve, reject) => {
+					const img = new Image();
+					img.onload = () => {
+						const { top, left, width, height } = photoPositions[index];
+						context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
+						resolve(true);
+					};
+					img.onerror = reject;
+					img.src = photo;
+				});
+			});
+
+			// 모든 사진이 로드될 때까지 대기
+			await Promise.all(photoPromises);
+
+			// 날짜 추가
+			const today = new Date().toLocaleDateString('ko-KR', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+			});
+
+			context.font = 'bold 20px Arial';
+			context.fillStyle = 'black';
+			context.textAlign = 'right';
+			context.fillText(today, canvas.width - 32, canvas.height - 30);
+
+			// 다운로드
+			const link = document.createElement('a');
+			link.download = `photo-booth-${new Date().toISOString()}.png`;
+			link.href = canvas.toDataURL('image/png', 1.0);
+			link.click();
+		} catch (error) {
+			console.error('Error during download:', error);
+			alert('Failed to download image. Please try again.');
+		}
+	};
+
+	const handleShare = async () => {
+		const canvas = canvasRef.current;
+		const context = canvas?.getContext('2d', { alpha: false });
+		if (!canvas || !context) return;
+
+		try {
+			setIsSharing(true);
+
+			// 캔버스 초기화
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			// 배경 이미지 로드 및 그리기
+			await new Promise((resolve, reject) => {
+				const bgImg = new Image();
+				bgImg.onload = () => {
+					context.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+					resolve(true);
+				};
+				bgImg.onerror = reject;
+				bgImg.src = currentTheme;
+			});
+
+			// 사진 로드 및 그리기
+			const photoPromises = photos.map((photo, index) => {
+				if (!photo) return Promise.resolve();
+
+				return new Promise((resolve, reject) => {
+					const img = new Image();
+					img.onload = () => {
+						const { top, left, width, height } = photoPositions[index];
+						context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
+						resolve(true);
+					};
+					img.onerror = reject;
+					img.src = photo;
+				});
+			});
+
+			await Promise.all(photoPromises);
+
+			// 날짜 추가
+			const today = new Date().toLocaleDateString('ko-KR', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+			});
+
+			context.font = 'bold 20px Arial';
+			context.fillStyle = 'black';
+			context.textAlign = 'right';
+			context.fillText(today, canvas.width - 32, canvas.height - 30);
+
+			// 캔버스를 Blob으로 변환
+			const blob = await new Promise<Blob>((resolve) => {
+				canvas.toBlob(
+					(blob) => {
+						if (blob) resolve(blob);
+					},
+					'image/png',
+					1.0
+				);
+			});
+
+			const file = new File([blob], 'photo-booth.png', { type: 'image/png' });
+
+			if (navigator.share) {
+				await navigator.share({
+					files: [file],
+					title: 'Photo Booth Picture',
+					text: 'Check out my photo booth pictures!',
+				});
+			} else {
+				const clipboardItem = new ClipboardItem({ 'image/png': blob });
+				await navigator.clipboard.write([clipboardItem]);
+				alert('Image copied to clipboard!');
+			}
+		} catch (error) {
+			console.error('Error sharing:', error);
+			alert('Failed to share image. Please try again.');
+		} finally {
+			setIsSharing(false);
+		}
 	};
 
 	return (
@@ -195,8 +307,13 @@ const IngPhotoPageContainer = () => {
 			isGrayscale={isGrayscale}
 			handleTakePhoto={handleTakePhoto}
 			handleDownload={handleDownload}
+			handleShare={handleShare}
 			setBrightness={setBrightness}
 			setIsGrayscale={setIsGrayscale}
+			currentTheme={currentTheme}
+			setCurrentTheme={setCurrentTheme}
+			isSharing={isSharing}
+			themes={themes}
 		/>
 	);
 };
