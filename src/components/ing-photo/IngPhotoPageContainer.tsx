@@ -11,6 +11,13 @@ const IngPhotoPageContainer = () => {
 		null,
 		null,
 	]);
+	// 원본 사진들을 저장할 state 추가
+	const [originalPhotos, setOriginalPhotos] = useState<(string | null)[]>([
+		null,
+		null,
+		null,
+		null,
+	]);
 	const [currentTheme, setCurrentTheme] = useState(
 		'/images/ing-photo/theme-mint.png'
 	);
@@ -24,24 +31,132 @@ const IngPhotoPageContainer = () => {
 	});
 	const [isSharing, setIsSharing] = useState(false);
 
-	const getFilterStyle = (brightness: number, isGrayscale: boolean) => {
-		const filters = [];
-		if (brightness !== 100) filters.push(`brightness(${brightness}%)`);
-		if (isGrayscale) filters.push('grayscale(100%)');
-		return filters.length > 0 ? filters.join(' ') : 'none';
+	const applyFilters = (
+		sourceContext: CanvasRenderingContext2D,
+		brightness: number,
+		isGrayscale: boolean
+	) => {
+		const imageData = sourceContext.getImageData(
+			0,
+			0,
+			sourceContext.canvas.width,
+			sourceContext.canvas.height
+		);
+		const data = imageData.data;
+
+		for (let i = 0; i < data.length; i += 4) {
+			// 밝기 조정
+			if (brightness !== 100) {
+				const factor = brightness / 100;
+				data[i] = Math.min(255, data[i] * factor); // Red
+				data[i + 1] = Math.min(255, data[i + 1] * factor); // Green
+				data[i + 2] = Math.min(255, data[i + 2] * factor); // Blue
+			}
+
+			// 흑백 변환
+			if (isGrayscale) {
+				const gray =
+					data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+				data[i] = gray; // Red
+				data[i + 1] = gray; // Green
+				data[i + 2] = gray; // Blue
+			}
+		}
+
+		sourceContext.putImageData(imageData, 0, 0);
+	};
+
+	// 필터가 적용된 이미지 생성
+	const createFilteredImage = async (
+		originalImage: string,
+		width: number,
+		height: number,
+		filterOptions: FilterOptions
+	): Promise<string> => {
+		const tempCanvas = document.createElement('canvas');
+		tempCanvas.width = width;
+		tempCanvas.height = height;
+		const tempContext = tempCanvas.getContext('2d', { alpha: false });
+
+		if (!tempContext) {
+			throw new Error('Failed to get context');
+		}
+
+		return new Promise((resolve, reject) => {
+			const img = new Image();
+			img.onload = () => {
+				tempContext.drawImage(img, 0, 0, width, height);
+				if (filterOptions.brightness !== 100 || filterOptions.isGrayscale) {
+					applyFilters(
+						tempContext,
+						filterOptions.brightness,
+						filterOptions.isGrayscale
+					);
+				}
+				resolve(tempCanvas.toDataURL('image/png', 1.0));
+			};
+			img.onerror = reject;
+			img.src = originalImage;
+		});
+	};
+
+	// 모든 사진에 필터 적용
+	const updateAllPhotos = async (options: FilterOptions) => {
+		const updatedPhotos = await Promise.all(
+			originalPhotos.map(async (photo, index) => {
+				if (!photo) return null;
+				const { width, height } = photoPositions[index];
+				return createFilteredImage(photo, width * 2, height * 2, options);
+			})
+		);
+		setPhotos(updatedPhotos);
+	};
+
+	const processAndDrawImage = async (
+		context: CanvasRenderingContext2D,
+		img: HTMLImageElement,
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		filterOptions: FilterOptions
+	) => {
+		// 임시 캔버스 생성
+		const tempCanvas = document.createElement('canvas');
+		tempCanvas.width = width;
+		tempCanvas.height = height;
+		const tempContext = tempCanvas.getContext('2d', { alpha: false });
+
+		if (!tempContext) return;
+
+		// 이미지를 임시 캔버스에 그리기
+		tempContext.drawImage(img, 0, 0, width, height);
+
+		// 필터 적용
+		if (filterOptions.brightness !== 100 || filterOptions.isGrayscale) {
+			applyFilters(
+				tempContext,
+				filterOptions.brightness,
+				filterOptions.isGrayscale
+			);
+		}
+
+		// 필터가 적용된 이미지를 최종 캔버스에 그리기
+		context.drawImage(tempCanvas, x, y);
 	};
 
 	const renderToCanvas = async (
 		context: CanvasRenderingContext2D,
-		shouldApplyFilter = true
+		photos: (string | null)[],
+		currentTheme: string,
+		filterOptions: FilterOptions
 	) => {
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
 		// Draw theme
-		const themeImg = new Image();
-		await new Promise((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
+			const themeImg = new Image();
 			themeImg.onload = () => {
-				context.filter = 'none';
 				context.drawImage(
 					themeImg,
 					0,
@@ -49,37 +164,39 @@ const IngPhotoPageContainer = () => {
 					context.canvas.width,
 					context.canvas.height
 				);
-				resolve(true);
+				resolve();
 			};
 			themeImg.onerror = reject;
 			themeImg.src = currentTheme;
 		});
 
 		// Draw photos with filters
-		if (shouldApplyFilter) {
-			for (let i = 0; i < photos.length; i++) {
-				const photo = photos[i];
-				if (!photo) continue;
+		await Promise.all(
+			photos.map((photo, index) => {
+				if (!photo) return Promise.resolve();
 
-				await new Promise((resolve, reject) => {
+				return new Promise<void>((resolve, reject) => {
 					const img = new Image();
-					img.onload = () => {
-						const { top, left, width, height } = photoPositions[i];
-						context.filter = getFilterStyle(
-							filterOptions.brightness,
-							filterOptions.isGrayscale
+					img.onload = async () => {
+						const { top, left, width, height } = photoPositions[index];
+						await processAndDrawImage(
+							context,
+							img,
+							left * 2,
+							top * 2,
+							width * 2,
+							height * 2,
+							filterOptions
 						);
-						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
-						resolve(true);
+						resolve();
 					};
 					img.onerror = reject;
 					img.src = photo;
 				});
-			}
-		}
+			})
+		);
 
 		// Draw date
-		context.filter = 'none';
 		const today = new Date().toLocaleDateString('ko-KR', {
 			year: 'numeric',
 			month: '2-digit',
@@ -95,6 +212,24 @@ const IngPhotoPageContainer = () => {
 		);
 	};
 
+	const createExportCanvas = async () => {
+		const exportCanvas = document.createElement('canvas');
+		exportCanvas.width = 450 * 2;
+		exportCanvas.height = 675 * 2;
+		const exportContext = exportCanvas.getContext('2d', { alpha: false });
+
+		if (!exportContext) {
+			throw new Error('Failed to get export canvas context');
+		}
+
+		exportContext.imageSmoothingEnabled = true;
+		exportContext.imageSmoothingQuality = 'high';
+
+		await renderToCanvas(exportContext, photos, currentTheme, filterOptions);
+
+		return exportCanvas;
+	};
+
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
@@ -108,7 +243,7 @@ const IngPhotoPageContainer = () => {
 		canvas.width = 450 * 2;
 		canvas.height = 675 * 2;
 
-		renderToCanvas(context);
+		renderToCanvas(context, photos, currentTheme, filterOptions);
 	}, [currentTheme, photos, filterOptions]);
 
 	const handleTakePhoto = (index: number) => {
@@ -155,7 +290,7 @@ const IngPhotoPageContainer = () => {
 		}
 	};
 
-	const capturePhoto = (index: number) => {
+	const capturePhoto = async (index: number) => {
 		const video = videoRef.current;
 		const canvas = document.createElement('canvas');
 		const context = canvas.getContext('2d', { alpha: false });
@@ -179,10 +314,7 @@ const IngPhotoPageContainer = () => {
 		const captureX = (video.videoWidth - captureWidth) / 2;
 		const captureY = (video.videoHeight - captureHeight) / 2;
 
-		context.filter = getFilterStyle(
-			filterOptions.brightness,
-			filterOptions.isGrayscale
-		);
+		// 원본 이미지 캡처
 		context.drawImage(
 			video,
 			captureX,
@@ -195,9 +327,21 @@ const IngPhotoPageContainer = () => {
 			canvas.height
 		);
 
-		const photo = canvas.toDataURL('image/png', 1.0);
+		// 원본 이미지 저장
+		const originalPhoto = canvas.toDataURL('image/png', 1.0);
+		const newOriginalPhotos = [...originalPhotos];
+		newOriginalPhotos[index] = originalPhoto;
+		setOriginalPhotos(newOriginalPhotos);
+
+		// 필터 적용된 이미지 생성 및 저장
+		const filteredPhoto = await createFilteredImage(
+			originalPhoto,
+			width * 2,
+			height * 2,
+			filterOptions
+		);
 		const newPhotos = [...photos];
-		newPhotos[index] = photo;
+		newPhotos[index] = filteredPhoto;
 		setPhotos(newPhotos);
 
 		const stream = video.srcObject as MediaStream;
@@ -207,15 +351,12 @@ const IngPhotoPageContainer = () => {
 	};
 
 	const handleDownload = async () => {
-		const canvas = canvasRef.current;
-		const context = canvas?.getContext('2d', { alpha: false });
-		if (!canvas || !context) return;
-
 		try {
-			await renderToCanvas(context);
+			const exportCanvas = await createExportCanvas();
+
 			const link = document.createElement('a');
 			link.download = `photo-booth-${new Date().toISOString()}.png`;
-			link.href = canvas.toDataURL('image/png', 1.0);
+			link.href = exportCanvas.toDataURL('image/png', 1.0);
 			link.click();
 		} catch (error) {
 			console.error('Error during download:', error);
@@ -224,23 +365,14 @@ const IngPhotoPageContainer = () => {
 	};
 
 	const handleShare = async () => {
-		const canvas = canvasRef.current;
-		const context = canvas?.getContext('2d', { alpha: false });
-		if (!canvas || !context) return;
-
 		try {
 			setIsSharing(true);
-			await renderToCanvas(context);
 
-			const blob = await new Promise<Blob>((resolve) => {
-				canvas.toBlob(
-					(blob) => {
-						if (blob) resolve(blob);
-					},
-					'image/png',
-					1.0
-				);
-			});
+			const exportCanvas = await createExportCanvas();
+
+			const blob = await new Promise<Blob>((resolve) =>
+				exportCanvas.toBlob((blob) => blob && resolve(blob), 'image/png', 1.0)
+			);
 
 			const file = new File([blob], 'photo-booth.png', { type: 'image/png' });
 
@@ -263,11 +395,10 @@ const IngPhotoPageContainer = () => {
 		}
 	};
 
-	const handleSetFilterOptions = (options: Partial<FilterOptions>) => {
-		setFilterOptions((prev) => ({
-			...prev,
-			...options,
-		}));
+	const handleSetFilterOptions = async (options: Partial<FilterOptions>) => {
+		const newOptions = { ...filterOptions, ...options };
+		setFilterOptions(newOptions);
+		await updateAllPhotos(newOptions);
 	};
 
 	return (

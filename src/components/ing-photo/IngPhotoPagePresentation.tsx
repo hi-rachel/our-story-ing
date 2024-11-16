@@ -49,21 +49,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	const hasPhotos = photos.some((photo) => photo !== null);
 
-	const getFilterStyle = () => {
-		const filters = [];
-		if (filterOptions.brightness !== 100) {
-			filters.push(`brightness(${filterOptions.brightness}%)`);
-		}
-		if (filterOptions.isGrayscale) filters.push('grayscale(100%)');
-		return filters.length > 0 ? filters.join(' ') : 'none';
-	};
-
 	const renderPhotoArea = (index: number) => {
-		const filterStyle = {
-			filter: getFilterStyle(),
-			WebkitFilter: getFilterStyle(),
-		};
-
 		if (isCapturing === index) {
 			return (
 				<div className='relative w-full h-full'>
@@ -72,7 +58,6 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 						autoPlay
 						playsInline
 						className='w-full h-full object-cover'
-						style={filterStyle}
 					/>
 					{countdown !== null && (
 						<div className='absolute inset-0 flex items-center justify-center bg-black/30'>
@@ -91,7 +76,6 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 					src={photos[index] as string}
 					alt={`Captured photo ${index + 1}`}
 					className='w-full h-full object-cover'
-					style={filterStyle}
 				/>
 			);
 		}
