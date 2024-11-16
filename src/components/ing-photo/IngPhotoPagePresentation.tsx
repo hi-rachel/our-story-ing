@@ -3,9 +3,10 @@ import Image from 'next/image';
 import { TiCamera } from 'react-icons/ti';
 import { TbFileDownload, TbCameraShare, TbLoader } from 'react-icons/tb';
 import { photoPositions } from '@/constants/photoPositions';
-import type { Theme } from '@/types/theme';
 import PhotoBoothInfo from './PhotoBoothInfo';
 import BackButton from '../common/button/BackButton';
+import type { Theme } from './types';
+import type { FilterOptions } from './types';
 
 interface IngPhotoPagePresentationProps {
 	videoRef: React.RefObject<HTMLVideoElement>;
@@ -13,13 +14,11 @@ interface IngPhotoPagePresentationProps {
 	photos: (string | null)[];
 	isCapturing: number | null;
 	countdown: number | null;
-	brightness: number;
-	isGrayscale: boolean;
+	filterOptions: FilterOptions;
 	handleTakePhoto: (index: number) => void;
 	handleDownload: () => void;
 	handleShare: () => Promise<void>;
-	setBrightness: (value: number) => void;
-	setIsGrayscale: (value: boolean) => void;
+	setFilterOptions: (options: Partial<FilterOptions>) => void;
 	currentTheme: string;
 	setCurrentTheme: (theme: string) => void;
 	isSharing: boolean;
@@ -32,13 +31,11 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 	photos,
 	isCapturing,
 	countdown,
-	brightness,
-	isGrayscale,
+	filterOptions,
 	handleTakePhoto,
 	handleDownload,
 	handleShare,
-	setBrightness,
-	setIsGrayscale,
+	setFilterOptions,
 	currentTheme,
 	setCurrentTheme,
 	isSharing,
@@ -52,17 +49,65 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	const hasPhotos = photos.some((photo) => photo !== null);
 
-	// 필터 스타일을 계산하는 함수
 	const getFilterStyle = () => {
 		const filters = [];
-		if (brightness !== 100) filters.push(`brightness(${brightness}%)`);
-		if (isGrayscale) filters.push('grayscale(100%)');
+		if (filterOptions.brightness !== 100) {
+			filters.push(`brightness(${filterOptions.brightness}%)`);
+		}
+		if (filterOptions.isGrayscale) filters.push('grayscale(100%)');
 		return filters.length > 0 ? filters.join(' ') : 'none';
+	};
+
+	const renderPhotoArea = (index: number) => {
+		const filterStyle = {
+			filter: getFilterStyle(),
+			WebkitFilter: getFilterStyle(),
+		};
+
+		if (isCapturing === index) {
+			return (
+				<div className='relative w-full h-full'>
+					<video
+						ref={videoRef}
+						autoPlay
+						playsInline
+						className='w-full h-full object-cover'
+						style={filterStyle}
+					/>
+					{countdown !== null && (
+						<div className='absolute inset-0 flex items-center justify-center bg-black/30'>
+							<span className='text-white text-5xl md:text-6xl font-bold'>
+								{countdown}
+							</span>
+						</div>
+					)}
+				</div>
+			);
+		}
+
+		if (photos[index]) {
+			return (
+				<img
+					src={photos[index] as string}
+					alt={`Captured photo ${index + 1}`}
+					className='w-full h-full object-cover'
+					style={filterStyle}
+				/>
+			);
+		}
+
+		return (
+			<div className='flex justify-center items-center w-full h-full bg-gray-100/80 hover:bg-gray-200/80 transition-colors backdrop-blur-sm'>
+				<TiCamera
+					className='text-gray-400 transition-transform group-hover:scale-110'
+					size={40}
+				/>
+			</div>
+		);
 	};
 
 	return (
 		<div className='min-h-screen bg-slate-50'>
-			{/* 상단 네비게이션 영역 */}
 			<div className='sticky top-0 z-50 bg-slate-50/80 backdrop-blur-sm border-b border-slate-100'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='relative flex items-center justify-between h-14 px-2 md:px-6'>
@@ -78,10 +123,8 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 				</div>
 			</div>
 
-			{/* 메인 컨테이너 */}
 			<div className='max-w-7xl mx-auto p-4 md:p-8 pt-6 lg:min-h-[calc(100vh-3.5rem)] lg:flex lg:items-center lg:justify-center'>
 				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8'>
-					{/* 포토 프레임 */}
 					<div className='relative w-full max-w-[450px] mx-auto lg:mx-0'>
 						<div className='relative overflow-hidden shadow-xl'>
 							<Image
@@ -95,73 +138,28 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 								className='w-full h-auto'
 							/>
 
-							{/* 사진 촬영 영역 */}
-							{photoPositions.map((position, index) => {
-								const relativePosition = {
-									top: `${(position.top / 675) * 100}%`,
-									left: `${(position.left / 450) * 100}%`,
-									width: `${(position.width / 450) * 100}%`,
-									height: `${(position.height / 675) * 100}%`,
-								};
+							{photoPositions.map((position, index) => (
+								<div
+									key={index}
+									className='absolute cursor-pointer hover:opacity-90 transition-opacity overflow-hidden'
+									style={{
+										top: `${(position.top / 675) * 100}%`,
+										left: `${(position.left / 450) * 100}%`,
+										width: `${(position.width / 450) * 100}%`,
+										height: `${(position.height / 675) * 100}%`,
+									}}
+									onClick={() => handleTakePhoto(index)}>
+									{renderPhotoArea(index)}
+								</div>
+							))}
 
-								return (
-									<div
-										key={index}
-										className='absolute cursor-pointer hover:opacity-90 transition-opacity overflow-hidden'
-										style={relativePosition}
-										onClick={() => handleTakePhoto(index)}>
-										{isCapturing === index ? (
-											<div className='relative w-full h-full'>
-												<video
-													ref={videoRef}
-													autoPlay
-													playsInline // 모바일 지원을 위해 추가
-													className='w-full h-full object-cover'
-													style={{
-														filter: getFilterStyle(),
-														WebkitFilter: getFilterStyle(), // Safari 지원을 위해 추가
-													}}
-												/>
-												{countdown !== null && (
-													<div className='absolute inset-0 flex items-center justify-center bg-black/30'>
-														<span className='text-white text-5xl md:text-6xl font-bold'>
-															{countdown}
-														</span>
-													</div>
-												)}
-											</div>
-										) : photos[index] ? (
-											<img
-												src={photos[index] as string}
-												alt={`Captured photo ${index + 1}`}
-												className='w-full h-full object-cover'
-												style={{
-													filter: getFilterStyle(),
-													WebkitFilter: getFilterStyle(), // Safari 지원을 위해 추가
-												}}
-											/>
-										) : (
-											<div className='flex justify-center items-center w-full h-full bg-gray-100/80 hover:bg-gray-200/80 transition-colors backdrop-blur-sm'>
-												<TiCamera
-													className='text-gray-400 transition-transform group-hover:scale-110'
-													size={40}
-												/>
-											</div>
-										)}
-									</div>
-								);
-							})}
-
-							{/* 날짜 표시 */}
 							<div className='absolute bottom-2 right-4 text-black text-xs font-medium'>
 								{today}
 							</div>
 						</div>
 					</div>
 
-					{/* 컨트롤 패널 */}
 					<div className='flex flex-col gap-4 lg:gap-6 lg:w-80'>
-						{/* 테마 선택 */}
 						<div className='bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-5'>
 							<h3 className='text-sm font-bold text-gray-900 mb-4'>
 								테마 선택
@@ -182,13 +180,11 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 							</div>
 						</div>
 
-						{/* 이미지 조정 */}
 						<div className='bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-5'>
 							<h3 className='text-sm font-bold text-gray-900 mb-4'>
 								이미지 조정
 							</h3>
 
-							{/* 밝기 조절 */}
 							<div className='mb-5'>
 								<label className='font-medium text-xs text-gray-600 mb-2 block'>
 									밝기
@@ -197,8 +193,10 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 									type='range'
 									min='50'
 									max='150'
-									value={brightness}
-									onChange={(e) => setBrightness(Number(e.target.value))}
+									value={filterOptions.brightness}
+									onChange={(e) =>
+										setFilterOptions({ brightness: Number(e.target.value) })
+									}
 									className='w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer 
                     [&::-webkit-slider-thumb]:appearance-none 
                     [&::-webkit-slider-thumb]:w-4 
@@ -210,7 +208,6 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 								/>
 							</div>
 
-							{/* 흑백 토글 */}
 							<div className='flex items-center justify-between'>
 								<label className='font-medium text-xs text-gray-600'>
 									흑백
@@ -218,36 +215,17 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 								<label className='relative inline-flex items-center cursor-pointer'>
 									<input
 										type='checkbox'
-										checked={isGrayscale}
-										onChange={(e) => setIsGrayscale(e.target.checked)}
+										checked={filterOptions.isGrayscale}
+										onChange={(e) =>
+											setFilterOptions({ isGrayscale: e.target.checked })
+										}
 										className='sr-only peer'
 									/>
-									<div
-										className="w-11 h-6 bg-gray-100 
-                    peer-focus:outline-none 
-                    peer-focus:ring-4 
-                    peer-focus:ring-blue-100 
-                    rounded-full peer 
-                    peer-checked:after:translate-x-full 
-                    peer-checked:after:border-white 
-                    after:content-[''] 
-                    after:absolute 
-                    after:top-[2px] 
-                    after:left-[2px] 
-                    after:bg-white 
-                    after:border-gray-300 
-                    after:border 
-                    after:rounded-full 
-                    after:h-5 
-                    after:w-5 
-                    after:transition-all
-                    after:shadow-sm
-                    peer-checked:bg-blue-500"></div>
+									<div className='w-11 h-6 bg-gray-100 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[""] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:bg-blue-500'></div>
 								</label>
 							</div>
 						</div>
 
-						{/* 다운로드 및 공유 버튼 */}
 						<div className='flex gap-3'>
 							<button
 								onClick={handleDownload}
@@ -273,7 +251,6 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 						</div>
 					</div>
 
-					{/* 숨겨진 캔버스 */}
 					<canvas
 						ref={canvasRef}
 						width={450}

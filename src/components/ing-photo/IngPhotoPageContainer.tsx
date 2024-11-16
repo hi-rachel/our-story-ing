@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import IngPhotoPagePresentation from './IngPhotoPagePresentation';
 import { photoPositions } from '@/constants/photoPositions';
 import { themes } from '@/constants/themes';
+import type { FilterOptions } from './types';
 
 const IngPhotoPageContainer = () => {
 	const [photos, setPhotos] = useState<(string | null)[]>([
@@ -17,57 +18,73 @@ const IngPhotoPageContainer = () => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const [isCapturing, setIsCapturing] = useState<number | null>(null);
 	const [countdown, setCountdown] = useState<number | null>(null);
-	const [brightness, setBrightness] = useState<number>(100);
-	const [isGrayscale, setIsGrayscale] = useState<boolean>(false);
+	const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+		brightness: 100,
+		isGrayscale: false,
+	});
 	const [isSharing, setIsSharing] = useState(false);
 
-	const drawTheme = (context: CanvasRenderingContext2D) => {
-		return new Promise<void>((resolve, reject) => {
-			const img = new window.Image();
-			img.onload = () => {
-				context.filter = 'none'; // 테마에는 필터를 적용하지 않음
+	const getFilterStyle = (brightness: number, isGrayscale: boolean) => {
+		const filters = [];
+		if (brightness !== 100) filters.push(`brightness(${brightness}%)`);
+		if (isGrayscale) filters.push('grayscale(100%)');
+		return filters.length > 0 ? filters.join(' ') : 'none';
+	};
+
+	const renderToCanvas = async (
+		context: CanvasRenderingContext2D,
+		shouldApplyFilter = true
+	) => {
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
+		// Draw theme
+		const themeImg = new Image();
+		await new Promise((resolve, reject) => {
+			themeImg.onload = () => {
+				context.filter = 'none';
 				context.drawImage(
-					img,
+					themeImg,
 					0,
 					0,
 					context.canvas.width,
 					context.canvas.height
 				);
-				resolve();
+				resolve(true);
 			};
-			img.onerror = reject;
-			img.src = currentTheme;
-		});
-	};
-
-	const drawPhotos = (context: CanvasRenderingContext2D) => {
-		const promises = photos.map((photo, index) => {
-			if (!photo) return Promise.resolve();
-
-			return new Promise<void>((resolve, reject) => {
-				const img = new window.Image();
-				img.onload = () => {
-					const { top, left, width, height } = photoPositions[index];
-					context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-					context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
-					resolve();
-				};
-				img.onerror = reject;
-				img.src = photo;
-			});
+			themeImg.onerror = reject;
+			themeImg.src = currentTheme;
 		});
 
-		return Promise.all(promises);
-	};
+		// Draw photos with filters
+		if (shouldApplyFilter) {
+			for (let i = 0; i < photos.length; i++) {
+				const photo = photos[i];
+				if (!photo) continue;
 
-	const drawDate = (context: CanvasRenderingContext2D) => {
+				await new Promise((resolve, reject) => {
+					const img = new Image();
+					img.onload = () => {
+						const { top, left, width, height } = photoPositions[i];
+						context.filter = getFilterStyle(
+							filterOptions.brightness,
+							filterOptions.isGrayscale
+						);
+						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
+						resolve(true);
+					};
+					img.onerror = reject;
+					img.src = photo;
+				});
+			}
+		}
+
+		// Draw date
+		context.filter = 'none';
 		const today = new Date().toLocaleDateString('ko-KR', {
 			year: 'numeric',
 			month: '2-digit',
 			day: '2-digit',
 		});
-
-		context.filter = 'none'; // 날짜에는 필터를 적용하지 않음
 		context.font = 'bold 20px Arial';
 		context.fillStyle = 'black';
 		context.textAlign = 'right';
@@ -91,15 +108,17 @@ const IngPhotoPageContainer = () => {
 		canvas.width = 450 * 2;
 		canvas.height = 675 * 2;
 
-		const updateCanvas = async () => {
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			await drawTheme(context);
-			await drawPhotos(context);
-			drawDate(context);
-		};
+		renderToCanvas(context);
+	}, [currentTheme, photos, filterOptions]);
 
-		updateCanvas();
-	}, [currentTheme, photos, brightness, isGrayscale]);
+	const handleTakePhoto = (index: number) => {
+		if (photos[index]) {
+			const confirmRetake = window.confirm('Do you want to retake this photo?');
+			if (!confirmRetake) return;
+		}
+		setIsCapturing(index);
+		startCountdownAndCapture(index);
+	};
 
 	const startCountdownAndCapture = async (index: number) => {
 		try {
@@ -142,14 +161,12 @@ const IngPhotoPageContainer = () => {
 		const context = canvas.getContext('2d', { alpha: false });
 		if (!context || !video) return;
 
-		// 캔버스 컨텍스트 초기화 설정
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.imageSmoothingEnabled = true;
-		context.imageSmoothingQuality = 'high';
-
 		const { width, height } = photoPositions[index];
 		canvas.width = width * 2;
 		canvas.height = height * 2;
+
+		context.imageSmoothingEnabled = true;
+		context.imageSmoothingQuality = 'high';
 
 		let captureWidth = video.videoHeight * (width / height);
 		let captureHeight = video.videoHeight;
@@ -162,7 +179,10 @@ const IngPhotoPageContainer = () => {
 		const captureX = (video.videoWidth - captureWidth) / 2;
 		const captureY = (video.videoHeight - captureHeight) / 2;
 
-		context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+		context.filter = getFilterStyle(
+			filterOptions.brightness,
+			filterOptions.isGrayscale
+		);
 		context.drawImage(
 			video,
 			captureX,
@@ -184,83 +204,15 @@ const IngPhotoPageContainer = () => {
 		stream.getTracks().forEach((track) => track.stop());
 		video.srcObject = null;
 		setIsCapturing(null);
-
-		const mainCanvas = canvasRef.current;
-		const mainContext = mainCanvas?.getContext('2d', { alpha: false });
-		if (mainCanvas && mainContext) {
-			const img = new window.Image();
-			img.onload = () => {
-				const { top, left, width, height } = photoPositions[index];
-				mainContext.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-				mainContext.drawImage(img, left * 2, top * 2, width * 2, height * 2);
-			};
-			img.src = photo;
-		}
-	};
-
-	const handleTakePhoto = (index: number) => {
-		if (photos[index]) {
-			const confirmRetake = window.confirm('Do you want to retake this photo?');
-			if (!confirmRetake) return;
-		}
-		setIsCapturing(index);
-		startCountdownAndCapture(index);
 	};
 
 	const handleDownload = async () => {
 		const canvas = canvasRef.current;
 		const context = canvas?.getContext('2d', { alpha: false });
-
 		if (!canvas || !context) return;
 
 		try {
-			// 캔버스 초기화
-			context.clearRect(0, 0, canvas.width, canvas.height);
-
-			// 배경 이미지 로드 및 그리기를 Promise로 래핑
-			await new Promise((resolve, reject) => {
-				const bgImg = new Image();
-				bgImg.onload = () => {
-					context.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-					resolve(true);
-				};
-				bgImg.onerror = reject;
-				bgImg.src = currentTheme;
-			});
-
-			// 모든 사진 로드 및 그리기를 Promise 배열로 처리
-			const photoPromises = photos.map((photo, index) => {
-				if (!photo) return Promise.resolve();
-
-				return new Promise((resolve, reject) => {
-					const img = new Image();
-					img.onload = () => {
-						const { top, left, width, height } = photoPositions[index];
-						context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
-						resolve(true);
-					};
-					img.onerror = reject;
-					img.src = photo;
-				});
-			});
-
-			// 모든 사진이 로드될 때까지 대기
-			await Promise.all(photoPromises);
-
-			// 날짜 추가
-			const today = new Date().toLocaleDateString('ko-KR', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-			});
-
-			context.font = 'bold 20px Arial';
-			context.fillStyle = 'black';
-			context.textAlign = 'right';
-			context.fillText(today, canvas.width - 32, canvas.height - 30);
-
-			// 다운로드
+			await renderToCanvas(context);
 			const link = document.createElement('a');
 			link.download = `photo-booth-${new Date().toISOString()}.png`;
 			link.href = canvas.toDataURL('image/png', 1.0);
@@ -278,53 +230,8 @@ const IngPhotoPageContainer = () => {
 
 		try {
 			setIsSharing(true);
+			await renderToCanvas(context);
 
-			// 캔버스 초기화
-			context.clearRect(0, 0, canvas.width, canvas.height);
-
-			// 배경 이미지 로드 및 그리기
-			await new Promise((resolve, reject) => {
-				const bgImg = new Image();
-				bgImg.onload = () => {
-					context.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-					resolve(true);
-				};
-				bgImg.onerror = reject;
-				bgImg.src = currentTheme;
-			});
-
-			// 사진 로드 및 그리기
-			const photoPromises = photos.map((photo, index) => {
-				if (!photo) return Promise.resolve();
-
-				return new Promise((resolve, reject) => {
-					const img = new Image();
-					img.onload = () => {
-						const { top, left, width, height } = photoPositions[index];
-						context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
-						context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
-						resolve(true);
-					};
-					img.onerror = reject;
-					img.src = photo;
-				});
-			});
-
-			await Promise.all(photoPromises);
-
-			// 날짜 추가
-			const today = new Date().toLocaleDateString('ko-KR', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-			});
-
-			context.font = 'bold 20px Arial';
-			context.fillStyle = 'black';
-			context.textAlign = 'right';
-			context.fillText(today, canvas.width - 32, canvas.height - 30);
-
-			// 캔버스를 Blob으로 변환
 			const blob = await new Promise<Blob>((resolve) => {
 				canvas.toBlob(
 					(blob) => {
@@ -356,6 +263,13 @@ const IngPhotoPageContainer = () => {
 		}
 	};
 
+	const handleSetFilterOptions = (options: Partial<FilterOptions>) => {
+		setFilterOptions((prev) => ({
+			...prev,
+			...options,
+		}));
+	};
+
 	return (
 		<IngPhotoPagePresentation
 			videoRef={videoRef}
@@ -363,13 +277,11 @@ const IngPhotoPageContainer = () => {
 			photos={photos}
 			isCapturing={isCapturing}
 			countdown={countdown}
-			brightness={brightness}
-			isGrayscale={isGrayscale}
+			filterOptions={filterOptions}
 			handleTakePhoto={handleTakePhoto}
 			handleDownload={handleDownload}
 			handleShare={handleShare}
-			setBrightness={setBrightness}
-			setIsGrayscale={setIsGrayscale}
+			setFilterOptions={handleSetFilterOptions}
 			currentTheme={currentTheme}
 			setCurrentTheme={setCurrentTheme}
 			isSharing={isSharing}
