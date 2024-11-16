@@ -52,6 +52,14 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	const hasPhotos = photos.some((photo) => photo !== null);
 
+	// 필터 스타일을 계산하는 함수
+	const getFilterStyle = () => {
+		const filters = [];
+		if (brightness !== 100) filters.push(`brightness(${brightness}%)`);
+		if (isGrayscale) filters.push('grayscale(100%)');
+		return filters.length > 0 ? filters.join(' ') : 'none';
+	};
+
 	return (
 		<div className='min-h-screen bg-slate-50'>
 			{/* 상단 네비게이션 영역 */}
@@ -107,11 +115,11 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 												<video
 													ref={videoRef}
 													autoPlay
+													playsInline // 모바일 지원을 위해 추가
 													className='w-full h-full object-cover'
 													style={{
-														filter: `brightness(${brightness}%) ${
-															isGrayscale ? 'grayscale(100%)' : 'none'
-														}`,
+														filter: getFilterStyle(),
+														WebkitFilter: getFilterStyle(), // Safari 지원을 위해 추가
 													}}
 												/>
 												{countdown !== null && (
@@ -128,9 +136,8 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 												alt={`Captured photo ${index + 1}`}
 												className='w-full h-full object-cover'
 												style={{
-													filter: `brightness(${brightness}%) grayscale(${
-														isGrayscale ? 100 : 0
-													}%`,
+													filter: getFilterStyle(),
+													WebkitFilter: getFilterStyle(), // Safari 지원을 위해 추가
 												}}
 											/>
 										) : (
