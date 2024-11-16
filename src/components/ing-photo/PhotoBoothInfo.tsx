@@ -41,7 +41,9 @@ const PhotoBoothInfo = () => {
 
 							<div className='space-y-4'>
 								{instructions.map((instruction, index) => (
-									<Alert key={index} className='border-l-4 border-blue-500'>
+									<Alert
+										key={index}
+										className='bg-white border-l-4 border-blue-500'>
 										<AlertTitle className='text-sm font-medium text-gray-900'>
 											Step {index + 1}
 										</AlertTitle>
