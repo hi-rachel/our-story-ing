@@ -21,6 +21,63 @@ const IngPhotoPageContainer = () => {
 	const [isGrayscale, setIsGrayscale] = useState<boolean>(false);
 	const [isSharing, setIsSharing] = useState(false);
 
+	const drawTheme = (context: CanvasRenderingContext2D) => {
+		return new Promise<void>((resolve, reject) => {
+			const img = new window.Image();
+			img.onload = () => {
+				context.filter = 'none'; // 테마에는 필터를 적용하지 않음
+				context.drawImage(
+					img,
+					0,
+					0,
+					context.canvas.width,
+					context.canvas.height
+				);
+				resolve();
+			};
+			img.onerror = reject;
+			img.src = currentTheme;
+		});
+	};
+
+	const drawPhotos = (context: CanvasRenderingContext2D) => {
+		const promises = photos.map((photo, index) => {
+			if (!photo) return Promise.resolve();
+
+			return new Promise<void>((resolve, reject) => {
+				const img = new window.Image();
+				img.onload = () => {
+					const { top, left, width, height } = photoPositions[index];
+					context.filter = `brightness(${brightness}%) grayscale(${isGrayscale ? 100 : 0}%)`;
+					context.drawImage(img, left * 2, top * 2, width * 2, height * 2);
+					resolve();
+				};
+				img.onerror = reject;
+				img.src = photo;
+			});
+		});
+
+		return Promise.all(promises);
+	};
+
+	const drawDate = (context: CanvasRenderingContext2D) => {
+		const today = new Date().toLocaleDateString('ko-KR', {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+		});
+
+		context.filter = 'none'; // 날짜에는 필터를 적용하지 않음
+		context.font = 'bold 20px Arial';
+		context.fillStyle = 'black';
+		context.textAlign = 'right';
+		context.fillText(
+			today,
+			context.canvas.width - 32,
+			context.canvas.height - 30
+		);
+	};
+
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
@@ -34,12 +91,15 @@ const IngPhotoPageContainer = () => {
 		canvas.width = 450 * 2;
 		canvas.height = 675 * 2;
 
-		const img = new window.Image();
-		img.onload = () => {
-			context.drawImage(img, 0, 0, canvas.width, canvas.height);
+		const updateCanvas = async () => {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			await drawTheme(context);
+			await drawPhotos(context);
+			drawDate(context);
 		};
-		img.src = currentTheme;
-	}, [currentTheme]);
+
+		updateCanvas();
+	}, [currentTheme, photos, brightness, isGrayscale]);
 
 	const startCountdownAndCapture = async (index: number) => {
 		try {
