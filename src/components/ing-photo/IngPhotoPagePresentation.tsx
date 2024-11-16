@@ -5,6 +5,7 @@ import { TbFileDownload, TbCameraShare, TbLoader } from 'react-icons/tb';
 import { photoPositions } from '@/constants/photoPositions';
 import type { Theme } from '@/types/theme';
 import PhotoBoothInfo from './PhotoBoothInfo';
+import BackButton from '../common/button/BackButton';
 
 interface IngPhotoPagePresentationProps {
 	videoRef: React.RefObject<HTMLVideoElement>;
@@ -53,9 +54,24 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	return (
 		<div className='min-h-screen bg-slate-50'>
-			<PhotoBoothInfo />
+			{/* 상단 네비게이션 영역 */}
+			<div className='sticky top-0 z-10 bg-slate-50/80 backdrop-blur-sm border-b border-slate-100'>
+				<div className='max-w-7xl mx-auto'>
+					<div className='relative flex items-center justify-between h-14 px-2 md:px-6'>
+						<div className='absolute left-2'>
+							<BackButton />
+						</div>
+						<div className='flex-1 flex justify-center'>
+							<div className='relative inline-block'>
+								<PhotoBoothInfo />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			{/* 메인 컨테이너 */}
-			<div className='max-w-7xl mx-auto p-4 md:p-8 lg:min-h-screen lg:flex lg:items-center lg:justify-center'>
+			<div className='max-w-7xl mx-auto p-4 md:p-8 pt-6 lg:min-h-[calc(100vh-3.5rem)] lg:flex lg:items-center lg:justify-center'>
 				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8'>
 					{/* 포토 프레임 */}
 					<div className='relative w-full max-w-[450px] mx-auto lg:mx-0'>
