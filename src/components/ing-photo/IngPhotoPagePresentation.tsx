@@ -130,7 +130,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 							})}
 
 							{/* 날짜 표시 */}
-							<div className='absolute bottom-3 right-4 text-black text-xs font-medium'>
+							<div className='absolute bottom-2 right-4 text-black text-xs font-medium'>
 								{today}
 							</div>
 						</div>
