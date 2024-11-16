@@ -18,30 +18,21 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))',
-				},
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))',
-				},
-				background: 'hsl(var(--background))',
-				text: '#4A4A4A',
+				primary: '#f472b6', // 핑크 (포인트 컬러)
+				secondary: '#FB7185',
+				background: '#fce7f3', // 연한 핑크
+				text: '#4A4A4A', // 메인 텍스트
 				accent: {
 					light: '#f4bffc',
-					DEFAULT: 'hsl(var(--accent))',
+					DEFAULT: '#e879f9',
 					dark: '#db32f5',
 					foreground: 'hsl(var(--accent-foreground))',
 				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))',
-				},
+				muted: '#9ca3af', // 부가 텍스트
 				surface: {
-					light: '#fce7f3',
-					DEFAULT: '#f3e8ff',
-					dark: '',
+					light: '#fce7f3', // 가장 연한 배경
+					DEFAULT: '#f3e8ff', // 메인 배경
+					dark: '', // 약간 진한 배경
 				},
 				success: '#2ec169',
 				error: '#FF5F49',
