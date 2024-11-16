@@ -11,17 +11,15 @@ const AnimatedHeroBackground = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 1, delay: 0.2 }}
 					className='text-4xl sm:text-5xl md:text-6xl font-bold leading-relaxed mb-6'>
-					<span className='inline-block animate-float text-primary'>
-						우리의
-					</span>{' '}
-					<span className='inline-block animate-float animation-delay-300 text-primary'>
+					<span className='inline-block text-primary'>우리의</span>{' '}
+					<span className='inline-block animation-delay-300 text-primary'>
 						이야기는
 					</span>{' '}
 					<br className='block sm:hidden' />
-					<span className='inline-block animate-float animation-delay-600 text-primary'>
+					<span className='inline-block animation-delay-600 text-primary'>
 						현재
 					</span>{' '}
-					<span className='inline-block animate-float animation-delay-900 text-primary'>
+					<span className='inline-block animation-delay-900 text-primary'>
 						진행중
 					</span>
 				</motion.h1>
