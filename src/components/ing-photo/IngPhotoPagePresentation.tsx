@@ -55,7 +55,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 	return (
 		<div className='min-h-screen bg-slate-50'>
 			{/* 상단 네비게이션 영역 */}
-			<div className='sticky top-0 z-10 bg-slate-50/80 backdrop-blur-sm border-b border-slate-100'>
+			<div className='sticky top-0 z-50 bg-slate-50/80 backdrop-blur-sm border-b border-slate-100'>
 				<div className='max-w-7xl mx-auto'>
 					<div className='relative flex items-center justify-between h-14 px-2 md:px-6'>
 						<div className='absolute left-2'>
