@@ -10,32 +10,30 @@ import MainLayout from '@/components/common/layout/MainLayout';
 const Home = () => {
 	const { t } = useTranslation();
 
-	const features = [
-		{
-			title: t('home.features.profileSetup.title'),
-			description: t('home.features.profileSetup.description'),
-			icon: '👥',
-			href: '/profile',
-		},
-		{
-			title: t('home.features.realTimeChat.title'),
-			description: t('home.features.realTimeChat.description'),
-			icon: '💬',
-			href: '/chat',
-		},
-		{
-			title: t('home.features.timeline.title'),
-			description: t('home.features.timeline.description'),
-			icon: '📅',
-			href: '/',
-		},
-		{
-			title: t('home.features.todoList.title'),
-			description: t('home.features.todoList.description'),
-			icon: '✅',
-			href: '/',
-		},
-	];
+	// const features = [
+	// 	{
+	// 		title: t('home.features.profileSetup.title'),
+	// 		description: t('home.features.profileSetup.description'),
+	// 		icon: '👥',
+	// 	},
+	// 	{
+	// 		title: t('home.features.realTimeChat.title'),
+	// 		description: t('home.features.realTimeChat.description'),
+	// 		icon: '💬',
+	// 		href: '/chat',
+	// 	},
+	// 	{
+	// 		title: t('home.features.timeline.title'),
+	// 		description: t('home.features.timeline.description'),
+	// 		icon: '📅',
+	// 	},
+	// 	{
+	// 		title: t('home.features.todoList.title'),
+	// 		description: t('home.features.todoList.description'),
+	// 		icon: '✅',
+	// 		href: '/',
+	// 	},
+	// ];
 
 	const memorableMoments = [
 		{
@@ -78,7 +76,7 @@ const Home = () => {
 					</section>
 
 					{/* Features Section */}
-					<section className='py-16 sm:py-24'>
+					{/* <section className='py-16 sm:py-24'>
 						<div className='container mx-auto px-4'>
 							<h2 className='text-3xl sm:text-4xl font-heading font-bold text-center mb-12'>
 								{t('home.features.title')}
@@ -94,18 +92,16 @@ const Home = () => {
 											delay: index * 0.1,
 										}}
 										className='bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg p-6 shadow-md hover:shadow-lg transition duration-300'>
-										<Link href={feature.href}>
-											<div className='text-4xl mb-4'>{feature.icon}</div>
-											<h3 className='text-xl font-heading font-semibold mb-2'>
-												{feature.title}
-											</h3>
-											<p className='text-gray-600'>{feature.description}</p>
-										</Link>
+										<div className='text-4xl mb-4'>{feature.icon}</div>
+										<h3 className='text-xl font-heading font-semibold mb-2'>
+											{feature.title}
+										</h3>
+										<p className='text-gray-600'>{feature.description}</p>
 									</motion.div>
 								))}
 							</div>
 						</div>
-					</section>
+					</section> */}
 
 					{/* Memorable Moments Section */}
 					<section className='py-16 sm:py-24 bg-gradient-to-b from-white to-pink-50'>
