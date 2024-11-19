@@ -29,11 +29,6 @@ const Header = () => {
 					{t('common.appName')}
 				</Link>
 				<div className='flex flex-wrap items-center space-x-4 sm:space-x-6 mt-2 sm:mt-0'>
-					<Link
-						href='#features'
-						className='text-text font-medium hover:text-primary transition duration-300 text-sm sm:text-base'>
-						{t('home.features.subTitle')}
-					</Link>
 					{user ? (
 						<div className='flex items-center space-x-4'>
 							<Link href={'/profile'}>
