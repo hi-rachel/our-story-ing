@@ -111,26 +111,28 @@ const Home = () => {
 							</h2>
 							<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8'>
 								{memorableMoments.map((item, index) => (
-									<motion.div
+									<motion.article
 										key={item.id}
 										initial={{ opacity: 0, scale: 0.9 }}
 										animate={{ opacity: 1, scale: 1 }}
 										transition={{
 											duration: 0.5,
 											delay: index * 0.1,
-										}}
-										className='bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2'>
-										<Link href={item.href}>
+										}}>
+										<Link
+											href={item.href}
+											className='block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f472b6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff0f0] group'
+											aria-label={`${item.title} - ${item.description}`}>
 											<div className='h-60 relative overflow-hidden'>
 												<Image
-													alt='memory'
+													alt=''
 													src={item.image}
 													fill
-													className='object-cover transition duration-300 transform hover:scale-110'
+													className='object-cover transition duration-300 group-hover:scale-105'
 												/>
 											</div>
-											<div className='p-6 bg-white z-10'>
-												<h3 className='text-xl font-heading font-semibold mb-3'>
+											<div className='p-6 bg-white'>
+												<h3 className='text-xl font-heading font-semibold mb-3 group-hover:text-pink-400 transition-colors'>
 													{item.title}
 												</h3>
 												<p className='text-gray-600 text-sm'>
@@ -138,7 +140,7 @@ const Home = () => {
 												</p>
 											</div>
 										</Link>
-									</motion.div>
+									</motion.article>
 								))}
 							</div>
 						</div>
