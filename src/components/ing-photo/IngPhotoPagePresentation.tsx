@@ -99,6 +99,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 							<BackButton />
 						</div>
 						<div className='flex-1 flex justify-center'>
+							<h1 className='text-lg font-bold'>ing photo 🫶📸</h1>
 							<div className='relative inline-block'>
 								<PhotoBoothInfo />
 							</div>
