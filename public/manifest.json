@@ -1,8 +1,8 @@
 {
 	"name": "Our Story Ing",
 	"short_name": "Ing",
-	"theme_color": "#FF6B6B",
-	"background_color": "#FFF0F0",
+	"theme_color": "#f472b6",
+	"background_color": "#fce7f3",
 	"display": "standalone",
 	"scope": "/",
 	"start_url": "/",
