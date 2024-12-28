@@ -28,7 +28,7 @@ const AnimatedHeroBackground = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 1, delay: 0.5 }}
 					className='text-lg sm:text-xl md:text-2xl max-w-2xl pt-3'>
-					우리의 소중한 순간을 기록하고 공유하세요
+					우리만의 소중한 순간을 기록하고 공유하세요 💗
 				</motion.p>
 				<motion.button
 					whileHover={{ scale: 1.05 }}
