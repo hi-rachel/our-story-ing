@@ -25,7 +25,7 @@ const Header = () => {
 				<Link
 					href='/'
 					className='text-xl sm:text-2xl font-heading font-bold text-primary'>
-					<img src={'/icons/couple.svg'} />
+					<img src={'/icons/couple.svg'} alt='ing app logo' />
 					{t('common.appName')}
 				</Link>
 				<div className='flex flex-wrap items-center space-x-4 sm:space-x-6 mt-2 sm:mt-0'>
