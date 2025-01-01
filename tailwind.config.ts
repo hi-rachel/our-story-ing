@@ -18,7 +18,11 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#f472b6', // 핑크 (포인트 컬러)
+				primary: {
+					light: '#fda4cf', // 더 밝은 핑크
+					DEFAULT: '#f472b6', // 현재 핑크
+					dark: '#fb3fac', // 더 진한 핑크
+				},
 				secondary: '#FB7185',
 				background: '#fce7f3', // 연한 핑크
 				text: '#4A4A4A', // 메인 텍스트
