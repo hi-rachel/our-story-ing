@@ -142,6 +142,9 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 								{today}
 							</div>
 						</div>
+						<p className='mt-4 text-sm text-gray-500 text-center'>
+							사진은 서버에 저장되지 않아 다른 사람이 볼 수 없습니다.
+						</p>
 					</div>
 
 					<div className='flex flex-col gap-4 lg:gap-6 lg:w-80'>
