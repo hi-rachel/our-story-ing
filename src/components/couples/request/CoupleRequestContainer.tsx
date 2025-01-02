@@ -95,19 +95,19 @@ const CoupleRequestContainer = () => {
 			await runTransaction(db, async (transaction) => {
 				const coupleRef = doc(db, 'couples', coupleRequestId as string);
 				const inviterRef = doc(db, 'users', inviter.userId);
-				const currentUserRef = doc(db, 'users', currentUser.userId);
+				const currentUserRef = doc(db, 'users', user.uid);
 
 				// Update the couple status to 'accepted' and connect the two users
 				transaction.update(coupleRef, {
 					status: 'accepted',
-					partnerId: currentUser.userId,
+					partnerId: user.uid,
 					acceptedAt: new Date(),
 				});
 
 				transaction.update(inviterRef, {
 					isCouple: true,
 					coupleId: coupleRequestId,
-					partnerId: currentUser.userId,
+					partnerId: user.uid,
 				});
 
 				transaction.update(currentUserRef, {
