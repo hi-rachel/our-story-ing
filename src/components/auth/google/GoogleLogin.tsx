@@ -1,15 +1,22 @@
+import { FC } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../../../../firebase';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
-const GoogleLogin = () => {
-	const [, setLoading] = useState(false);
+interface GoogleLoginProps {
+	disabled?: boolean;
+}
+
+const GoogleLogin: FC<GoogleLoginProps> = ({ disabled = false }) => {
+	const { t } = useTranslation();
 	const router = useRouter();
 
 	const handleGoogleLogin = async () => {
-		setLoading(true);
+		if (disabled) return;
+
 		try {
 			const GoogleProvider = new GoogleAuthProvider();
 			GoogleProvider.setCustomParameters({
@@ -34,20 +41,24 @@ const GoogleLogin = () => {
 					createdAt: new Date(),
 				});
 			}
+			toast.success(t('login.loginSuccess'));
+			router.push('/');
 		} catch (error) {
 			console.error('Error logging in with Google: ', error);
-		} finally {
-			setLoading(false);
-			router.push('/');
 		}
 	};
 
 	return (
-		<button onClick={handleGoogleLogin}>
+		<button
+			onClick={handleGoogleLogin}
+			disabled={disabled}
+			className='flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed'>
 			<img
-				src='/login/google.svg'
-				className='w-full transition duration-300 ease-in-out transform hover:brightness-90'
+				src='/login/google-logo.png'
+				alt='Google logo'
+				className='w-5 h-5 mr-2'
 			/>
+			{t('login.GoogleSignUp')}
 		</button>
 	);
 };
