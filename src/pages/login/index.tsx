@@ -1,36 +1,59 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import GoogleLogin from '@/components/auth/google/GoogleLogin';
 import { auth } from '../../../firebase';
 import { useRouter } from 'next/router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { toast } from 'react-toastify';
+import { handleAuthError } from '@/utils/firebaseError';
+import { FirebaseError } from 'firebase/app';
 
 const LoginPage = () => {
 	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { t } = useTranslation();
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const user = auth.currentUser;
-		// 이미 로그인된 유저는 로그인 페이지 접근 제한
-		// 알림 띄우기
 		if (user) {
 			router.push('/');
+			toast.success('이미 로그인되어 있습니다.');
 		}
 	}, []);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// Handle login logic here
+		setIsLoading(true);
+
+		try {
+			const userCredential = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			if (userCredential.user) {
+				toast.success('로그인에 성공했습니다.');
+				router.push('/');
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error('로그인 에러:', error);
+				const firebaseError = error as FirebaseError;
+				const errorMessage = handleAuthError(firebaseError);
+				toast.error(errorMessage);
+			}
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
 		<div className='min-h-screen bg-gradient-to-b from-background to-white flex items-center justify-center px-4'>
 			<Head>
-				<title>{t('login.title')}</title>
+				<title>로그인</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
@@ -40,14 +63,14 @@ const LoginPage = () => {
 				transition={{ duration: 0.5 }}
 				className='bg-white p-8 rounded-lg shadow-card w-full max-w-md'>
 				<h2 className='text-3xl font-heading font-bold text-center text-primary mb-6'>
-					{t('login.title')}
+					로그인
 				</h2>
 				<form onSubmit={handleSubmit} className='space-y-6'>
 					<div>
 						<label
 							htmlFor='email'
 							className='block text-sm font-medium text-gray-700'>
-							{t('login.email')}
+							이메일
 						</label>
 						<div className='mt-1'>
 							<input
@@ -57,6 +80,7 @@ const LoginPage = () => {
 								onChange={(e) => setEmail(e.target.value)}
 								className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
 								required
+								disabled={isLoading}
 							/>
 						</div>
 					</div>
@@ -65,7 +89,7 @@ const LoginPage = () => {
 						<label
 							htmlFor='password'
 							className='block text-sm font-medium text-gray-700'>
-							{t('login.password')}
+							비밀번호
 						</label>
 						<div className='mt-1'>
 							<input
@@ -75,6 +99,7 @@ const LoginPage = () => {
 								onChange={(e) => setPassword(e.target.value)}
 								className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
 								required
+								disabled={isLoading}
 							/>
 						</div>
 					</div>
@@ -82,20 +107,21 @@ const LoginPage = () => {
 					<div className='flex items-center justify-end'>
 						<div className='text-sm'>
 							<Link
-								href='/forgot-password'
+								href='/reset-password'
 								className='font-medium text-primary hover:text-secondary'>
-								{t('login.forgotPassword')}
+								비밀번호를 잊으셨나요?
 							</Link>
 						</div>
 					</div>
 
 					<div>
 						<motion.button
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
 							type='submit'
-							className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'>
-							{t('login.logIn')}
+							disabled={isLoading}
+							className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed'>
+							{isLoading ? '로그인 중...' : '로그인'}
 						</motion.button>
 					</div>
 				</form>
@@ -107,21 +133,21 @@ const LoginPage = () => {
 						</div>
 						<div className='relative flex justify-center text-sm'>
 							<span className='px-2 bg-white text-gray-500'>
-								{t('login.orLoginWith')}
+								또는 다음으로 로그인
 							</span>
 						</div>
 					</div>
 					<div className='mt-6 flex justify-center align-middle'>
-						<GoogleLogin />
+						<GoogleLogin disabled={isLoading} />
 					</div>
 				</div>
 
 				<p className='mt-8 text-center text-sm text-gray-600'>
-					{t('login.dontHaveAccount')}{' '}
+					계정이 없으신가요?{' '}
 					<Link
 						href='/signup'
 						className='font-medium text-primary hover:text-secondary'>
-						{t('login.signUp')}
+						회원가입
 					</Link>
 				</p>
 			</motion.div>
