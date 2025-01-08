@@ -17,7 +17,13 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter();
 
-	const publicRoutes = ['/', '/login', '/signup', '/ing-photo'];
+	const publicRoutes = [
+		'/',
+		'/login',
+		'/signup',
+		'/reset-password',
+		'/ing-photo',
+	];
 
 	const initAuthState = () => {
 		auth.onAuthStateChanged((authUser) => {
