@@ -4,9 +4,9 @@ import { TiCamera } from 'react-icons/ti';
 import { TbFileDownload, TbCameraShare, TbLoader } from 'react-icons/tb';
 import { photoPositions } from '@/constants/photoPositions';
 import PhotoBoothInfo from './PhotoBoothInfo';
-import BackButton from '../common/button/BackButton';
 import type { Theme } from './types';
 import type { FilterOptions } from './types';
+import PageHeader from '../common/header/PageHeader';
 
 interface IngPhotoPagePresentationProps {
 	videoRef: React.RefObject<HTMLVideoElement>;
@@ -92,21 +92,9 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	return (
 		<div className='min-h-screen bg-slate-50'>
-			<div className='sticky top-0 z-50 bg-slate-50/80 backdrop-blur-sm border-b border-slate-100'>
-				<div className='max-w-7xl mx-auto'>
-					<div className='relative flex items-center justify-between h-14 px-2 md:px-6'>
-						<div className='absolute left-2'>
-							<BackButton />
-						</div>
-						<div className='flex-1 flex justify-center'>
-							<h1 className='text-lg font-bold'>ing photo 🫶📸</h1>
-							<div className='relative inline-block'>
-								<PhotoBoothInfo />
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<PageHeader title='ing photo 📸'>
+				<PhotoBoothInfo />
+			</PageHeader>
 
 			<div className='max-w-7xl mx-auto p-4 md:p-8 pt-6 lg:min-h-[calc(100vh-3.5rem)] lg:flex lg:items-center lg:justify-center'>
 				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8'>

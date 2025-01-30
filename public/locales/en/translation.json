@@ -1,6 +1,6 @@
 {
 	"common": {
-		"appName": "ing",
+		"appName": "Our Story Ing",
 		"getStarted": "Get Started",
 		"signup": "Sign Up",
 		"login": "Log In",
@@ -86,7 +86,10 @@
 		"forgotPassword": "Forgot Password?",
 		"orLoginWith": "Or log in with",
 		"dontHaveAccount": "Don't have an account?",
-		"signUp": "Sign up"
+		"signUp": "Sign up",
+		"GoogleSignUp": "Continue with Google",
+		"GoogleLogin": "Continue with Google",
+		"loginSuccess": "Login was successful."
 	},
 	"footer": {
 		"quickLinks": "Quick Links",

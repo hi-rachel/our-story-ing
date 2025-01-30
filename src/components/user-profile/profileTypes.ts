@@ -43,6 +43,7 @@ export interface ProfileDetailsProps {
 	user: User;
 	userData: UserData;
 	t: (key: string) => string;
+	setIsEditing: (value: boolean) => void;
 }
 
 export interface EditFormProps {

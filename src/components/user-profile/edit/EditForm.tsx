@@ -13,6 +13,7 @@ import {
 	FaEnvelope,
 	FaHeart,
 	FaTrash,
+	FaHeartBroken,
 } from 'react-icons/fa';
 
 const EditForm: React.FC<EditFormProps> = ({
@@ -41,10 +42,9 @@ const EditForm: React.FC<EditFormProps> = ({
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5 }}
-			onSubmit={handleSubmit}
-			className='space-y-8 px-4 py-5'>
+			onSubmit={handleSubmit}>
 			{/* Editable Profile Image */}
-			<div className='flex justify-center items-center mb-8'>
+			<div className='flex justify-center items-center py-6'>
 				<div className='relative'>
 					<motion.div
 						whileHover={{ scale: 1.05 }}
@@ -76,7 +76,7 @@ const EditForm: React.FC<EditFormProps> = ({
 				</div>
 			</div>
 
-			<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-8 p-4'>
 				{/* Personal Information Section */}
 				<div>
 					<h3 className='text-lg font-medium text-gray-900 mb-4'>
@@ -216,6 +216,7 @@ const EditForm: React.FC<EditFormProps> = ({
 								type='button'
 								onClick={handleCoupleUnlink}
 								className='w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-error hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'>
+								<FaHeartBroken className='inline-block mr-2' />
 								{t('profile.unlinkCouple')}
 							</motion.button>
 						)}
@@ -224,7 +225,7 @@ const EditForm: React.FC<EditFormProps> = ({
 			</div>
 
 			{/* Save, Cancel, and Delete Account Buttons */}
-			<div className='flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-3 mt-8'>
+			<div className='p-4 flex flex-col sm:flex-row justify-between items-center md:mt-8 mt-4 border-t gap-4'>
 				<motion.button
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}

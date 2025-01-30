@@ -12,6 +12,7 @@ import {
 	FaUser,
 } from 'react-icons/fa';
 import { calculateDaysSinceAnniversary } from '@/utils/dateUtils';
+import EditAccountButton from '../edit/EditAccountButton';
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 	partnerName,
@@ -19,6 +20,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 	user,
 	userData,
 	t,
+	setIsEditing,
 }) => {
 	const router = useRouter();
 	const [anniversary, setAnniversary] = useState<string | null>(null);
@@ -190,6 +192,9 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 							)}
 						</motion.div>
 					</div>
+				</div>
+				<div className='flex justify-end p-4 border-t'>
+					<EditAccountButton setIsEditing={setIsEditing} t={t} />
 				</div>
 			</div>
 		</motion.div>

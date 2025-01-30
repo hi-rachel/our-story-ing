@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import { motion } from 'framer-motion';
 import GoogleLogin from '@/components/auth/google/GoogleLogin';
 import { useRouter } from 'next/router';
@@ -174,19 +173,14 @@ const SignUpPage = () => {
 	};
 
 	return (
-		<div className='min-h-screen bg-gradient-to-b from-background to-white flex items-center justify-center px-4'>
-			<Head>
-				<title>회원가입</title>
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-
+		<div className='min-h-screen bg-gradient-to-t from-background to-white flex items-center justify-center px-4'>
 			<motion.div
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5 }}
-				className='bg-white p-8 rounded-lg shadow-card w-full max-w-md'>
+				className='bg-white p-8 rounded-lg shadow-lg w-full max-w-md'>
 				<h2 className='text-3xl font-heading font-bold text-center text-primary mb-6'>
-					회원가입
+					지금 함께하기
 				</h2>
 				<form onSubmit={handleSubmit} className='space-y-4'>
 					<div>

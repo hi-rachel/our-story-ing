@@ -4,7 +4,7 @@ import { auth } from '../../../../firebase';
 import DefaultProfile from '@/components/common/profile/DefaultProfile';
 import { motion } from 'framer-motion';
 
-const Header = () => {
+const MainHeader = () => {
 	const { t } = useTranslation();
 	const user = auth.currentUser;
 
@@ -20,13 +20,18 @@ const Header = () => {
 	};
 
 	return (
-		<nav className='fixed top-0 left-0 right-0 bg-white bg-opacity-95 shadow-md z-50'>
-			<div className='container mx-auto px-4 py-3 flex flex-wrap justify-between items-center'>
-				<Link
-					href='/'
-					className='text-xl sm:text-2xl font-heading font-bold text-primary'>
-					<img src={'/icons/couple.svg'} alt='ing app logo' />
-					{t('common.appName')}
+		<nav className='fixed top-0 left-0 right-0 bg-white bg-opacity-95 shadow-sm z-50'>
+			<div className='container mx-auto px-4 py-4 flex justify-between items-center'>
+				<Link href='/' className='text-lg font-bold text-primary'>
+					<div className='flex justify-center items-center gap-3'>
+						<img
+							src={'/icons/couple.svg'}
+							alt='ing app logo'
+							width={'30px'}
+							height={'30px'}
+						/>
+						{t('common.appName')}
+					</div>
 				</Link>
 				<div className='flex flex-wrap items-center space-x-4 sm:space-x-6 mt-2 sm:mt-0'>
 					{user ? (
@@ -65,4 +70,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default MainHeader;

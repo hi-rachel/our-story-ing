@@ -1,6 +1,6 @@
 {
 	"common": {
-		"appName": "ing",
+		"appName": "Our Story Ing",
 		"getStarted": "시작하기",
 		"signup": "회원가입",
 		"login": "로그인",
@@ -86,7 +86,10 @@
 		"forgotPassword": "비밀번호를 잊으셨나요?",
 		"orLoginWith": "또는 다음으로 로그인",
 		"dontHaveAccount": "계정이 없으신가요?",
-		"signUp": "가입하기"
+		"signUp": "가입하기",
+		"GoogleSignUp": "구글로 가입하기",
+		"GoogleLogin": "구글로 로그인",
+		"loginSuccess": "로그인에 성공했습니다."
 	},
 	"footer": {
 		"quickLinks": "빠른 링크",

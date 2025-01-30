@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const AnimatedHeroBackground = () => {
 	return (
-		<div className='relative w-full min-h-screen overflow-hidden pt-32 sm:pt-32 md:pt-40 text-black'>
+		<div className='relative w-full min-h-screen overflow-hidden pt-32 sm:pt-48 text-black'>
 			<div className='flex flex-col items-center justify-center h-full px-4 text-center'>
 				<motion.h1
 					initial={{ opacity: 0, y: -50 }}

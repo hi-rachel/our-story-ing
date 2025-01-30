@@ -54,7 +54,7 @@ const PhotoBoothInfo: React.FC = () => {
 		<div className='relative inline-block'>
 			<button
 				onClick={() => setIsOpen(true)}
-				className='fixed top-4 right-4 p-2 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-colors'
+				className='fixed top-2 right-6 p-2 bg-white rounded-full shadow-lg hover:bg-slate-100 transition-colors'
 				aria-label='사용 안내'>
 				<InfoIcon className='w-6 h-6 text-gray-600' />
 			</button>

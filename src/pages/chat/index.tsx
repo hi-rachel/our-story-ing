@@ -141,7 +141,7 @@ const EveryoneChatPage = () => {
 					className='text-2xl cursor-pointer mr-2'
 					onClick={handleGoBack}
 				/>
-				<div className='flex-grow text-center font-semibold'>ing Chat</div>
+				<div className='flex-grow text-center font-semibold'>Chat</div>
 			</div>
 
 			{/* 채팅 메시지 리스트 */}
