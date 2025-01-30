@@ -145,11 +145,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 									<button
 										key={theme.id}
 										onClick={() => setCurrentTheme(theme.path)}
-										className={`aspect-square rounded-xl border-2 transition-all hover:scale-105 ${
-											currentTheme === theme.path
-												? 'border-blue-500 ring-4 ring-blue-50'
-												: 'border-transparent hover:border-blue-200'
-										} ${theme.color}`}
+										className={`aspect-square rounded-xl transition-all hover:scale-105 ${theme.color}`}
 										title={theme.name}
 									/>
 								))}
