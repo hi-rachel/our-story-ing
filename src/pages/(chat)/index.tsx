@@ -12,17 +12,6 @@ import { useRouter } from 'next/router';
 import { formatDate } from '@/utils/dateUtils';
 import DefaultProfile from '@/components/common/profile/DefaultProfile';
 
-// TODO
-// [x] 커플 채팅 만들기
-// [x] 커플 연결 구현 완료 후, 커플 연결된 두 명끼리만 채팅 가능하게 하기
-// -> 다른 사용자 접근 불가, 2명만 입장 가능, 커플이 아니면 접근 불가
-// [] 다국화 적용 -> 영어 시간 포맷 표시
-// [x] 채팅방 나가기
-// [] 채팅방 삭제
-// [] 새 메시지 알림
-// [] 알림 모달 넣기
-// [] 상대방 정보 수정 -> 업데이트 반영하기
-
 const EveryoneChatPage = () => {
 	const router = useRouter();
 	const [chatting, setChatting] = useState<

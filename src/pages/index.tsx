@@ -5,9 +5,11 @@ import MainHeader from '@/components/home/header/MainHeader';
 import { motion } from 'framer-motion';
 import AnimatedHeroBackground from '@/components/home/AnimatedHeroBackground';
 import MainFooter from '@/components/common/footer/MainFooter';
+import { useRouter } from 'next/router';
 
 const Home = () => {
 	const { t } = useTranslation();
+	const router = useRouter();
 
 	// const features = [
 	// 	{
@@ -151,12 +153,16 @@ const Home = () => {
 							<p className='mb-8 text-lg max-w-2xl mx-auto'>
 								{t('home.cta.subtitle')}
 							</p>
-							<Link
-								href='/signup'
-								className='bg-white text-primary px-8 py-3 rounded-full text-lg font-semibold 
-                  hover:bg-primary hover:text-white transition duration-300 shadow-lg hover:shadow-xl'>
+							<motion.button
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								onClick={() => router.push('/sign-up')}
+								style={{ borderRadius: '9999px' }}
+								className='mt-8 px-8 py-3 bg-white text-primary rounded-full
+								font-semibold text-lg shadow-lg hover:shadow-xl transition
+								duration-300'>
 								{t('common.getStarted')}
-							</Link>
+							</motion.button>
 						</motion.div>
 					</div>
 				</section>

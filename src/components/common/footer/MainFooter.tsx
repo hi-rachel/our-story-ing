@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaHome, FaCommentDots, FaCamera } from 'react-icons/fa';
+import { FaHome, FaCamera } from 'react-icons/fa';
 import { BsFillChatHeartFill } from 'react-icons/bs';
 import { UserData } from '@/types/user';
 import { User } from 'firebase/auth';
@@ -76,11 +76,11 @@ const MainFooter = () => {
 					<FaHome size={28} />
 				</div>
 			</Link>
-			<Link href='/chat' className='group'>
+			{/* <Link href='/chat' className='group'>
 				<div className='w-12 h-12 flex items-center justify-center text-primary hover:text-primary-dark transition-colors duration-300'>
 					<FaCommentDots size={28} />
 				</div>
-			</Link>
+			</Link> */}
 			{renderCoupleChat()}
 			<Link href='/ing-photo' className='group'>
 				<div className='w-12 h-12 flex items-center justify-center text-primary hover:text-primary-dark transition-colors duration-300'>

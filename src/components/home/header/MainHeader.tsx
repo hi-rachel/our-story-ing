@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { auth } from '../../../../firebase';
 import DefaultProfile from '@/components/common/profile/DefaultProfile';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 const MainHeader = () => {
+	const router = useRouter();
 	const { t } = useTranslation();
 	const user = auth.currentUser;
 
@@ -47,21 +49,20 @@ const MainHeader = () => {
 									</span>
 								</div>
 							</Link>
-							<button
+							<motion.button
+								style={{ borderRadius: '9999px' }}
 								onClick={handleLogOut}
 								className='bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-background hover:text-primary transition duration-300 shadow-button'>
 								{t('common.logout')}
-							</button>
+							</motion.button>
 						</div>
 					) : (
 						<motion.button
 							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}>
-							<Link
-								href='/login'
-								className='bg-gradient-to-r from-pink-400 to-purple-300 text-white px-5 py-3 rounded-full text-sm font-semibold h transition duration-300 shadow-button'>
-								{t('common.login')}
-							</Link>
+							style={{ borderRadius: '9999px' }}
+							onClick={() => router.push('/login')}
+							className='block bg-gradient-to-r from-pink-400 to-purple-300 text-white px-5 py-3 rounded-full text-sm font-semibold h transition duration-300 shadow-button'>
+							{t('common.login')}
 						</motion.button>
 					)}
 				</div>

@@ -33,6 +33,7 @@ const AnimatedHeroBackground = () => {
 				<motion.button
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
+					style={{ borderRadius: '9999px' }}
 					className='mt-8 px-8 py-3 bg-white text-primary rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition duration-300'>
 					시작하기
 				</motion.button>
