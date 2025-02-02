@@ -18,6 +18,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 	chatEndRef,
 	scrollToBottom,
 }) => {
+	console.log(chatting);
 	return (
 		<div className='flex flex-col h-screen bg-background p-4'>
 			{/* Chat Header */}
@@ -26,7 +27,7 @@ const ChatPresentation: React.FC<ChatPresentationProps> = ({
 					className='text-2xl cursor-pointer mr-2'
 					onClick={handleGoBack}
 				/>
-				<div className='flex-grow text-center font-semibold'>Couple Chat</div>
+				<div className='flex-grow text-center font-semibold'>{}</div>
 			</div>
 
 			{/* Chat Messages List */}

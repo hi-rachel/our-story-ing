@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth, messaging, requestPermissionAndSaveToken } from '../../firebase';
 import { User } from 'firebase/auth';
-import Loading from '@/components/common/loading/Loading';
+import Loading from '@/components/common/loading/HourglassHeartLoading';
 import Meta from '@/components/common/meta/Meta';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { onMessage } from '@firebase/messaging';
 import PageHeader from '@/components/common/header/PageHeader';
+import '../styles/animation.css';
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 	const [loading, setLoading] = useState(true);

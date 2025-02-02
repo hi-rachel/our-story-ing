@@ -1,0 +1,35 @@
+@keyframes topHeartOrbit {
+	0% {
+		transform: translateY(0) rotate(0deg);
+	}
+	25% {
+		transform: translateY(25%) rotate(90deg);
+	}
+	50% {
+		transform: translateY(50%) rotate(180deg);
+	}
+	75% {
+		transform: translateY(25%) rotate(270deg);
+	}
+	100% {
+		transform: translateY(0) rotate(360deg);
+	}
+}
+
+@keyframes bottomHeartOrbit {
+	0% {
+		transform: translateY(0) rotate(0deg);
+	}
+	25% {
+		transform: translateY(-25%) rotate(-90deg);
+	}
+	50% {
+		transform: translateY(-50%) rotate(-180deg);
+	}
+	75% {
+		transform: translateY(-25%) rotate(-270deg);
+	}
+	100% {
+		transform: translateY(0) rotate(-360deg);
+	}
+}

@@ -17,7 +17,7 @@ import ChatPresentation from './ChatPresentation';
 import { formatDate } from '@/utils/dateUtils';
 import { ChatMessage } from './chatTypes';
 import { useTranslation } from 'react-i18next';
-import Loading from '../common/loading/Loading';
+import Loading from '../common/loading/HourglassHeartLoading';
 import ErrorPage from '@/pages/error';
 import { sendPushNotification } from '@/utils/notificationUtils';
 
@@ -105,6 +105,8 @@ const ChatContainer: React.FC = () => {
 
 					if (coupleDoc.exists()) {
 						const coupleData = coupleDoc.data();
+
+						console.log(coupleData);
 
 						if (
 							coupleData.inviterId === user.uid ||
