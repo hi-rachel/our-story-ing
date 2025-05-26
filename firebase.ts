@@ -1,10 +1,20 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { getAuth, onAuthStateChanged, Auth } from 'firebase/auth';
+import { getFirestore, doc, setDoc, Firestore } from 'firebase/firestore';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { getMessaging, getToken, Messaging } from 'firebase/messaging';
 
-const firebaseConfig = {
+interface FirebaseConfig {
+	apiKey: string | undefined;
+	authDomain: string | undefined;
+	projectId: string | undefined;
+	storageBucket: string | undefined;
+	messagingSenderId: string | undefined;
+	appId: string | undefined;
+	measurementId: string | undefined;
+}
+
+const firebaseConfig: FirebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
 	projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -16,51 +26,78 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
-export const storage = getStorage(app);
-export const db = getFirestore(app);
+// 클라이언트 사이드에서만 초기화
+export const getClientAuth = (): Auth | null => {
+	if (typeof window !== 'undefined') {
+		return getAuth(app);
+	}
+	return null;
+};
 
-export let messaging: Messaging | null = null;
+export const getClientStorage = (): FirebaseStorage | null => {
+	if (typeof window !== 'undefined') {
+		return getStorage(app);
+	}
+	return null;
+};
 
-if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-	messaging = getMessaging(app);
-}
+export const getClientFirestore = (): Firestore | null => {
+	if (typeof window !== 'undefined') {
+		return getFirestore(app);
+	}
+	return null;
+};
 
-export const initializeMessaging = async () => {
+export const getClientMessaging = (): Messaging | null => {
 	if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-		try {
-			const registration = await navigator.serviceWorker.register(
-				'/firebase-messaging-sw.js'
-			);
-			console.log('Service Worker registered: ', registration);
+		return getMessaging(app);
+	}
+	return null;
+};
 
-			messaging = getMessaging(app);
+export const initializeMessaging = async (): Promise<void> => {
+	if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
+		return;
+	}
 
-			const currentToken = await getToken(messaging, {
-				vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-				serviceWorkerRegistration: registration,
-			});
+	try {
+		const registration = await navigator.serviceWorker.register(
+			'/firebase-messaging-sw.js'
+		);
+		console.log('Service Worker registered: ', registration);
 
-			if (currentToken) {
-				const user = auth.currentUser;
-				if (user) {
-					await saveFcmTokenToFirestore(user.uid, currentToken);
-				}
-			} else {
-				console.log(
-					'No registration token available. Request permission to generate one.'
-				);
+		const messaging = getMessaging(app);
+
+		const currentToken = await getToken(messaging, {
+			vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+			serviceWorkerRegistration: registration,
+		});
+
+		if (currentToken) {
+			const auth = getClientAuth();
+			if (auth?.currentUser) {
+				await saveFcmTokenToFirestore(auth.currentUser.uid, currentToken);
 			}
-		} catch (err) {
-			console.error('Failed to register service worker or get FCM token:', err);
+		} else {
+			console.log(
+				'No registration token available. Request permission to generate one.'
+			);
 		}
+	} catch (err) {
+		console.error('Failed to register service worker or get FCM token:', err);
 	}
 };
 
 export const saveFcmTokenToFirestore = async (
 	userId: string,
 	fcmToken: string
-) => {
+): Promise<void> => {
+	const db = getClientFirestore();
+	if (!db) {
+		console.error('Firestore is not available');
+		return;
+	}
+
 	try {
 		await setDoc(doc(db, 'users', userId), { fcmToken }, { merge: true });
 		console.log('FCM token saved to Firestore');
@@ -69,21 +106,22 @@ export const saveFcmTokenToFirestore = async (
 	}
 };
 
-export const requestPermissionAndSaveToken = async () => {
-	const user = auth.currentUser;
-	if (!user) return;
+export const requestPermissionAndSaveToken = async (): Promise<void> => {
+	const auth = getClientAuth();
+	if (!auth?.currentUser) return;
 
 	try {
 		const permission = await Notification.requestPermission();
 		if (permission === 'granted') {
 			console.log('Notification permission granted.');
 
+			const messaging = getClientMessaging();
 			if (messaging) {
 				const fcmToken = await getToken(messaging, {
 					vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
 				});
 				if (fcmToken) {
-					await saveFcmTokenToFirestore(user.uid, fcmToken);
+					await saveFcmTokenToFirestore(auth.currentUser.uid, fcmToken);
 				} else {
 					console.error('Failed to retrieve FCM token.');
 				}
@@ -98,8 +136,16 @@ export const requestPermissionAndSaveToken = async () => {
 	}
 };
 
-onAuthStateChanged(auth, (user) => {
-	if (user) {
-		requestPermissionAndSaveToken();
-	}
-});
+// 클라이언트 사이드에서만 auth state 변화 감지
+export const initializeAuthStateListener = (): void => {
+	if (typeof window === 'undefined') return;
+
+	const auth = getClientAuth();
+	if (!auth) return;
+
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			requestPermissionAndSaveToken();
+		}
+	});
+};
