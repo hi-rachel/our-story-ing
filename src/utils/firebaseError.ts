@@ -1,5 +1,5 @@
 import { FirebaseError } from '@firebase/app';
-import { AuthErrorCodes } from '@firebase/auth';
+import { AuthErrorCodes } from 'firebase/auth';
 
 export const handleAuthError = (error: FirebaseError): string => {
 	let errorMessage = '예상치 못한 오류가 발생했습니다';
