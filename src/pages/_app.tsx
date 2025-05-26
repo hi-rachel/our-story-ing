@@ -36,7 +36,7 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 		'/signup': '회원가입 | Our Story Ing',
 		'/reset-password': '비밀번호 재설정 | Our Story Ing',
 		'/profile': '프로필 | Our Story Ing',
-		'/ing-photo': 'ing photo 📸',
+		'/ing-photo': 'Photo Booth | Our Story Ing',
 		'/chat': '채팅 | Our Story Ing',
 		'/couple-chat': '커플 채팅 | Our Story Ing',
 	};

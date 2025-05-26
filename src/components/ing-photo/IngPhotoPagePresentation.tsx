@@ -92,7 +92,7 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 
 	return (
 		<div className='min-h-screen bg-slate-50'>
-			<PageHeader title='ing photo 📸'>
+			<PageHeader title='Photo Booth'>
 				<PhotoBoothInfo />
 			</PageHeader>
 

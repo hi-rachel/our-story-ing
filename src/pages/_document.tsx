@@ -15,7 +15,7 @@ const Document = () => {
 				<link rel='icon' href='/favicon.ico' />
 				<meta
 					name='description'
-					content='커플들이 자신들의 여정을 공유할 수 있는 특별한 공간'
+					content='소중한 사람과의 추억을 기록할 수 있는 공간 | 포토부스'
 				/>
 			</Head>
 			<body>

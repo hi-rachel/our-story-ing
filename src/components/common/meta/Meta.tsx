@@ -9,7 +9,7 @@ interface MetaProps {
 
 const Meta: React.FC<MetaProps> = ({
 	title = 'Our Story Ing',
-	description = '커플들이 자신들의 여정을 공유할 수 있는 특별한 공간',
+	description = '소중한 사람과의 추억을 기록할 수 있는 공간 | 포토부스',
 	// image = 'https://our-story-ing.vercel.app/main.jpg',
 }) => {
 	const router = useRouter();
