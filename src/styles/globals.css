@@ -1,50 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-html,
-body {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%;
-	overflow-x: hidden; /* 가로 스크롤 방지 */
-
-	font-family:
-		'Pretendard Variable',
-		Pretendard,
-		-apple-system,
-		BlinkMacSystemFont,
-		system-ui,
-		Roboto,
-		'Helvetica Neue',
-		'Segoe UI',
-		'Apple SD Gothic Neo',
-		'Noto Sans KR',
-		'Malgun Gothic',
-		'Apple Color Emoji',
-		'Segoe UI Emoji',
-		'Segoe UI Symbol',
-		sans-serif;
-}
-
-*:focus {
-	outline: none;
-	box-shadow:
-		0 0 0 2px #fff0f0,
-		0 0 0 4px #f472b6;
-	border-radius: 4px;
-}
-
-.animation-delay-300 {
-	animation-delay: 300ms;
-}
-.animation-delay-600 {
-	animation-delay: 600ms;
-}
-.animation-delay-900 {
-	animation-delay: 900ms;
-}
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -100,11 +55,52 @@ body {
 		--chart-5: 340 75% 55%;
 	}
 }
-@layer base {
-	* {
-		@apply border-border;
-	}
-	body {
-		@apply bg-background text-foreground;
-	}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden; /* 가로 스크롤 방지 */
+
+	font-family:
+		'Pretendard Variable',
+		Pretendard,
+		-apple-system,
+		BlinkMacSystemFont,
+		system-ui,
+		Roboto,
+		'Helvetica Neue',
+		'Segoe UI',
+		'Apple SD Gothic Neo',
+		'Noto Sans KR',
+		'Malgun Gothic',
+		'Apple Color Emoji',
+		'Segoe UI Emoji',
+		'Segoe UI Symbol',
+		sans-serif;
+}
+
+*:focus {
+	outline: none;
+	box-shadow:
+		0 0 0 2px #fff0f0,
+		0 0 0 4px #f472b6;
+	border-radius: 4px;
+}
+
+* {
+	scrollbar-width: thin; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+	width: 6px;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: #d1d5db; /* Tailwind gray-300 */
+	border-radius: 4px;
+}
+*::-webkit-scrollbar-track {
+	background: transparent;
 }
