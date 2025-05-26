@@ -10,16 +10,16 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
+		"@firebase/app": "0.10.10",
+		"@firebase/messaging": "^0.12.11",
 		"@tailwindcss/postcss": "^4.1.7",
 		"autoprefixer": "^10.4.21",
 		"axios": "^1.7.7",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
-		"@firebase/app": "0.10.10",
 		"firebase": "10.13.1",
 		"firebase-admin": "^12.5.0",
-		"@firebase/messaging": "^0.12.11",
 		"framer-motion": "^11.5.4",
 		"lucide-react": "^0.460.0",
 		"next": "^14.2.13",
@@ -33,7 +33,8 @@
 		"react-toastify": "^10.0.5",
 		"tailwind-merge": "^2.5.4",
 		"tailwind-scrollbar": "^4.0.2",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"undici": "^6.21.3"
 	},
 	"devDependencies": {
 		"@types/node": "^20",
