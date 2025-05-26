@@ -11,31 +11,6 @@ const Home = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 
-	// const features = [
-	// 	{
-	// 		title: t('home.features.profileSetup.title'),
-	// 		description: t('home.features.profileSetup.description'),
-	// 		icon: '👥',
-	// 	},
-	// 	{
-	// 		title: t('home.features.realTimeChat.title'),
-	// 		description: t('home.features.realTimeChat.description'),
-	// 		icon: '💬',
-	// 		href: '/chat',
-	// 	},
-	// 	{
-	// 		title: t('home.features.timeline.title'),
-	// 		description: t('home.features.timeline.description'),
-	// 		icon: '📅',
-	// 	},
-	// 	{
-	// 		title: t('home.features.todoList.title'),
-	// 		description: t('home.features.todoList.description'),
-	// 		icon: '✅',
-	// 		href: '/',
-	// 	},
-	// ];
-
 	const memorableMoments = [
 		{
 			id: 'photo-booth',
@@ -69,34 +44,6 @@ const Home = () => {
 					<AnimatedHeroBackground />
 				</section>
 
-				{/* Features Section */}
-				{/* <section className='py-16 sm:py-24'>
-						<div className='container mx-auto px-4'>
-							<h2 className='text-3xl sm:text-4xl font-heading font-bold text-center mb-12'>
-								{t('home.features.title')}
-							</h2>
-							<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
-								{features.map((feature, index) => (
-									<motion.div
-										key={feature.title}
-										initial={{ opacity: 0, y: 20 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{
-											duration: 0.5,
-											delay: index * 0.1,
-										}}
-										className='bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg p-6 shadow-md hover:shadow-lg transition duration-300'>
-										<div className='text-4xl mb-4'>{feature.icon}</div>
-										<h3 className='text-xl font-heading font-semibold mb-2'>
-											{feature.title}
-										</h3>
-										<p className='text-gray-600'>{feature.description}</p>
-									</motion.div>
-								))}
-							</div>
-						</div>
-					</section> */}
-
 				{/* Memorable Moments Section */}
 				<section className='py-16 sm:py-24 bg-gradient-to-b from-white to-pink-50'>
 					<div className='container mx-auto px-4'>
@@ -122,7 +69,7 @@ const Home = () => {
 												alt={item.id}
 												src={item.image}
 												fill
-												className='object-cover transition duration-300 group-hover:scale-105'
+												className='object-contain transition duration-300 group-hover:scale-105'
 											/>
 										</div>
 										<div className='p-6 bg-white'>
@@ -156,7 +103,7 @@ const Home = () => {
 							<motion.button
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}
-								onClick={() => router.push('/sign-up')}
+								onClick={() => router.push('/signup')}
 								style={{ borderRadius: '9999px' }}
 								className='mt-8 px-8 py-3 bg-white text-primary rounded-full
 								font-semibold text-lg shadow-lg hover:shadow-xl transition

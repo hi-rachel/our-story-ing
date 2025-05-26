@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../../../../firebase';
 import DefaultProfile from '@/components/common/profile/DefaultProfile';
@@ -23,17 +24,14 @@ const MainHeader = () => {
 
 	return (
 		<nav className='fixed top-0 left-0 right-0 bg-white bg-opacity-95 shadow-sm z-50'>
-			<div className='container mx-auto px-4 py-4 flex justify-between items-center'>
+			<div className='container mx-auto flex justify-between items-center px-4 py-1'>
 				<Link href='/' className='text-lg font-bold text-primary'>
-					<div className='flex justify-center items-center gap-3'>
-						<img
-							src={'/icons/couple.svg'}
-							alt='ing app logo'
-							width={'30px'}
-							height={'30px'}
-						/>
-						{t('common.appName')}
-					</div>
+					<Image
+						src='/images/logo/osi-black.png'
+						alt='osi logo'
+						width={60}
+						height={30}
+					/>
 				</Link>
 				<div className='flex flex-wrap items-center space-x-4 sm:space-x-6 mt-2 sm:mt-0'>
 					{user ? (
