@@ -19,7 +19,7 @@ const IngPhotoPageContainer = () => {
 		null,
 	]);
 	const [currentTheme, setCurrentTheme] = useState(
-		'/images/ing-photo/theme-mint.png'
+		'/images/ing-photo/sunset.png'
 	);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);

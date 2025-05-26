@@ -136,18 +136,29 @@ const IngPhotoPagePresentation: React.FC<IngPhotoPagePresentationProps> = ({
 					</div>
 
 					<div className='flex flex-col gap-4 lg:gap-6 lg:w-80'>
-						<div className='bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-5'>
-							<h3 className='text-sm font-bold text-gray-900 mb-4'>
+						<div className='bg-transparent rounded-2xl shadow-lg shadow-slate-200/50 flex flex-col overflow-x-hidden pb-5'>
+							<h3 className='mt-5 ml-5 text-sm font-bold text-gray-900'>
 								테마 선택
 							</h3>
-							<div className='grid grid-cols-3 gap-3 lg:grid-cols-2'>
+
+							<div
+								className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 overflow-y-auto overflow-x-hidden p-5'
+								style={{ maxHeight: '500px', minHeight: '200px' }}>
 								{themes.map((theme) => (
 									<button
 										key={theme.id}
 										onClick={() => setCurrentTheme(theme.path)}
-										className={`aspect-square rounded-xl transition-all hover:scale-105 ${theme.color}`}
-										title={theme.name}
-									/>
+										data-selected={theme.path === currentTheme}
+										className='relative border border-gray-200 shadow-sm aspect-square rounded-xl overflow-hidden box-border transition-all'
+										title={theme.name}>
+										<Image
+											src={theme.path}
+											alt={theme.name}
+											fill
+											className='object-cover'
+											sizes='100px'
+										/>
+									</button>
 								))}
 							</div>
 						</div>
