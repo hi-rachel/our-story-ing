@@ -1,16 +1,6 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-	darkMode: ['class'],
-	safelist: [
-		'bg-[#FF9292]',
-		'bg-[#FFC5C5]',
-		'bg-[#FFF7C1]',
-		'bg-[#C9FFC6]',
-		'bg-[#A7DDFF]',
-		'bg-[#48B6FF]',
-		'bg-[#DCB8FF]',
-	],
 	content: [
 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -93,63 +83,7 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate')],
+	plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')],
 };
 
 export default config;
-
-// const config: Config = {
-// 	content: [
-// 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-// 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
-// 	],
-// 	theme: {
-// 		extend: {
-// 			colors: {
-// 				primary: {
-// 					light: '#FFE4E6', // 매우 연한 핑크
-// 					DEFAULT: '#FDA4AF', // 메인 핑크
-// 					dark: '#FB7185', // 진한 핑크
-// 				},
-// 				secondary: {
-// 					light: '#FFF1F2', // 매우 연한 로즈
-// 					DEFAULT: '#FFE4E6', // 메인 로즈
-// 					dark: '#FDA4AF', // 진한 로즈
-// 				},
-// 				background: {
-// 					light: '#FFF5F5', // 매우 연한 배경
-// 					DEFAULT: '#FFF1F2', // 메인 배경
-// 					dark: '#FFE4E6', // 진한 배경
-// 				},
-// 				text: {
-// 					primary: '#334155', // 메인 텍스트
-// 					secondary: '#64748B', // 보조 텍스트
-// 					muted: '#94A3B8', // 흐린 텍스트
-// 				},
-// 				accent: {
-// 					light: '#FDA4AF', // 연한 액센트
-// 					DEFAULT: '#FB7185', // 메인 액센트
-// 					dark: '#F43F5E', // 진한 액센트
-// 				},
-// 				success: '#10B981', // 성공
-// 				error: '#EF4444', // 에러
-// 			},
-// 			fontFamily: {
-// 				sans: ['Roboto', 'sans-serif'],
-// 				heading: ['Poppins', 'sans-serif'],
-// 			},
-// 			boxShadow: {
-// 				card: '0 4px 6px rgba(0, 0, 0, 0.05)',
-// 				button: '0 2px 4px rgba(0, 0, 0, 0.05)',
-// 				'card-hover': '0 8px 12px rgba(0, 0, 0, 0.1)',
-// 			},
-// 			borderRadius: {
-// 				default: '12px',
-// 				large: '16px',
-// 			},
-// 		},
-// 	},
-// 	plugins: [],
-// };
-
-// export default config;
